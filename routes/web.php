@@ -191,11 +191,11 @@ Route::controller(TestimnonialController::class)->group(function (){
 
 Route::get('/', function () {
     return redirect()->route('login');
-});
+})->name('home');
 
 
 Route::controller(FrontController::class)->group(function () {
-    Route::get('/login', 'home')->name('home');
+    // Route::get('/home', 'home')->name('home');
     Route::get('/coaching', 'coaching')->name('coaching');
     Route::get('/about', 'about')->name('about');
     Route::get('/session-detail/{slug?}', 'sessionDetail')->name('session-detail');
