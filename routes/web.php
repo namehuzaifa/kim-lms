@@ -50,6 +50,7 @@ Route::controller(UsersController::class)->group(function (){
 });
 
 Route::controller(CoursesController::class)->group(function (){
+    // Route::get('courses-create', 'create')->name('courses-create')->middleware(['auth','user', 'coach']);
     Route::get('courses-create', 'create')->name('courses-create')->middleware(['auth','user', 'coach']);
     Route::post('courses-create', 'store')->name('courses-store')->middleware(['auth','user', 'coach']);
 
