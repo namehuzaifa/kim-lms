@@ -139,10 +139,12 @@
                                 <p class="card-text mb-2">Enter your credentials to login to your account</p>
                                 <form class="auth-login-form mt-2"  action="{{ route('login') }}" method="POST">
                                     @csrf
-                                    <div class="input-group input-group-merge mb-2">
-                                        {{-- <label class="form-label" for="login-email">Email</label> --}}
-                                        <span class="input-group-text" id="basic-addon5"> <i data-feather='mail' ></i></span>
-                                        <input class="form-control" id="login-email" type="text" name="email" placeholder="john@example.com" value="{{old('email')}}" autofocus="" tabindex="1" />
+                                    <div class="mb-2">
+                                        <div class="input-group input-group-merge ">
+                                            {{-- <label class="form-label" for="login-email">Email</label> --}}
+                                            <span class="input-group-text" id="basic-addon5"> <i data-feather='mail' ></i></span>
+                                            <input class="form-control" id="login-email" type="text" name="email" placeholder="john@example.com" value="{{old('email')}}" autofocus="" tabindex="1" />
+                                        </div>
                                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                     </div>
                                     <div class="mb-1">

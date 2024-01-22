@@ -144,19 +144,21 @@
                                 <p class="card-text mb-2">Enter your credentials to create new account</p>
                                 <form class="auth-register-form mt-2" action="{{ route('register') }}" method="POST">
                                     @csrf
-                                    <div class="input-group input-group-merge mb-2">
-                                        <span class="input-group-text" id="basic-addon5"> <i data-feather='user' ></i></span>
-                                        {{-- <label class="form-label" for="register-username">Name</label> --}}
-                                        <input class="form-control" id="register-username" type="text" name="name" placeholder="johndoe" value="{{ old('name') }}" autofocus="" tabindex="1" />
+                                    <div class="mb-2">
+                                        <div class="input-group input-group-merge mb-2">
+                                            <span class="input-group-text" id="basic-addon5"> <i data-feather='user' ></i></span>
+                                            {{-- <label class="form-label" for="register-username">Name</label> --}}
+                                            <input class="form-control" id="register-username" type="text" name="name" placeholder="johndoe" value="{{ old('name') }}" autofocus="" tabindex="1" />
+                                        </div>
                                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
-
                                     </div>
-                                    <div class="input-group input-group-merge mb-2">
-                                        <span class="input-group-text" id="basic-addon5"> <i data-feather='mail' ></i></span>
-                                        {{-- <label class="form-label" for="register-email">Email</label> --}}
-                                        <input class="form-control" id="register-email" type="text" name="email" placeholder="john@example.com" value="{{ old('email') }}" tabindex="2" />
+                                    <div class="mb-2">
+                                        <div class="input-group input-group-merge mb-2">
+                                            <span class="input-group-text" id="basic-addon5"> <i data-feather='mail' ></i></span>
+                                            {{-- <label class="form-label" for="register-email">Email</label> --}}
+                                            <input class="form-control" id="register-email" type="text" name="email" placeholder="john@example.com" value="{{ old('email') }}" tabindex="2" />
+                                        </div>
                                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
-
                                     </div>
                                     <div class="mb-1">
                                         <label class="form-label" for="register-password">Password</label>
