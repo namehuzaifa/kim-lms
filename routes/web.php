@@ -36,42 +36,43 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(UsersController::class)->group(function (){
-    Route::get('user-create', 'create')->name('user-create')->middleware(['auth','user', 'coach']);
-    Route::post('user-create', 'store')->name('user-store')->middleware(['auth','user', 'coach']);
+    Route::get('user-create', 'create')->name('user-create')->middleware(['auth', 'Allow:,admin']);
+    Route::post('user-create', 'store')->name('user-store')->middleware(['auth', 'Allow:,admin']);
 
     Route::get('user-edit/{id}', 'edit')->name('user-edit')->middleware(['auth']);
     Route::post('user-update/{id}', 'update')->name('user-update')->middleware(['auth']);
 
     Route::get('user-list', 'index')->name('user-list')->middleware(['auth', 'Allow:coach,admin']);
-    Route::get('user-delete/{id}', 'destroy')->name('user-delete')->middleware(['auth','user', 'coach']);
+    Route::get('user-delete/{id}', 'destroy')->name('user-delete')->middleware(['auth', 'Allow:,admin']);
 
-    Route::get('add-user-session/{id}', 'addSession')->name('add-user-session')->middleware(['auth','user', 'coach']);
-    Route::post('coaching-detail', 'coachingDetail')->name('coaching-detail')->middleware(['auth','user', 'coach']);
+    Route::get('add-user-session/{id}', 'addSession')->name('add-user-session')->middleware(['auth', 'Allow:,admin']);
+    Route::post('coaching-detail', 'coachingDetail')->name('coaching-detail')->middleware(['auth', 'Allow:,admin']);
 });
 
-Route::controller(CoursesController::class)->group(function (){
-    // Route::get('courses-create', 'create')->name('courses-create')->middleware(['auth','user', 'coach']);
-    Route::get('courses-create', 'create')->name('courses-create')->middleware(['auth','user', 'coach']);
-    Route::post('courses-create', 'store')->name('courses-store')->middleware(['auth','user', 'coach']);
-
-    Route::get('courses-edit/{id}', 'edit')->name('courses-edit')->middleware(['auth','user', 'coach']);
-    Route::post('courses-update/{id}', 'update')->name('courses-update')->middleware(['auth','user', 'coach']);
-
-    Route::get('courses-list', 'index')->name('courses-list')->middleware(['auth','user', 'coach']);
-    Route::get('courses-delete/{id}', 'destroy')->name('courses-delete')->middleware(['auth','user', 'coach']);
-});
 
 Route::controller(CoachingController::class)->group(function (){
-    Route::get('coaching-create', 'create')->name('coaching-create')->middleware(['auth','user',]);
-    Route::post('coaching-create', 'store')->name('coaching-store')->middleware(['auth','user',]);
+    Route::get('coaching-create', 'create')->name('coaching-create')->middleware(['auth', 'Allow:coach,admin',]);
+    Route::post('coaching-create', 'store')->name('coaching-store')->middleware(['auth', 'Allow:coach,admin',]);
 
-    Route::get('coaching-edit/{id}', 'edit')->name('coaching-edit')->middleware(['auth','user',]);
-    Route::post('coaching-update/{id}', 'update')->name('coaching-update')->middleware(['auth','user',]);
+    Route::get('coaching-edit/{id}', 'edit')->name('coaching-edit')->middleware(['auth', 'Allow:coach,admin',]);
+    Route::post('coaching-update/{id}', 'update')->name('coaching-update')->middleware(['auth', 'Allow:coach,admin',]);
 
-    Route::get('coaching-list', 'index')->name('coaching-list')->middleware(['auth','user',]);
-    Route::get('coaching-delete/{id}', 'destroy')->name('coaching-delete')->middleware(['auth','user',]);
-    Route::post('create-slot', 'createSlot')->name('create-slot')->middleware(['auth','user',]);
+    Route::get('coaching-list', 'index')->name('coaching-list')->middleware(['auth', 'Allow:coach,admin',]);
+    Route::get('coaching-delete/{id}', 'destroy')->name('coaching-delete')->middleware(['auth', 'Allow:coach,admin',]);
+    Route::post('create-slot', 'createSlot')->name('create-slot')->middleware(['auth', 'Allow:coach,admin',]);
 });
+
+// Route::controller(CoursesController::class)->group(function (){
+//     // Route::get('courses-create', 'create')->name('courses-create')->middleware(['auth','user', 'coach']);
+//     Route::get('courses-create', 'create')->name('courses-create')->middleware(['auth','user', 'coach']);
+//     Route::post('courses-create', 'store')->name('courses-store')->middleware(['auth','user', 'coach']);
+
+//     Route::get('courses-edit/{id}', 'edit')->name('courses-edit')->middleware(['auth','user', 'coach']);
+//     Route::post('courses-update/{id}', 'update')->name('courses-update')->middleware(['auth','user', 'coach']);
+
+//     Route::get('courses-list', 'index')->name('courses-list')->middleware(['auth','user', 'coach']);
+//     Route::get('courses-delete/{id}', 'destroy')->name('courses-delete')->middleware(['auth','user', 'coach']);
+// });
 
 Route::controller(BlogController::class)->group(function (){
     Route::get('blog-create', 'create')->name('blog-create')->middleware(['auth','user', 'coach']);

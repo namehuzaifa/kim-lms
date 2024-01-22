@@ -237,7 +237,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                    {{-- <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='airplay'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Courses</span></a>
                         <ul class="menu-content">
@@ -253,7 +253,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
 
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='calendar'></i>
@@ -288,7 +288,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                    {{-- <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='message-circle'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Blog</span></a>
                         <ul class="menu-content">
@@ -304,9 +304,9 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
 
-                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                    {{-- <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='mic'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Podcast</span></a>
                         <ul class="menu-content">
@@ -322,9 +322,9 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
 
-                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                    {{-- <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='file-plus'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Pages</span></a>
                         <ul class="menu-content">
@@ -340,9 +340,9 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
 
-                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                    {{-- <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='database'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Contact Query</span></a>
                         <ul class="menu-content">
@@ -362,9 +362,9 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
 
-                    <li class="nav-item {{ navActive(['guide-tracking']) }}">
+                    {{-- <li class="nav-item {{ navActive(['guide-tracking']) }}">
                         <a class="d-flex align-items-center" href="{{ route('guide-tracking') }}">
                             <i data-feather='search'></i>
                             <span class="menu-title text-truncate" data-i18n="Dashboards">Guide Tracking</span>
@@ -376,14 +376,13 @@
                             <i data-feather='mail'></i>
                             <span class="menu-title text-truncate" data-i18n="Dashboards">News Letter</span>
                         </a>
-                    </li>
+                    </li> --}}
 
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a class="d-flex align-items-center" href="{{ route('cms-page-edit','about') }}">
                             <i data-feather='airplay'></i>
                             <span class="menu-title text-truncate" data-i18n="Charts">Pages Content</span>
-                            {{-- <span class="badge badge-light-danger rounded-pill ms-auto me-2">2</span> --}}
                         </a>
 
                         <ul class="menu-content">
@@ -412,8 +411,8 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
-
+                    </li> --}}
+{{--
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='file-plus'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Site Setting</span></a>
@@ -424,7 +423,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
 
 
                 @endif
