@@ -437,26 +437,6 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center" href="#">
-                            <i data-feather='users'></i>
-                            <span class="menu-title text-truncate" data-i18n="Invoice">Users</span>
-                        </a>
-                            <ul class="menu-content">
-                                <li class="{{ navActive(['user-list', 'user-edit']) }}">
-                                    <a class="d-flex align-items-center" href="{{ route('user-list') }}">
-                                        <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span>
-                                    </a>
-                                </li>
-
-                                <li class="{{ navActive(['user-create']) }}">
-                                    <a class="d-flex align-items-center" href="{{ route('user-create') }}">
-                                        <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add new</span>
-                                    </a>
-                                </li>
-                            </ul>
-                    </li>
-
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='book-open'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Sessions</span></a>

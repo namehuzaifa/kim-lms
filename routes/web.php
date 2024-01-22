@@ -42,7 +42,7 @@ Route::controller(UsersController::class)->group(function (){
     Route::get('user-edit/{id}', 'edit')->name('user-edit')->middleware(['auth']);
     Route::post('user-update/{id}', 'update')->name('user-update')->middleware(['auth']);
 
-    Route::get('user-list', 'index')->name('user-list')->middleware(['auth', 'Allow:coach,admin']);
+    Route::get('user-list', 'index')->name('user-list')->middleware(['auth', 'Allow:admin']);
     Route::get('user-delete/{id}', 'destroy')->name('user-delete')->middleware(['auth', 'Allow:,admin']);
 
     Route::get('add-user-session/{id}', 'addSession')->name('add-user-session')->middleware(['auth', 'Allow:,admin']);
