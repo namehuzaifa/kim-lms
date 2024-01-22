@@ -60,7 +60,7 @@
                                                         <label class="form-label" for="user_role">User Role</label>
                                                         <select name="user_role" class="form-control" id="">
                                                             <option {{ ($isEdit && $user?->user_role == 'user') ? "selected" : "" }} value="user">User</option>
-                                                            <option {{ ($isEdit && $user?->user_role == 'coach') ? "selected" : "" }} value="coach">Coach</option>
+                                                            <option {{ ($isEdit && $user?->user_role == 'coach') ? "selected" : "" }} value="coach">Teacher</option>
                                                             <option {{ ($isEdit && $user?->user_role == 'admin') ? "selected" : "" }} value="admin">Admin</option>
                                                         </select>
                                                         @error('user_role')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
