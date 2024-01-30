@@ -71,10 +71,13 @@ class SessionOrderController extends Controller
             User::create(['name' => $request->name, 'email' => $request->email, 'password' => $request->password, 'user_role' => 'user']);
             // User_metas::create($request->except('_token','name','email','password'));
 
-            return redirect()->json(['status' => true, 'message' => "User add successfully"]);
+            return response()->json([
+                'status' => true,
+                'errors' => "User add successfully"
+            ], 200); // 422 Unprocessable Entity
 
         } catch (\Exception $e) {
-            return redirect()->json(['status' => false, 'message' => $e->getMessage() ], 422);
+            return response()->json(['status' => false, 'message' => $e->getMessage() ], 422);
         }
     }
 
