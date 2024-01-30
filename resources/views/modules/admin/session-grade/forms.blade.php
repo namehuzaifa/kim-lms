@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title',($isEdit) ? "Edit Blog" : 'Add Blog'.' | '.config('app.name'))
+@section('title',($isEdit) ? "Edit Grade" : 'Add Grade'.' | '.config('app.name'))
 
 @section('content')
 
@@ -13,7 +13,7 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0"> {{ ($isEdit) ? "Edit Blog" : 'Add Blog' }}</h2>
+                            <h2 class="content-header-title float-start mb-0"> {{ ($isEdit) ? "Edit Grade" : 'Add Grade' }}</h2>
                         </div>
                     </div>
                 </div>
@@ -28,14 +28,14 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <form class="form form-vertical" method="POST" action="{{ ($isEdit) ?  route('blog-update', $id) : route('blog-store') }}" enctype="multipart/form-data" >
+                                    <form class="form form-vertical" method="POST" action="{{ ($isEdit) ?  route('grade-update', $id) : route('grade-store') }}" enctype="multipart/form-data" >
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6  col-12">
                                                 <div class="mb-1">
-                                                    <label class="form-label" for="first-title-vertical" >Title</label>
-                                                    <input type="text" id="first-title-vertical" class="form-control" value="{{ ($isEdit) ? $blog?->title : old('title')  }}" name="title" placeholder="title" />
-                                                    @error('title')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                    <label class="form-label" for="first-name-vertical" >Name</label>
+                                                    <input type="text" id="first-name-vertical" class="form-control" value="{{ ($isEdit) ? $blog?->name : old('name')  }}" name="name" placeholder="name" />
+                                                    @error('name')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
 
@@ -50,7 +50,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-10  col-12">
+                                            {{-- <div class="col-md-10  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="description">Description</label>
                                                     <textarea class="form-control" name="description" id="" rows="7">{{ ($isEdit) ? $blog?->description : old('description')  }}</textarea>
@@ -76,7 +76,7 @@
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <div class="col-12">
                                                 <button type="submit" class="btn btn-primary me-1">Submit</button>

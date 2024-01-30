@@ -1,6 +1,6 @@
 
 @extends('layouts.master')
-@section('title','Blog List | '.config('app.name'))
+@section('title','Grade List | '.config('app.name'))
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
@@ -21,7 +21,7 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">Blog List</h2>
+                            <h2 class="content-header-title float-start mb-0">Grade List</h2>
                         </div>
                     </div>
                 </div>
@@ -39,38 +39,37 @@
                                     <thead>
                                         <tr>
                                             <th>id</th>
-                                            <th>title</th>
+                                            <th>Name</th>
                                             <th>Stats</th>
                                             <th>Create Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($blogs as $blog)
+                                        @foreach ($grades as $grade)
 
                                         <tr>
-                                            <td>{{ $blog->id }}</td>
+                                            <td>{{ $grade->id }}</td>
                                             <td>
                                                 <div class="d-flex justify-content-left align-items-center">
-                                                    <div class="avatar  me-1"><img src="{{ asset( ($blog?->image_url) ? $blog?->image_url : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="32" height="32"></div>
                                                     <div class="d-flex flex-column">
-                                                        <span class="emp_name text-truncate fw-bold">{{ $blog->title }}</span>
-                                                        {{-- <small class="emp_post text-truncate text-muted">{{ $blog->title }}</small> --}}
+                                                        <span class="emp_name text-truncate fw-bold">{{ $grade->name }}</span>
+                                                        {{-- <small class="emp_post text-truncate text-muted">{{ $grade->title }}</small> --}}
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ ($blog->status) ? 'active' : 'Inactive' }}</td>
-                                            <td>{{ $blog->created_at->format('d-M-Y') }}</td>
+                                            <td>{{ ($grade->status) ? 'active' : 'Inactive' }}</td>
+                                            <td>{{ $grade->created_at->format('d-M-Y') }}</td>
                                             <td>
-                                                {{-- <a href="{{ route('app-blog-detail', $blog->id) }}" class="">
+                                                {{-- <a href="{{ route('app-grade-detail', $grade->id) }}" class="">
                                                     <x-detail-icon/>
                                                 </a> --}}
 
-                                                <a href="{{ route('blog-edit', $blog->id) }}" class="item-edit">
+                                                <a href="{{ route('grade-edit', $grade->id) }}" class="item-edit">
                                                     <x-edit-icon/>
                                                 </a>
 
-                                                <a href="{{ route('blog-delete', $blog->id) }}" class="delete-record">
+                                                <a href="{{ route('grade-delete', $grade->id) }}" class="delete-record">
                                                     <x-trash-icon/>
                                                 </a>
                                             </td>
@@ -128,7 +127,7 @@
             buttons: [
 
                 {
-                    text: 'Add New Blog',
+                    text: 'Add New grade',
                     className: 'add-new btn btn-primary',
                     attr: {
                         // 'data-bs-toggle': 'modal',
@@ -142,7 +141,7 @@
             });
 
             $(document).on("click",".add-new",function() {
-                $(location).prop('href', "{{ route('blog-create') }}");
+                $(location).prop('href', "{{ route('grade-create') }}");
             });
 
             table.on('draw', function () {

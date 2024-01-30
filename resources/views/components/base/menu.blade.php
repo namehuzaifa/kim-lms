@@ -216,12 +216,17 @@
                                         <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add new</span>
                                     </a>
                                 </li>
+                                <li class="{{ navActive(['access-token-list']) }}">
+                                    <a class="d-flex align-items-center" href="{{ route('access-token-list') }}">
+                                        <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Api Token</span>
+                                    </a>
+                                </li>
                             </ul>
                     </li>
 
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='book-open'></i>
-                        <span class="menu-title text-truncate" data-i18n="Invoice">Session</span></a>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">On Demand Sessions</span></a>
                         <ul class="menu-content">
                             <li class="{{ navActive(['coaching-list', 'coaching-edit']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('coaching-list') }}">
@@ -234,6 +239,20 @@
                                     <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add new</span>
                                 </a>
                             </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                        <i data-feather='book-open'></i>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Sessions</span></a>
+                        <ul class="menu-content">
+                            <li class="{{ navActive(['grade-list', 'grade-edit']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('grade-list') }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Grade list</span>
+                                </a>
+                            </li>
+
+
                         </ul>
                     </li>
 

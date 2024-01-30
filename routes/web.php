@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CMSPagesController;
 use App\Http\Controllers\CoachingController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueryController;
 use App\Http\Controllers\SessionBookingController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\SessionGradeController;
 use App\Http\Controllers\SessionPaymentController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TestimnonialController;
@@ -34,6 +36,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::controller(AccessTokenController::class)->group(function (){
+    Route::get('access-token-list', 'index')->name('access-token-list')->middleware(['auth', 'Allow:admin']);
+    Route::post('access-token-create', 'store')->name('access-token-store')->middleware(['auth', 'Allow:,admin']);
+    Route::get('access-token-delete/{id}', 'destroy')->name('access-token-delete')->middleware(['auth', 'Allow:,admin']);
+});
 
 Route::controller(UsersController::class)->group(function (){
     Route::get('user-create', 'create')->name('user-create')->middleware(['auth', 'Allow:,admin']);
@@ -60,6 +68,19 @@ Route::controller(CoachingController::class)->group(function (){
     Route::get('coaching-list', 'index')->name('coaching-list')->middleware(['auth', 'Allow:coach,admin',]);
     Route::get('coaching-delete/{id}', 'destroy')->name('coaching-delete')->middleware(['auth', 'Allow:coach,admin',]);
     Route::post('create-slot', 'createSlot')->name('create-slot')->middleware(['auth', 'Allow:coach,admin',]);
+});
+
+
+Route::controller(SessionGradeController::class)->group(function (){
+    Route::get('grade-create', 'create')->name('grade-create')->middleware(['auth', 'Allow:admin',]);
+    Route::post('grade-create', 'store')->name('grade-store')->middleware(['auth', 'Allow:admin',]);
+
+    Route::get('grade-edit/{id}', 'edit')->name('grade-edit')->middleware(['auth', 'Allow:admin',]);
+    Route::post('grade-update/{id}', 'update')->name('grade-update')->middleware(['auth', 'Allow:admin',]);
+
+    Route::get('grade-list', 'index')->name('grade-list')->middleware(['auth', 'Allow:admin',]);
+    Route::get('grade-delete/{id}', 'destroy')->name('grade-delete')->middleware(['auth', 'Allow:admin',]);
+    Route::post('create-slot', 'createSlot')->name('create-slot')->middleware(['auth', 'Allow:admin',]);
 });
 
 // Route::controller(CoursesController::class)->group(function (){

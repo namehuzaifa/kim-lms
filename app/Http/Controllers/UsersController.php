@@ -22,6 +22,11 @@ class UsersController extends Controller
         return view('modules.admin.users.list', compact('users'));
     }
 
+    public function indexApi()
+    {
+        return response()->json(User::all());
+    }
+
 
     public function addSession($id)
     {
