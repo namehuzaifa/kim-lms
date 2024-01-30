@@ -58,7 +58,7 @@ class SessionOrderController extends Controller
         if ($validator->fails()) {
             // Return validation errors as JSON response
             return response()->json([
-                'status' => 'error',
+                'status' => false,
                 'message' => 'Validation failed',
                 'errors' => $validator->errors()
             ], 422); // 422 Unprocessable Entity
@@ -71,10 +71,10 @@ class SessionOrderController extends Controller
             User::create(['name' => $request->name, 'email' => $request->email, 'password' => $request->password, 'user_role' => 'user']);
             // User_metas::create($request->except('_token','name','email','password'));
 
-            return redirect()->json(['status' => 'success', 'message' => "User add successfully"]);
+            return redirect()->json(['status' => true, 'message' => "User add successfully"]);
 
         } catch (\Exception $e) {
-            return redirect()->back()->with(['status' => 'failed', 'message' => $e->getMessage() ]);
+            return redirect()->json(['status' => false, 'message' => $e->getMessage() ], 422);
         }
     }
 
