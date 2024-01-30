@@ -528,12 +528,12 @@
                             <span class="menu-title text-truncate" data-i18n="Dashboards">Payment list</span>
                         </a>
                     </li>
-                    {{-- <li class="nav-item {{ navActive(['payment-list']) }}">
-                        <a class="d-flex align-items-center" href="{{ route('coaching') }}">
+                    <li class="nav-item">
+                        <a class="d-flex align-items-center" href="https://tothestar.org/on-demand-sessions/">
                             <i data-feather='file-plus'></i>
-                            <span class="menu-title text-truncate" data-i18n="Dashboards">Book New Session</span>
+                            <span class="menu-title text-truncate" data-i18n="Dashboards">Book On demand session</span>
                         </a>
-                    </li> --}}
+                    </li>
 
                     @if (isset(getFreeSessionUrl()->slug) && getUserSessionCount() == 0)
                         <li class="m-2 get-free-session" style="white-space: normal">
