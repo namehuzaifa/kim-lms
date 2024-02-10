@@ -48,7 +48,7 @@
                                     <form class="form form-vertical" method="POST" action="{{ ($isEdit) ?  route('coaching-update', $id) : route('coaching-store') }}" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
-                                            <div class="col-md-4  col-12">
+                                            <div class="col-md-3  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="title" >Title</label>
                                                     <input type="text" id="title" class="form-control" value="{{ ($isEdit) ? $coaching?->title : old('title')  }}" name="title" placeholder="title" />
@@ -56,7 +56,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-4 mb-1">
+                                            <div class="col-md-3 mb-1">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="fp-multiple">Blackout dates</label>
                                                     <input type="text" id="fp-multiple" class="form-control flatpickr-multiple" value="{{ ($isEdit) ? $coaching?->blackout_dates : old('blackout_dates') }}" name="blackout_dates" placeholder="YYYY-MM-DD"  />
@@ -64,7 +64,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-4 col-12">
+                                            <div class="col-md-3 col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="status">Session Status</label>
                                                     <select class="form-select" id="status" name="status" required>
@@ -72,6 +72,18 @@
                                                         <option value="0" {{ ($isEdit && !$coaching?->status) ? 'selected': '' }}>Inactive</option>
                                                     </select>
                                                     @error('status')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-12">
+                                                <div class="mb-1">
+                                                    <label class="form-label" for="subject_id">Select Subject</label>
+                                                    <select class="form-select" id="subject_id" name="subject_id" required>
+                                                        @foreach ($subjects as $subject)
+                                                            <option value="{{ $subject?->id }}" {{ ($isEdit && $subject?->id == $coaching?->subject_id) ? 'selected' : '' }}>{{ $subject?->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('subject_id')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
 

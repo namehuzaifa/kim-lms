@@ -1,6 +1,6 @@
 
 @extends('layouts.master')
-@section('title','coaching | '.config('app.name'))
+@section('title','Subject List | '.config('app.name'))
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
@@ -21,7 +21,7 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">Sessions List</h2>
+                            <h2 class="content-header-title float-start mb-0">Subject List</h2>
                         </div>
                     </div>
                 </div>
@@ -39,50 +39,38 @@
                                     <thead>
                                         <tr>
                                             <th>id</th>
-                                            <th>Title</th>
-                                            {{-- <th>Start</th>
-                                            <th>End</th>
-                                            <th>Duration</th> --}}
-                                            <th>Price</th>
-                                            <th>Limit</th>
-                                            <th>Coach</th>
-                                            <th>Status</th>
-                                            <th>Created Date</th>
+                                            <th>Name</th>
+                                            <th>Stats</th>
+                                            <th>Create Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($coachings as $coaching)
+                                        @foreach ($subjects as $subject)
 
                                         <tr>
-                                            <td>{{ $coaching->id }}</td>
+                                            <td>{{ $subject->id }}</td>
                                             <td>
                                                 <div class="d-flex justify-content-left align-items-center">
-                                                    <div class="avatar  me-1"><img src="{{ asset( ($coaching?->image_id) ? $coaching?->image_id : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="32" height="32"></div>
+                                                    <div class="avatar  me-1"><img src="{{ asset( ($subject?->image_url) ? $subject?->image_url : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="32" height="32"></div>
                                                     <div class="d-flex flex-column">
-                                                        <span class="emp_name text-truncate fw-bold">{{ $coaching->title }}</span>
-                                                        <small class="emp_post text-truncate text-muted">Subject : {{ $coaching?->getSubject?->name }}</small>
+                                                        <span class="emp_name text-truncate fw-bold">{{ $subject->name }}</span>
+                                                        {{-- <small class="emp_post text-truncate text-muted">{{ $subject->title }}</small> --}}
                                                     </div>
                                                 </div>
                                             </td>
-                                            {{-- <td>{{ $coaching->start_time }}</td>
-                                            <td>{{ $coaching->end_time }}</td>
-                                            <td>{{ $coaching->duration }}</td> --}}
-                                            <td>${{ $coaching->price_per_session }}</td>
-                                            <td>{{ $coaching->session_limit }}</td>
-                                            <td>{{ $coaching->coach_name }}</td>
-                                            <td>{{ ($coaching->status) ? 'active' : 'Inactive' }}</td>
-                                            <td>{{ $coaching->created_at->format('d-M-Y') }}</td>
+                                            <td>{{ ($subject->status) ? 'active' : 'Inactive' }}</td>
+                                            <td>{{ $subject->created_at->format('d-M-Y') }}</td>
                                             <td>
-                                                {{-- <a href="{{ route('app-coaching-detail', $coaching->id) }}" class="">
+                                                {{-- <a href="{{ route('app-subject-detail', $subject->id) }}" class="">
                                                     <x-detail-icon/>
                                                 </a> --}}
 
-                                                <a href="{{ route('coaching-edit', $coaching->id) }}" class="item-edit">
+                                                <a href="{{ route('subject-edit', $subject->id) }}" class="item-edit">
                                                     <x-edit-icon/>
                                                 </a>
 
-                                                <a href="{{ route('coaching-delete', $coaching->id) }}" class="delete-record" onclick="return confirm('are you sure you want to delete this?')">
+                                                <a href="{{ route('subject-delete', $subject->id) }}" class="delete-record">
                                                     <x-trash-icon/>
                                                 </a>
                                             </td>
@@ -140,7 +128,7 @@
             buttons: [
 
                 {
-                    text: 'Add New Session',
+                    text: 'Add New Subject',
                     className: 'add-new btn btn-primary',
                     attr: {
                         // 'data-bs-toggle': 'modal',
@@ -154,7 +142,7 @@
             });
 
             $(document).on("click",".add-new",function() {
-                $(location).prop('href', "{{ route('coaching-create') }}");
+                $(location).prop('href', "{{ route('subject-create') }}");
             });
 
             table.on('draw', function () {

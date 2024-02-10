@@ -9,6 +9,8 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\GuideUserTrackingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsLetterController;
+use App\Http\Controllers\OnDemandSession\SubjectController;
+use App\Http\Controllers\OnDemandSession\UserScreenController;
 use App\Http\Controllers\PagesContentController;
 use App\Http\Controllers\PoadcastController;
 use App\Http\Controllers\ProfileController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\SessionPaymentController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TestimnonialController;
 use App\Http\Controllers\UsersController;
+use App\Models\Coaching;
 use App\Models\PagesContent;
 use App\Models\SessionPayment;
 use App\Models\SiteSetting;
@@ -36,6 +39,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::controller(UserScreenController::class)->group(function (){
+    Route::get('/subjects', 'subjects')->name('subjects');
+    Route::get('/courses/{slug}', 'courses')->name('courses');
+    Route::get('/course-detail/{slug}', 'courseDetail')->name('course-detail');
+})->middleware(['auth', 'Allow:admin']);
+
 
 Route::controller(AccessTokenController::class)->group(function (){
     Route::get('access-token-list', 'index')->name('access-token-list')->middleware(['auth', 'Allow:admin']);
@@ -80,7 +90,17 @@ Route::controller(SessionGradeController::class)->group(function (){
 
     Route::get('grade-list', 'index')->name('grade-list')->middleware(['auth', 'Allow:admin',]);
     Route::get('grade-delete/{id}', 'destroy')->name('grade-delete')->middleware(['auth', 'Allow:admin',]);
-    Route::post('create-slot', 'createSlot')->name('create-slot')->middleware(['auth', 'Allow:admin',]);
+});
+
+Route::controller(SubjectController::class)->group(function (){
+    Route::get('subject-create', 'create')->name('subject-create')->middleware(['auth', 'Allow:admin',]);
+    Route::post('subject-create', 'store')->name('subject-store')->middleware(['auth', 'Allow:admin',]);
+
+    Route::get('subject-edit/{id}', 'edit')->name('subject-edit')->middleware(['auth', 'Allow:admin',]);
+    Route::post('subject-update/{id}', 'update')->name('subject-update')->middleware(['auth', 'Allow:admin',]);
+
+    Route::get('subject-list', 'index')->name('subject-list')->middleware(['auth', 'Allow:admin',]);
+    Route::get('subject-delete/{id}', 'destroy')->name('subject-delete')->middleware(['auth', 'Allow:admin',]);
 });
 
 // Route::controller(CoursesController::class)->group(function (){
@@ -148,11 +168,11 @@ Route::controller(GuideUserTrackingController ::class)->group(function (){
 });
 
 
-// Route::controller(NewsLetterController::class)->group(function (){
-//     Route::get('newsletter-list', 'index')->name('newsletter-list')->middleware(['auth','user', 'coach']);
-//     Route::post('post-email', 'postEmail')->name('post-email')->middleware(['auth','user', 'coach']);
-//     Route::post('newsletter-create', 'store')->name('newsletter-create');
-// });
+Route::controller(NewsLetterController::class)->group(function (){
+    Route::get('newsletter-list', 'index')->name('newsletter-list')->middleware(['auth','user', 'coach']);
+    Route::post('post-email', 'postEmail')->name('post-email')->middleware(['auth','user', 'coach']);
+    Route::post('newsletter-create', 'store')->name('newsletter-create');
+});
 
 Route::controller(SessionBookingController::class)->group(function (){
     // Route::get('session-create', 'create')->name('session-create')->middleware(['auth','user', 'coach']);
@@ -216,32 +236,32 @@ Route::get('/', function () {
 })->name('home');
 
 
-// Route::controller(FrontController::class)->group(function () {
-//     // Route::get('/home', 'home')->name('home');
-//     Route::get('/coaching', 'coaching')->name('coaching');
-//     Route::get('/about', 'about')->name('about');
-//     Route::get('/session-detail/{slug?}', 'sessionDetail')->name('session-detail');
+Route::controller(FrontController::class)->group(function () {
+    // Route::get('/home', 'home')->name('home');
+    Route::get('/coaching', 'coaching')->name('coaching');
+    Route::get('/about', 'about')->name('about');
+    Route::get('/session-detail/{slug?}', 'sessionDetail')->name('session-detail');
 
-//     Route::get('/blog', 'blog')->name('blog');
-//     Route::get('/blog-detail/{slug?}', 'blogDetail')->name('blog-detail');
+    Route::get('/blog', 'blog')->name('blog');
+    Route::get('/blog-detail/{slug?}', 'blogDetail')->name('blog-detail');
 
-//     Route::get('/podcast', 'poadcast')->name('poadcast');
-//     Route::get('/podcast-detail/{slug?}', 'poadcastDetail')->name('poadcast-detail');
+    Route::get('/podcast', 'poadcast')->name('poadcast');
+    Route::get('/podcast-detail/{slug?}', 'poadcastDetail')->name('poadcast-detail');
 
-//     Route::get('/course', 'course')->name('course');
-//     Route::get('/course-detail/{slug?}', 'courseDetail')->name('course-detail');
+    Route::get('/course', 'course')->name('course');
+    Route::get('/course-detail/{slug?}', 'courseDetail')->name('course-detail');
 
-//     Route::get('/session-booking/{slug?}', 'sessionBooking')->name('session-booking')->middleware(['auth']);
+    Route::get('/session-booking/{slug?}', 'sessionBooking')->name('session-booking')->middleware(['auth']);
 
-//     Route::get('pages/{slug}', 'pages')->name('pages');
+    Route::get('pages/{slug}', 'pages')->name('pages');
 
-//     // Route::post('/session-booking/{slug?}', 'sessionCreate')->name('session-create')->middleware(['auth']);
+    // Route::post('/session-booking/{slug?}', 'sessionCreate')->name('session-create')->middleware(['auth']);
 
-//     // Route::post('/session-slots', 'getSlots')->name('get-slots')->middleware(['auth']);
+    // Route::post('/session-slots', 'getSlots')->name('get-slots')->middleware(['auth']);
 
-//     Route::get('/testimonial', 'testimonial')->name('testimonial');
-//     Route::get('/thankyou', 'thankyou')->name('thankyou');
-// });
+    Route::get('/testimonial', 'testimonial')->name('testimonial');
+    Route::get('/thankyou', 'thankyou')->name('thankyou');
+});
 
 // Route::get('/call', function(){
 //   return Artisan::call('migrate');

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('coachings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('subject_id')->constrained('subjects');
             $table->string('title')->default('no title');
             $table->string('slug');
             $table->string('coach_name')->nullable();

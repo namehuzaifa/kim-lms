@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('session_plans', function (Blueprint $table) {
+        Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('grade_id')->constrained('session_grades');
             $table->string('name');
-            $table->longText('description')->nullable();
+            $table->string('slug');
+            $table->text('description')->nullable();
+            $table->text('image_url')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('session_plans');
+        Schema::dropIfExists('subjects');
     }
 };

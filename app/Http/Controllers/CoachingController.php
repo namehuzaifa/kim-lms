@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coaching;
 use App\Models\Slot;
+use App\Models\Subject;
 use App\Services\Payments\StripeService;
 use DateTime;
 use Illuminate\Http\Request;
@@ -36,7 +37,8 @@ class CoachingController extends Controller
     public function create()
     {
         $isEdit = false;
-        return view('modules.admin.coaching.forms', compact('isEdit'));
+        $subjects = Subject::whereStatus(1)->get();
+        return view('modules.admin.coaching.forms', compact('isEdit', 'subjects'));
     }
 
     /**
@@ -50,6 +52,7 @@ class CoachingController extends Controller
         $request->validate([
             'title'             => ['required', 'string', 'max:255'],
             'coach_name'        => ['required', 'string', 'max:255'],
+            'subject_id'        => ['required', 'string'],
             'start_time'        => ['required', 'array'],
             'end_time'          => ['required', 'array'],
             'duration'          => ['required', 'array'],
@@ -126,9 +129,9 @@ class CoachingController extends Controller
     public function edit($id)
     {
         $coaching = Coaching::findOrFail($id);
-        // dd($coaching->getslots->pluck('days')->toArray());
         $isEdit = true;
-        return view('modules.admin.coaching.forms', compact('id', 'coaching', 'isEdit'));
+        $subjects = Subject::whereStatus(1)->get();
+        return view('modules.admin.coaching.forms', compact('id', 'coaching', 'isEdit', 'subjects'));
     }
 
     /**
