@@ -90,6 +90,19 @@
                 left: 80px;
             }
         }
+        .card.ecommerce-card {
+            padding: 10px;
+        }
+        .ecommerce-application .grid-view .ecommerce-card .item-description {
+            white-space: normal;
+            max-height: 89px;
+        }
+
+        p.teacher-bio{
+            font-size: 0.875rem;
+            line-height: 1.5rem;
+        }
+
     </style>
 @endsection
 
@@ -134,7 +147,7 @@
 
                     @forelse ($courses as $course)
                         <div class="card ecommerce-card">
-                            <div class="item-img text-center">
+                            <div class="item-img1 text-center1">
                                 <a href="{{ route('session-detail', $course?->slug) }}">
                                     <img src="{{ asset($course->image_id) }}" class="img-fluid" alt="img-placeholder" />
                                 </a>
@@ -163,9 +176,20 @@
                                 <p class="card-text item-description">
                                     {{ $course?->description }}
                                 </p>
+                                <div class="d-flex align-items-start">
+                                    <div class="avatar me-2">
+                                        <img src="../../../app-assets/images/portrait/small/avatar-s-6.jpg" width="60" height="60" alt="Avatar">
+                                    </div>
+                                    <div class="author-info">
+                                        <h6 class="fw-bolder">Willie Clark</h6>
+                                        <p class="card-text mb-0 teacher-bio">
+                                            Based in London, Uncode is a blog by Willie Clark.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="item-options text-center">
-                                <a href="{{ route('course-detail', $course?->slug) }}" class="btn btn-primary btn-cart">
+                                <a href="{{ route('course-detail', $course?->slug) }}" class="btn btn-primary btn-cart rounded">
                                     <span class="add-to-cart">View Details</span>
                                 </a>
                             </div>

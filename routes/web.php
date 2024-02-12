@@ -41,10 +41,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(UserScreenController::class)->group(function (){
-    Route::get('/subjects', 'subjects')->name('subjects');
-    Route::get('/courses/{slug}', 'courses')->name('courses');
-    Route::get('/course-detail/{slug}', 'courseDetail')->name('course-detail');
-})->middleware(['auth', 'Allow:admin']);
+    Route::get('/subjects', 'subjects')->name('subjects')->middleware(['auth', 'Allow:admin']);
+    Route::get('/courses/{slug}', 'courses')->name('courses')->middleware(['auth', 'Allow:admin']);
+    Route::get('/course-detail/{slug}', 'courseDetail')->name('course-detail')->middleware(['auth', 'Allow:admin']);
+});
 
 
 Route::controller(AccessTokenController::class)->group(function (){
