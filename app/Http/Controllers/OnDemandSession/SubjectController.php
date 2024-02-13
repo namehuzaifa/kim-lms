@@ -17,7 +17,7 @@ class SubjectController extends Controller
     public function index()
     {
         $subjects = Subject::all();
-        return view('modules.admin.Subject.list', compact('subjects'));
+        return view('modules.admin.subject.list', compact('subjects'));
     }
 
     /**
@@ -28,7 +28,7 @@ class SubjectController extends Controller
     public function create()
     {
         $isEdit = false;
-        return view('modules.admin.Subject.forms', compact('isEdit'));
+        return view('modules.admin.subject.forms', compact('isEdit'));
     }
 
     /**
@@ -76,7 +76,7 @@ class SubjectController extends Controller
     {
         $subject = Subject::findOrFail($id);
         $isEdit = true;
-        return view('modules.admin.Subject.forms', compact('id', 'subject', 'isEdit'));
+        return view('modules.admin.subject.forms', compact('id', 'subject', 'isEdit'));
     }
 
     /**
@@ -89,7 +89,7 @@ class SubjectController extends Controller
     {
         $subject = Subject::findOrFail($id);
         $isEdit = true;
-        return view('modules.admin.Subject.forms', compact('id', 'subject', 'isEdit'));
+        return view('modules.admin.subject.forms', compact('id', 'subject', 'isEdit'));
     }
 
     /**
