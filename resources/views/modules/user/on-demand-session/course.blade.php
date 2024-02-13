@@ -96,6 +96,7 @@
         .ecommerce-application .grid-view .ecommerce-card .item-description {
             white-space: normal;
             max-height: 89px;
+            min-height: 62px;
         }
 
         p.teacher-bio{
@@ -148,7 +149,7 @@
                     @forelse ($courses as $course)
                         <div class="card ecommerce-card">
                             <div class="item-img1 text-center1">
-                                <a href="{{ route('session-detail', $course?->slug) }}">
+                                <a href="{{ route('course-detail', $course?->slug) }}">
                                     <img src="{{ asset($course->image_id) }}" class="img-fluid" alt="img-placeholder" />
                                 </a>
                             </div>
@@ -167,7 +168,7 @@
                                         <a class="text-dark" href="{{ route('course-detail', $course?->slug) }}">{{ $course?->title }}</a>
                                     </div>
                                     <div class="item-cost">
-                                        <h6 class="item-price">${{ $course?->price_per_session }}</h6>
+                                        <h6 class="item-price">{{ $course?->price_per_session == 0 ? "Free" : "$".$course?->price_per_session  }}</h6>
                                     </div>
                                 </div>
                                 {{-- <div class="item-name">
@@ -178,10 +179,10 @@
                                 </p>
                                 <div class="d-flex align-items-start">
                                     <div class="avatar me-2">
-                                        <img src="../../../app-assets/images/portrait/small/avatar-s-6.jpg" width="60" height="60" alt="Avatar">
+                                        <img src="{{ asset('assets/images/avatar.png') }}" width="60" height="60" alt="Avatar">
                                     </div>
                                     <div class="author-info">
-                                        <h6 class="fw-bolder">Willie Clark</h6>
+                                        <h6 class="fw-bolder">{{ $course?->coach_name ? $course?->coach_name : $course?->getUser->name }}</h6>
                                         <p class="card-text mb-0 teacher-bio">
                                             Based in London, Uncode is a blog by Willie Clark.
                                         </p>

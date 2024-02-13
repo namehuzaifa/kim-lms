@@ -339,7 +339,7 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">Mathematics - Calculus</h2>
+                            <h2 class="content-header-title float-start mb-0">{{ $session?->title }}</h2>
                         </div>
                     </div>
                 </div>
@@ -415,10 +415,10 @@
                                         <hr class="my-2" />
                                         <div class="d-flex align-items-start">
                                             <div class="avatar me-2">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-6.jpg" width="60" height="60" alt="Avatar" />
+                                                <img src="{{ asset('assets/images/avatar.png') }}" width="60" height="60" alt="Avatar" />
                                             </div>
                                             <div class="author-info">
-                                                <h6 class="fw-bolder">Willie Clark</h6>
+                                                <h6 class="fw-bolder">{{ $session?->coach_name ? $session?->coach_name : $session?->getUser->name }}</h6>
                                                 <p class="card-text mb-0">
                                                     Based in London, Uncode is a blog by Willie Clark. His posts explore modern design trends through photos
                                                     and quotes by influential creatives and web designer around the world.
