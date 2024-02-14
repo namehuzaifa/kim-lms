@@ -22,6 +22,8 @@ class UserScreenController extends Controller
 
     function courseDetail($slug) {
         $session = Coaching::whereSlug($slug)->firstOrFail();
-        return view('modules.user.on-demand-session.detail', compact( 'session'));
+        $randomCourses = Coaching::whereStatus(1)->whereSubject_id($session->getsubject?->id)->inRandomOrder()->limit(4)->get();
+        $subjects = Subject::whereStatus(1)->inRandomOrder()->limit(4)->get();
+        return view('modules.user.on-demand-session.detail', compact( 'session', 'randomCourses', 'subjects'));
     }
 }

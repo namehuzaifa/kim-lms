@@ -299,6 +299,17 @@
         .table thead .last {
             border-radius: 0px 12px 0px 0px;
         }
+
+        pre.card-text.mb-2 {
+            white-space: pre-line;
+            background: unset;
+            font-size: 14px;
+        }
+
+        .img-fluid {
+            max-height: 380px;
+            object-fit: cover;
+        }
     </style>
 @endsection
 
@@ -335,7 +346,7 @@
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper container-xxl p-0">
-            <div class="content-header row">
+            {{-- <div class="content-header row">
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
@@ -344,7 +355,7 @@
                     </div>
                 </div>
 
-            </div>
+            </div> --}}
             <div class="content-detached content-left">
                 <div class="content-body">
                     <!-- Blog Detail -->
@@ -353,39 +364,32 @@
                             <!-- Blog -->
                             <div class="col-12">
                                 <div class="card">
-                                    <img src="../../../app-assets/images/banner/banner-12.jpg" class="img-fluid card-img-top" alt="Blog Detail Pic" />
+                                    <img src="{{ asset($session->image_id) }}" class="img-fluid card-img-top" alt="Blog Detail Pic" />
                                     <div class="card-body">
-                                        <h4 class="card-title">The Best Features Coming to iOS and Web design</h4>
+                                        <h4 class="card-title">{{ $session?->title }}</h4>
                                         <div class="d-flex">
                                             <div class="avatar me-50">
-                                                <img src="../../../app-assets/images/portrait/small/avatar-s-7.jpg" alt="Avatar" width="24" height="24" />
+                                                <img src="{{ asset( ($session?->getSubject?->image_url) ? $session?->getSubject?->image_url : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="24" height="24" />
                                             </div>
                                             <div class="author-info">
                                                 <small class="text-muted me-25">Subject : </small>
-                                                <small><a href="#" class="text-body">Ghani Pradita</a></small>
+                                                <small><a href="#" class="text-body">{{ $session?->getSubject?->name }}</a></small>
                                                 <span class="text-muted ms-50 me-25">|</span>
-                                                <small class="text-muted">Jan 10, 2020</small>
+                                                <small class="text-muted">{{ $session->created_at->format('M d, Y') }}</small>
                                             </div>
                                         </div>
                                         <div class="my-1 py-25">
-                                            <a href="#">
+                                            {{-- <a href="#">
                                                 <span class="badge rounded-pill badge-light-danger me-50">Gaming</span>
                                             </a>
                                             <a href="#">
                                                 <span class="badge rounded-pill badge-light-warning">Video</span>
-                                            </a>
+                                            </a> --}}
                                         </div>
-                                        <p class="card-text mb-2">
-                                            Before you get into the nitty-gritty of coming up with a perfect title, start with a rough draft: your
-                                            working title. What is that, exactly? A lot of people confuse working titles with topics. Let's clear that
-                                            Topics are very general and could yield several different blog posts. Think "raising healthy kids," or
-                                            "kitchen storage." A writer might look at either of those topics and choose to take them in very, very
-                                            different directions.A working title, on the other hand, is very specific and guides the creation of a
-                                            single blog post. For example, from the topic "raising healthy kids," you could derive the following working
-                                            title See how different and specific each of those is? That's what makes them working titles, instead of
-                                            overarching topics.
-                                        </p>
-                                        <h4 class="mb-75">Unprecedented Challenge</h4>
+                                        <pre class="card-text mb-2">
+                                            {{ $session?->description }}
+                                        </pre>
+                                        {{-- <h4 class="mb-75">Unprecedented Challenge</h4>
                                         <ul class="p-0 mb-2">
                                             <li class="d-block">
                                                 <span class="me-25">-</span>
@@ -411,7 +415,7 @@
                                                 <span class="me-25">-</span>
                                                 <span>Fully ethical life</span>
                                             </li>
-                                        </ul>
+                                        </ul> --}}
                                         <hr class="my-2" />
                                         <div class="d-flex align-items-start">
                                             <div class="avatar me-2">
@@ -526,9 +530,25 @@
 
                         <!-- Recent Posts -->
                         <div class="blog-recent-posts mt-3">
-                            <h6 class="section-label">Recent Posts</h6>
+                            <h6 class="section-label">Related Session</h6>
                             <div class="mt-75">
-                                <div class="d-flex mb-2">
+
+                                @forelse ($randomCourses as $randomCourse)
+                                    <div class="d-flex mb-2">
+                                        <a href="{{ route('course-detail', $randomCourse?->slug) }}" class="me-2">
+                                            <img class="rounded" src="{{ asset($randomCourse?->image_id) }}" width="100" height="70" alt="Recent Post Pic" />
+                                        </a>
+                                        <div class="blog-info">
+                                            <h6 class="blog-recent-post-title">
+                                                <a href="{{ route('course-detail', $randomCourse?->slug) }}" class="text-body-heading">{{ $randomCourse?->title }}</a>
+                                            </h6>
+                                            <div class="text-muted mb-0">{{ $randomCourse?->created_at->format('M d, Y') }}</div>
+                                        </div>
+                                    </div>
+                                @empty
+
+                                @endforelse
+                                {{-- <div class="d-flex mb-2">
                                     <a href="page-blog-detail.html" class="me-2">
                                         <img class="rounded" src="../../../app-assets/images/banner/banner-22.jpg" width="100" height="70" alt="Recent Post Pic" />
                                     </a>
@@ -571,16 +591,33 @@
                                         </h6>
                                         <div class="text-muted mb-0">Oct 08 2020</div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <!--/ Recent Posts -->
 
                         <!-- Categories -->
                         <div class="blog-categories mt-3">
-                            <h6 class="section-label">Categories</h6>
+                            <h6 class="section-label">Subjects</h6>
                             <div class="mt-1">
-                                <div class="d-flex justify-content-start align-items-center mb-75">
+                                @forelse ($subjects as $subject)
+                                    <div class="d-flex justify-content-start align-items-center mb-75">
+                                        <a href="{{ route('courses', $subject?->slug) }}" class="me-75">
+                                            <div class="avatar bg-light-primary rounded">
+                                                <div class="avatar-content">
+                                                    <img class="img-fluid card-img-top" src="{{ asset( ($subject?->image_url) ? $subject?->image_url : 'assets/images/no-preview.png' ) }}" alt="img-placeholder" />
+                                                    {{-- <i data-feather="watch" class="avatar-icon font-medium-1"></i> --}}
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="{{ route('courses', $subject?->slug) }}">
+                                            <div class="blog-category-title text-body">{{ $subject?->name }}</div>
+                                        </a>
+                                    </div>
+                                @empty
+
+                                @endforelse
+                                {{-- <div class="d-flex justify-content-start align-items-center mb-75">
                                     <a href="#" class="me-75">
                                         <div class="avatar bg-light-primary rounded">
                                             <div class="avatar-content">
@@ -592,6 +629,7 @@
                                         <div class="blog-category-title text-body">Fashion</div>
                                     </a>
                                 </div>
+
                                 <div class="d-flex justify-content-start align-items-center mb-75">
                                     <a href="#" class="me-75">
                                         <div class="avatar bg-light-success rounded">
@@ -639,7 +677,7 @@
                                     <a href="#">
                                         <div class="blog-category-title text-body">Video</div>
                                     </a>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <!--/ Categories -->

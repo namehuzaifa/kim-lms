@@ -104,6 +104,30 @@
             line-height: 1.5rem;
         }
 
+        .btn-dark {
+            background-color: #020202 !important;
+        }
+        .btn-dark:hover:not(.disabled):not(:disabled) {
+            background-color: #118CFF !important;
+            border-color: #118CFF !important;
+        }
+
+        .ecommerce-application .grid-view .ecommerce-card .card-body {
+            padding-top: 0.3rem;
+        }
+
+        .card.ecommerce-card img {
+            border-radius: 5px;
+        }
+        .fw-bolder {
+            margin-bottom: 0.3px;
+        }
+        p.teacher-bio {
+            line-height: 1.2rem;
+        }
+        .item-options.text-center {
+            margin: 3px 14px;
+        }
     </style>
 @endsection
 
@@ -165,7 +189,9 @@
                                         </ul>
                                     </div> --}}
                                     <div class="item-name">
-                                        <a class="text-dark" href="{{ route('course-detail', $course?->slug) }}">{{ $course?->title }}</a>
+                                        <h3 class="fw-bolder">
+                                            <a class="text-dark" href="{{ route('course-detail', $course?->slug) }}">{{ $course?->title }}</a>
+                                        </h3>
                                     </div>
                                     <div class="item-cost">
                                         <h6 class="item-price">{{ $course?->price_per_session == 0 ? "Free" : "$".$course?->price_per_session  }}</h6>
@@ -174,12 +200,12 @@
                                 {{-- <div class="item-name">
                                     <a href="{{ route('course-detail', $course?->slug) }}">{{ $course?->title }}</a>
                                 </div> --}}
-                                <p class="card-text item-description">
+                                <p class="card-text item-description mt-1">
                                     {{ $course?->description }}
                                 </p>
                                 <div class="d-flex align-items-start">
                                     <div class="avatar me-2">
-                                        <img src="{{ asset('assets/images/avatar.png') }}" width="60" height="60" alt="Avatar">
+                                        <img src="{{ asset('assets/images/avatar.png') }}" width="50" height="50" alt="Avatar">
                                     </div>
                                     <div class="author-info">
                                         <h6 class="fw-bolder">{{ $course?->coach_name ? $course?->coach_name : $course?->getUser->name }}</h6>
@@ -190,7 +216,7 @@
                                 </div>
                             </div>
                             <div class="item-options text-center">
-                                <a href="{{ route('course-detail', $course?->slug) }}" class="btn btn-primary btn-cart rounded">
+                                <a href="{{ route('course-detail', $course?->slug) }}" class="btn btn-dark btn-cart rounded">
                                     <span class="add-to-cart">View Details</span>
                                 </a>
                             </div>
