@@ -81,7 +81,7 @@
                                                 </div>
                                             </td>
                                             <td>{{ $user->email }}</td>
-                                            <td>{{ $user->user_role }}</td>
+                                            <td>{{ $user->user_role == "coach" ? "teacher" : $user->user_role }}</td>
                                             <td>{{ $user->created_at->format('d-M-Y') }}</td>
                                             <td>
                                                 {{-- <a href="{{ route('app-user-detail', $user->id) }}" class="">
@@ -99,9 +99,9 @@
                                                     <a href="{{ route('session-list', $user->id) }}" class="item-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Open User Booked Session">
                                                         <i data-feather='calendar'></i>
                                                     </a>
-                                                    <a href="{{ route('add-user-session', $user->id) }}" class="item-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Add User Session">
+                                                    {{-- <a href="{{ route('add-user-session', $user->id) }}" class="item-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Add User Session">
                                                         <i data-feather='plus'></i>
-                                                    </a>
+                                                    </a> --}}
                                                 @endif
 
                                             </td>

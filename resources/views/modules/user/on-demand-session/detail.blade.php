@@ -745,7 +745,7 @@
                                 icon: "success",
                                 button: "Close",
                             }).then((willDelete) => {
-                                window.location.href = "{{ route('session-list') }}";
+                                window.location.href = "{{ route('ondemain-order-list') }}";
                             });
                         }
                     }
