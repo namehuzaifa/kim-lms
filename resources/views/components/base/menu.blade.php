@@ -495,7 +495,7 @@
                             </li>
                         </ul>
                     </li> --}}
-{{--
+                    {{--
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='file-plus'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Site Setting</span></a>
@@ -536,16 +536,6 @@
                                     <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add new</span>
                                 </a>
                             </li>
-                            <li class="{{ navActive(['subject-list', 'subject-edit']) }}">
-                                <a class="d-flex align-items-center" href="{{ route('subject-list') }}">
-                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subject list</span>
-                                </a>
-                            </li>
-                            {{-- <li class="{{ navActive(['subjects']) }}">
-                                <a class="d-flex align-items-center" href="{{ route('subjects') }}">
-                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subjects</span>
-                                </a>
-                            </li> --}}
                         </ul>
                     </li>
 
