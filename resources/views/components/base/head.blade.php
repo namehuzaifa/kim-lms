@@ -66,5 +66,10 @@
   background: #555;
 }
 
+.btn.btn-primary{
+    border-color: #118CFF !important;
+    background-color: #118CFF !important;
+}
+
 </style>
 </head>

@@ -47,6 +47,7 @@ class SessionBookingController extends Controller
         }
 
         $sessions =  $sessions->get();
+        $sessions =  [];
 
         return view('modules.admin.SessionBooking.list', compact('sessions'));
     }

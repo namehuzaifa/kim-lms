@@ -264,25 +264,11 @@
                                     <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subject list</span>
                                 </a>
                             </li>
-                            <li class="{{ navActive(['subjects']) }}">
+                            {{-- <li class="{{ navActive(['subjects']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('subjects') }}">
                                     <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Subjects</span>
                                 </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
-                        <i data-feather='book-open'></i>
-                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Sessions</span></a>
-                        <ul class="menu-content">
-                            <li class="{{ navActive(['grade-list', 'grade-edit']) }}">
-                                <a class="d-flex align-items-center" href="{{ route('grade-list') }}">
-                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Grade list</span>
-                                </a>
-                            </li>
-
-
+                            </li> --}}
                         </ul>
                     </li>
 
@@ -306,7 +292,54 @@
 
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='calendar'></i>
-                        <span class="menu-title text-truncate" data-i18n="Invoice">Booked Session</span></a>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">On demand Booking</span></a>
+                        <ul class="menu-content">
+                            <li class="{{ navActive(['ondemain-order-list', 'ondemain-order-list']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('ondemain-order-list') }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">List</span>
+                                </a>
+                            </li>
+                            <li class="{{ navActive(['today-ondemain-list']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('today-ondemain-list','today=true') }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Today session</span>
+                                </a>
+                            </li>
+                            <li class="{{ navActive(['pending-ondemain-list']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('pending-ondemain-list', "status=pending") }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Pending session</span>
+                                </a>
+                            </li>
+                            <li class="{{ navActive(['done-ondemain-list']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('done-ondemain-list', "status=done") }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Done session</span>
+                                </a>
+                            </li>
+
+                            {{-- <li class="{{ navActive(['session-create']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('session-create') }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add new</span>
+                                </a>
+                            </li> --}}
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                        <i data-feather='book-open'></i>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Sessions</span></a>
+                        <ul class="menu-content">
+                            <li class="{{ navActive(['grade-list', 'grade-edit']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('grade-list') }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Grade list</span>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                        <i data-feather='calendar'></i>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Booking</span></a>
                         <ul class="menu-content">
                             <li class="{{ navActive(['session-list', 'session-edit']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('session-list') }}">
@@ -336,6 +369,7 @@
                             </li> --}}
                         </ul>
                     </li>
+
 
                     {{-- <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='message-circle'></i>
@@ -549,32 +583,44 @@
                     <li class="nav-item {{ navActive(['session-list']) }}">
                         <a class="d-flex align-items-center" href="{{ route('session-list',auth()->user()->id) }}">
                             <i data-feather='calendar'></i>
-                            <span class="menu-title text-truncate" data-i18n="Dashboards">Booked Session</span>
+                            <span class="menu-title text-truncate" data-i18n="Dashboards">Schedule Booking</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ navActive(['payment-list']) }}">
+                    {{-- <li class="nav-item {{ navActive(['payment-list']) }}">
                         <a class="d-flex align-items-center" href="{{ route('payment-list') }}">
                             <i data-feather='dollar-sign'></i>
                             <span class="menu-title text-truncate" data-i18n="Dashboards">Payment list</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="d-flex align-items-center" href="https://tothestar.org/on-demand-sessions/">
-                            <i data-feather='file-plus'></i>
-                            <span class="menu-title text-truncate" data-i18n="Dashboards">Book On demand session</span>
-                        </a>
+                    </li> --}}
+                    <li class="nav-item"><a class="d-flex align-items-center" href="#">
+                        <i data-feather='book-open'></i>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">On demand session</span></a>
+                        <ul class="menu-content">
+                            <li class="{{ navActive(['subjects']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('subjects') }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Book New</span>
+                                </a>
+                            </li>
+
+                            <li class="{{ navActive(['ondemain-order-list']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('ondemain-order-list',auth()->user()->id) }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Booked session</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
-                    @if (isset(getFreeSessionUrl()->slug) && getUserSessionCount() == 0)
+
+                    {{-- @if (isset(getFreeSessionUrl()->slug) && getUserSessionCount() == 0) --}}
                         <li class="m-2 get-free-session" style="white-space: normal">
                             {{-- <div class="card">
                                 <div class="card-body">
                                     <p>Once it has been set up you can do these things</p> --}}
-                                    <a href="{{ route('session-create', getFreeSessionUrl()->slug) }}" class="btn btn-primary me-1 waves-effect waves-float waves-light zoominout">Book Free Session Now</a>
+                                    <a href="https://tothestar.org/on-demand-sessions/" class="btn btn-primary me-1 waves-effect waves-float waves-light zoominout">Book On demand session</a>
                                 {{-- </div>
                             </div> --}}
                         </li>
-                    @endif
+                    {{-- @endif --}}
                 @endif
             </ul>
         </div>

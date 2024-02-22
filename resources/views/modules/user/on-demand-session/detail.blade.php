@@ -65,13 +65,13 @@
         }
 
         body #faq-search-filter .faq-search {
-            background-color: #107fe2 !important;
+            background-color: #118cff !important;
             background-size: unset;
             background-image: url("{{asset('/')}}assets/images/on-demand-session/subject_layer.png");
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #b860f9;
+            background: #118cff;
             border-radius: 20px;
         }
 
@@ -148,6 +148,10 @@
             background-color: #FFFFFF;
             color: #787878;
         }
+        .dark-layout #calendar_weekdays div, .dark-layout #calendar_content div{
+            background-color: #242b3d;
+            color: #FFFFFF;
+        }
         #calendar_content{
             -webkit-border-radius: 0px 0px 12px 12px;
             -moz-border-radius: 0px 0px 12px 12px;
@@ -157,10 +161,13 @@
             float: left;
         }
         #calendar_content div:hover{
-            background-color: #F8F8F8;
+            background-color: #118cff;
         }
         #calendar_content div.blank{
             background-color: #E8E8E8;
+        }
+        .dark-layout #calendar_content div.blank{
+            background-color: #242b3d;
         }
         #calendar_header, #calendar_content div.active{
             zoom: 1;
@@ -169,7 +176,7 @@
         }
         #calendar_content div.active{
             color: #FFFFFF;
-            background-color: #b860f9;
+            background-color: #118cff;
 
         }
         #calendar_header{
@@ -189,6 +196,15 @@
             float:left;
             width:70%;
         }
+
+        .dark-layout .col-md-3.time-slot-list {
+            background-color: #242b3d;
+        }
+
+        .dark-layout div#session .slots {
+            color: #fff;
+        }
+
         i[class^=icon-chevron]{
             color: #FFFFFF;
             float: left;
@@ -239,22 +255,20 @@
             border-radius: 4px;
             cursor: pointer;
             /* background: midnightblue; */
-            border: 2px solid #b860f9;
+            border: 2px solid #118cff;
             font-size: 18px;
         }
         div#session{
-            /* display: contents;
-            margin: 40px */
-            /* margin-top: 25px; */
+            margin: unset;
+            width: 100%;
             padding-top: 13px;
             justify-content: space-evenly;
             max-height: 340px;
             overflow: scroll;
-            /* border-top: 1px solid #d2d0d0; */
         }
 
         div#session .slots.active {
-            background: #b860f9;
+            background: #118cff;
             color: white;
         }
 
@@ -275,10 +289,11 @@
             background-color: #ffffff;
             padding: 0;
             margin-right: 2%;
+            border-radius: 12px;
         }
 
         h1.time-slot-h {
-            background: #b860f9;
+            background: #118cff;
             color: white;
             margin: unset;
             padding: 14px;
@@ -288,7 +303,7 @@
         }
 
         .table thead th {
-            background: #b860f9 !important;
+            background: #118cff !important;
             /* border-radius: 12px 12px 0px 0px; */
             color: white;
             padding: 18px;
@@ -310,6 +325,14 @@
             max-height: 380px;
             object-fit: cover;
         }
+
+        .avatar img {
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            object-fit: cover;
+        }
+
     </style>
 @endsection
 
@@ -350,7 +373,7 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">{{ $session?->title }}</h2>
+                            <h2 class="content-header-title float-start mb-0">{{ $course?->title }}</h2>
                         </div>
                     </div>
                 </div>
@@ -364,18 +387,18 @@
                             <!-- Blog -->
                             <div class="col-12">
                                 <div class="card">
-                                    <img src="{{ asset($session->image_id) }}" class="img-fluid card-img-top" alt="Blog Detail Pic" />
+                                    <img src="{{ asset($course->image_id) }}" class="img-fluid card-img-top" alt="Blog Detail Pic" />
                                     <div class="card-body">
-                                        <h4 class="card-title">{{ $session?->title }}</h4>
+                                        <h4 class="card-title">{{ $course?->title }}</h4>
                                         <div class="d-flex">
                                             <div class="avatar me-50">
-                                                <img src="{{ asset( ($session?->getSubject?->image_url) ? $session?->getSubject?->image_url : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="24" height="24" />
+                                                <img src="{{ asset( ($course?->getSubject?->image_url) ? $course?->getSubject?->image_url : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="24" height="24" />
                                             </div>
                                             <div class="author-info">
                                                 <small class="text-muted me-25">Subject : </small>
-                                                <small><a href="#" class="text-body">{{ $session?->getSubject?->name }}</a></small>
+                                                <small><a href="#" class="text-body">{{ $course?->getSubject?->name }}</a></small>
                                                 <span class="text-muted ms-50 me-25">|</span>
-                                                <small class="text-muted">{{ $session->created_at->format('M d, Y') }}</small>
+                                                <small class="text-muted">{{ $course->created_at->format('M d, Y') }}</small>
                                             </div>
                                         </div>
                                         <div class="my-1 py-25">
@@ -387,7 +410,7 @@
                                             </a> --}}
                                         </div>
                                         <pre class="card-text mb-2">
-                                            {{ $session?->description }}
+                                            {{ $course?->description }}
                                         </pre>
                                         {{-- <h4 class="mb-75">Unprecedented Challenge</h4>
                                         <ul class="p-0 mb-2">
@@ -422,7 +445,7 @@
                                                 <img src="{{ asset('assets/images/avatar.png') }}" width="60" height="60" alt="Avatar" />
                                             </div>
                                             <div class="author-info">
-                                                <h6 class="fw-bolder">{{ $session?->coach_name ? $session?->coach_name : $session?->getUser->name }}</h6>
+                                                <h6 class="fw-bolder">{{ $course?->coach_name ? $course?->coach_name : $course?->getUser->name }}</h6>
                                                 <p class="card-text mb-0">
                                                     Based in London, Uncode is a blog by Willie Clark. His posts explore modern design trends through photos
                                                     and quotes by influential creatives and web designer around the world.
@@ -442,88 +465,89 @@
                 </div>
 
                 <!-- Leave a Blog Comment -->
-                <div class="row justify-content-center">
+                <form id="msform" method="POST" action="{{ route('course-booking', $course->slug) }}" class="form" >
+                    @csrf
+                    <div class="row justify-content-center card card-body" style="flex-direction: unset;">
 
-                    <div class="col-md-3" id="calendar">
-                        <div id="calendar_header">
-                            <i class="icon-chevron-left fa fa-angle-left"></i>
-                            <h1></h1>
-                            <i class="icon-chevron-right fa fa-angle-right"></i>
+                        <div class="col-md-3" id="calendar">
+                            <div id="calendar_header">
+                                <i class="icon-chevron-left fa fa-angle-left"></i>
+                                <h1></h1>
+                                <i class="icon-chevron-right fa fa-angle-right"></i>
+                            </div>
+                            <div id="calendar_weekdays"></div>
+                            <div id="calendar_content"></div>
                         </div>
-                        <div id="calendar_weekdays"></div>
-                        <div id="calendar_content"></div>
-                    </div>
 
-                    <div class="col-md-3 time-slot-list">
-                        <h1 class="time-slot-h">Time slot</h1>
-                        <div class="row" id="session">
-                            <div class="booked col-10">No Date selected</div>
+                        <div class="col-md-3 time-slot-list">
+                            <h1 class="time-slot-h">Time slot</h1>
+                            <div class="row" id="session">
+                                <div class="booked col-10">No Date selected</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 select_list">
+                            <table class="table setup_table  table-striped main__table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="first">Schedule</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col" class="last"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="schedule-table">
+                                    <tr class="demo"><td></td><td>No session selected</td><td></td><td></td></tr>
+                                    {{-- <tr>
+                                        <th>1</th>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td><span class="cross" >&#10060;</span></td>
+                                    </tr> --}}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
-                    <div class="col-md-5 select_list">
-                        <table class="table setup_table  table-striped main__table">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="first">Schedule</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Time</th>
-                                    <th scope="col" class="last"></th>
-                                </tr>
-                            </thead>
-                            <tbody class="schedule-table">
-                                <tr class="demo"><td></td><td>No session selected</td><td></td><td></td></tr>
-                                {{-- <tr>
-                                    <th>1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td><span class="cross" >&#10060;</span></td>
-                                </tr> --}}
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-12 mt-1">
+                            <h6 class="section-label mt-25">User Information</h6>
+                            <div class="card">
+                                <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-4 col-12">
+                                                <div class="mb-2">
+                                                    <input type="text" class="form-control" value="{{ Auth::user()?->name }}" name="name" placeholder="Name" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 col-12">
+                                                <div class="mb-2">
+                                                    <input type="email" class="form-control" value="{{ Auth::user()?->email }}" name="email"  placeholder="Email" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 col-12">
+                                                <div class="mb-2">
+                                                    <input type="tel" class="form-control" value="{{ Auth::user()?->phone }}" name="phone"  placeholder="Phone" />
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <textarea class="form-control mb-2" rows="4" placeholder="Notes" name="note"></textarea>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-primary">Subimt</button>
+                                            </div>
+                                        </div>
 
-                    <div class="col-12 mt-1">
-                        <h6 class="section-label mt-25">Payment</h6>
-                        <div class="card">
-                            <div class="card-body">
-                                <form action="javascript:void(0)" class="form">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-12">
-                                            <div class="mb-2">
-                                                <input type="text" class="form-control" placeholder="Name" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-12">
-                                            <div class="mb-2">
-                                                <input type="email" class="form-control" placeholder="Email" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 col-12">
-                                            <div class="mb-2">
-                                                <input type="url" class="form-control" placeholder="Website" />
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <textarea class="form-control mb-2" rows="4" placeholder="Comment"></textarea>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-check mb-2">
-                                                <input type="checkbox" class="form-check-input" id="blogCheckbox" />
-                                                <label class="form-check-label" for="blogCheckbox">Save my name, email, and website in this browser for the next time I comment.</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="submit" class="btn btn-primary">Post Comment</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
+
                 <!--/ Leave a Blog Comment -->
             </div>
+
+
             <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
                     <div class="blog-sidebar my-2 my-lg-0">
@@ -546,57 +570,19 @@
                                         </div>
                                     </div>
                                 @empty
-
+                                    <div class="d-flex mb-2">
+                                        <div class="blog-info">
+                                            <h6 class="blog-recent-post-title">
+                                                <a href="javascript:;" class="text-body-heading">No Related Session Found</a>
+                                            </h6>
+                                        </div>
+                                    </div>
                                 @endforelse
-                                {{-- <div class="d-flex mb-2">
-                                    <a href="page-blog-detail.html" class="me-2">
-                                        <img class="rounded" src="../../../app-assets/images/banner/banner-22.jpg" width="100" height="70" alt="Recent Post Pic" />
-                                    </a>
-                                    <div class="blog-info">
-                                        <h6 class="blog-recent-post-title">
-                                            <a href="page-blog-detail.html" class="text-body-heading">Why Should Forget Facebook?</a>
-                                        </h6>
-                                        <div class="text-muted mb-0">Jan 14 2020</div>
-                                    </div>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <a href="page-blog-detail.html" class="me-2">
-                                        <img class="rounded" src="../../../app-assets/images/banner/banner-27.jpg" width="100" height="70" alt="Recent Post Pic" />
-                                    </a>
-                                    <div class="blog-info">
-                                        <h6 class="blog-recent-post-title">
-                                            <a href="page-blog-detail.html" class="text-body-heading">Publish your passions, your way</a>
-                                        </h6>
-                                        <div class="text-muted mb-0">Mar 04 2020</div>
-                                    </div>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <a href="page-blog-detail.html" class="me-2">
-                                        <img class="rounded" src="../../../app-assets/images/banner/banner-39.jpg" width="100" height="70" alt="Recent Post Pic" />
-                                    </a>
-                                    <div class="blog-info">
-                                        <h6 class="blog-recent-post-title">
-                                            <a href="page-blog-detail.html" class="text-body-heading">The Best Ways to Retain More</a>
-                                        </h6>
-                                        <div class="text-muted mb-0">Feb 18 2020</div>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <a href="page-blog-detail.html" class="me-2">
-                                        <img class="rounded" src="../../../app-assets/images/banner/banner-35.jpg" width="100" height="70" alt="Recent Post Pic" />
-                                    </a>
-                                    <div class="blog-info">
-                                        <h6 class="blog-recent-post-title">
-                                            <a href="page-blog-detail.html" class="text-body-heading">Share a Shocking Fact or Statistic</a>
-                                        </h6>
-                                        <div class="text-muted mb-0">Oct 08 2020</div>
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
                         <!--/ Recent Posts -->
 
-                        <!-- Categories -->
+                        <!-- subject -->
                         <div class="blog-categories mt-3">
                             <h6 class="section-label">Subjects</h6>
                             <div class="mt-1">
@@ -617,70 +603,9 @@
                                 @empty
 
                                 @endforelse
-                                {{-- <div class="d-flex justify-content-start align-items-center mb-75">
-                                    <a href="#" class="me-75">
-                                        <div class="avatar bg-light-primary rounded">
-                                            <div class="avatar-content">
-                                                <i data-feather="watch" class="avatar-icon font-medium-1"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="blog-category-title text-body">Fashion</div>
-                                    </a>
-                                </div>
-
-                                <div class="d-flex justify-content-start align-items-center mb-75">
-                                    <a href="#" class="me-75">
-                                        <div class="avatar bg-light-success rounded">
-                                            <div class="avatar-content">
-                                                <i data-feather="shopping-cart" class="avatar-icon font-medium-1"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="blog-category-title text-body">Food</div>
-                                    </a>
-                                </div>
-                                <div class="d-flex justify-content-start align-items-center mb-75">
-                                    <a href="#" class="me-75">
-                                        <div class="avatar bg-light-danger rounded">
-                                            <div class="avatar-content">
-                                                <i data-feather="command" class="avatar-icon font-medium-1"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="blog-category-title text-body">Gaming</div>
-                                    </a>
-                                </div>
-                                <div class="d-flex justify-content-start align-items-center mb-75">
-                                    <a href="#" class="me-75">
-                                        <div class="avatar bg-light-info rounded">
-                                            <div class="avatar-content">
-                                                <i data-feather="hash" class="avatar-icon font-medium-1"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="blog-category-title text-body">Quote</div>
-                                    </a>
-                                </div>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <a href="#" class="me-75">
-                                        <div class="avatar bg-light-warning rounded">
-                                            <div class="avatar-content">
-                                                <i data-feather="video" class="avatar-icon font-medium-1"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <div class="blog-category-title text-body">Video</div>
-                                    </a>
-                                </div> --}}
                             </div>
                         </div>
-                        <!--/ Categories -->
+                        <!--/ subject -->
                     </div>
 
                 </div>
@@ -695,48 +620,20 @@
 @section('scripts')
   <!-- BEGIN: Page JS-->
   <script src="{{ asset('') }}app-assets/js/scripts/pages/app-ecommerce-wishlist.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <!-- END: Page JS-->
 
 
   <script>
 
-        var days = {!! $session?->getslots->pluck('days')->toJson() !!};
+        var days = {!! $course?->getslots->pluck('days')->toJson() !!};
         // var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-        var blackOutDate = {!! json_encode(explode(",",str_replace(" ", "",$session?->blackout_dates))) !!};
-        var sectionLimit = {{ $session?->session_limit }};
-        var monthLimit = {{ $session?->month_limit }}*30;
-        var sessionId   =   "{{ $session?->id }}"
-        var slug   =   "{{ $session?->slug }}"
+        var blackOutDate = {!! json_encode(explode(",",str_replace(" ", "",$course?->blackout_dates))) !!};
+        var sectionLimit = {{ $course?->session_limit }};
+        var monthLimit = {{ $course?->month_limit }}*30;
+        var sessionId   =   "{{ $course?->id }}"
+        var slug   =   "{{ $course?->slug }}"
         var date = "";
-
-        $(document).on( 'change', '#select-session', function(e){
-            $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-            url = "{{ route('coaching-detail') }}"
-            var id = $(this).val();
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {id : id},
-            }).done(function (data) {
-                console.log(data);
-                days         = data.days;;
-                blackOutDate = data.block_date;
-                sectionLimit = data.session.session_limit;
-                monthLimit   = data.session.month_limit*30;
-                sessionId    =   id;
-                slug            =    data.session.slug;
-
-                if(data.session.price_per_session == 0){
-                    $('#msform').addClass('free');
-                    $('#account-detail').addClass('d-none');
-                } else {
-                    $('#msform').removeClass('free')
-                    $('#account-detail').removeClass('d-none')
-                }
-                // calender_set()
-                $('#session').html('')
-            });
-        })
 
         $(document).on( 'click', '.slots', function(e){
             var $this = $(this);
@@ -791,7 +688,7 @@
             var weekday     =   $(this).attr('weekday');
 
             $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-            url = "{{ route('get-slots') }}"
+            url = "{{ route('course-slots') }}"
 
             $.ajax({
                 url: url,
@@ -802,9 +699,9 @@
                 var html = '';
                 $.each(data.slots, function(key,val){
                     if(jQuery.inArray(val, data.booked) != -1) {
-                        html += '<div class="booked col-10">'+val+'</div>';
+                        html += '<div class="booked col-5">'+val+'</div>';
                     } else {
-                        html += '<div class="slots col-10">'+val+'</div>';
+                        html += '<div class="slots col-5">'+val+'</div>';
                     }
                 });
                 $('#session').html(html);
@@ -812,6 +709,58 @@
 
         })
 
+        $('#msform').submit(function(e){
+            e.preventDefault();
+            var stripeForm = $('#msform').serialize();
+            // let stripeForm = new FormData($('form.msform')[0]);
+            let url = $('#msform').attr('action');
+            $('#msform').find('button[type="submit"]').append('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
+            $('#msform').find('button[type="submit"]').prop('disabled',true);
+
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: stripeForm,
+                dataType : 'json',
+                success: function (response) {
+                    $('#msform').find('button[type="submit"]').prop('disabled',false);
+                    $(".fa-spinner").remove();
+                    console.log(response);
+
+                    if(!response.status){
+
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            icon: "warning",
+                            button: "Close",
+                        });
+                    }
+                    else{
+                        if (response.auto_redirect) {window.location.href = response.redirect_url;}
+                        else{
+                            swal({
+                                //title: "Good job!",
+                                text: response.message,
+                                icon: "success",
+                                button: "Close",
+                            }).then((willDelete) => {
+                                window.location.href = "{{ route('session-list') }}";
+                            });
+                        }
+                    }
+                },
+                error : function(errorThrown){
+                    console.log(errorThrown);
+                    swal({
+                        title: "Error!",
+                        text: errorThrown,
+                        icon: "warning",
+                        button: "Close",
+                    });
+                }
+            });
+        });
 
         $(function () {
             function c() {
@@ -960,10 +909,10 @@
                 "Saturday"
             ];
             var o = [
-                "#107fe2",
-                "#b860f9",
-                "#107fe2",
-                "#b860f9",
+                "#118cff",
+                "#118cff",
+                "#118cff",
+                "#118cff",
                 // "#16a085",
                 // "#1abc9c",
                 // "#c0392b",

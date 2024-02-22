@@ -10,7 +10,9 @@
      <!-- END: Page CSS-->
 
     <style>
-
+        .item-img1.text-center1 img {
+            height: 181px;
+        }
         footer.footer.footer-static.footer-light {
             display: none;
         }

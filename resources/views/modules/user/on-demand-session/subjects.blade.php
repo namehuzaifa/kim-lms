@@ -93,7 +93,8 @@
             padding: 8px;
             border-radius: 0.428rem;
             max-height: 170px;
-            object-fit: contain;
+            object-fit: cover;
+            object-position: top;
         }
 
         @media (min-width: 992px){

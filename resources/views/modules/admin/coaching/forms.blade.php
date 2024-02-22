@@ -129,7 +129,7 @@
                                             <div class="col-md-3  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="price_per_session">Price Per Session $</label>
-                                                    <input type="number" id="price_per_session" class="form-control" value="{{ ($isEdit) ? $coaching?->price_per_session : (old('price_per_session') ? old('price_per_session') : "0")  }}" name="price_per_session" placeholder="Price Per Session" />
+                                                    <input readonly type="number" id="price_per_session" class="form-control" value="{{ ($isEdit) ? $coaching?->price_per_session : (old('price_per_session') ? old('price_per_session') : "0")  }}" name="price_per_session" placeholder="Price Per Session" />
                                                     @error('price_per_session')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
@@ -152,8 +152,8 @@
 
                                             <div class="col-md-3  col-12">
                                                 <div class="mb-1">
-                                                    <label class="form-label" for="coach_name">Coach name</label>
-                                                    <input type="text" id="coach_name" class="form-control" value="{{ ($isEdit) ? $coaching?->coach_name : old('coach_name') }}" name="coach_name" placeholder="Coach name" />
+                                                    <label class="form-label" for="coach_name">Teacher name</label>
+                                                    <input type="text" id="coach_name" class="form-control" value="{{ ($isEdit) ? $coaching?->coach_name : (old('coach_name') ? old('coach_name') : Auth::user()->name) }}" name="coach_name" placeholder="Coach name" />
                                                     @error('coach_name')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>

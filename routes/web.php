@@ -41,9 +41,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(UserScreenController::class)->group(function (){
-    Route::get('/subjects', 'subjects')->name('subjects')->middleware(['auth', 'Allow:admin']);
-    Route::get('/courses/{slug}', 'courses')->name('courses')->middleware(['auth', 'Allow:admin']);
-    Route::get('/course-detail/{slug}', 'courseDetail')->name('course-detail')->middleware(['auth', 'Allow:admin']);
+    Route::get('/subjects', 'subjects')->name('subjects')->middleware(['auth', 'Allow:user']);
+    Route::get('/courses/{slug}', 'courses')->name('courses')->middleware(['auth', 'Allow:user']);
+    Route::get('/course-detail/{slug}', 'courseDetail')->name('course-detail')->middleware(['auth', 'Allow:user']);
+    Route::post('/course-slots', 'getSlots')->name('course-slots')->middleware(['auth', 'Allow:user']);
+    Route::post('/course-booking/{slug?}', 'courseBooking')->name('course-booking')->middleware(['auth', 'Allow:user']);
+
+    Route::get('ondemain-order-list/{id?}', 'orderList')->name('ondemain-order-list')->middleware(['auth']);
+    Route::get('today-ondemain-list/', 'orderList')->name('today-ondemain-list')->middleware(['auth']);
+    Route::get('pending-ondemain-list/', 'orderList')->name('pending-ondemain-list')->middleware(['auth',]);
+    Route::get('done-ondemain-list/', 'orderList')->name('done-ondemain-list')->middleware(['auth',]);
+
 });
 
 
