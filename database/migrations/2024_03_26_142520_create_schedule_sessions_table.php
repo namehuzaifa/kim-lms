@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('session_plans', function (Blueprint $table) {
+        Schema::create('schedule_sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('grade_id')->constrained('session_grades');
-            $table->string('name');
+            $table->string('title');
+            $table->string('plan_price')->default(0);
+            $table->string('plan_hours');
+            $table->string('customize_hour');
             $table->longText('description')->nullable();
+            $table->boolean('recommended')->default(0);
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('session_plans');
+        Schema::dropIfExists('schedule_sessions');
     }
 };

@@ -15,9 +15,9 @@ use App\Http\Controllers\PagesContentController;
 use App\Http\Controllers\PoadcastController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueryController;
+use App\Http\Controllers\ScheduleSession\SessionController;
 use App\Http\Controllers\SessionBookingController;
-use App\Http\Controllers\SessionController;
-use App\Http\Controllers\SessionGradeController;
+use App\Http\Controllers\ScheduleSession\SessionGradeController;
 use App\Http\Controllers\SessionPaymentController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TestimnonialController;
@@ -98,6 +98,17 @@ Route::controller(SessionGradeController::class)->group(function (){
 
     Route::get('grade-list', 'index')->name('grade-list')->middleware(['auth', 'Allow:admin',]);
     Route::get('grade-delete/{id}', 'destroy')->name('grade-delete')->middleware(['auth', 'Allow:admin',]);
+});
+
+Route::controller(SessionController::class)->group(function (){
+    Route::get('schedule-session-create', 'create')->name('schedule-session-create')->middleware(['auth', 'Allow:admin',]);
+    Route::post('schedule-session-create', 'store')->name('schedule-session-store')->middleware(['auth', 'Allow:admin',]);
+
+    Route::get('schedule-session-edit/{id}', 'edit')->name('schedule-session-edit')->middleware(['auth', 'Allow:admin',]);
+    Route::post('schedule-session-update/{id}', 'update')->name('schedule-session-update')->middleware(['auth', 'Allow:admin',]);
+
+    Route::get('schedule-session-list', 'index')->name('schedule-session-list')->middleware(['auth', 'Allow:admin',]);
+    Route::get('schedule-session-delete/{id}', 'destroy')->name('schedule-session-delete')->middleware(['auth', 'Allow:admin',]);
 });
 
 Route::controller(SubjectController::class)->group(function (){

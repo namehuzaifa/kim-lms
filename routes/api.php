@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ScheduleSession\SessionController;
 use App\Http\Controllers\SessionOrderController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('user-list', [UsersController::class, 'indexApi'])->middleware('auth:sanctum');
+
+Route::get('user-list', [SessionController::class, 'listForfront'])->middleware('auth:sanctum');
 
 Route::post('session-order', [SessionOrderController::class, 'store'])->middleware('auth:sanctum');
 

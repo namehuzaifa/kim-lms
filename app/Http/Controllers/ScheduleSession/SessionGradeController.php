@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ScheduleSession;
 
+use App\Http\Controllers\Controller;
 use App\Models\SessionGrade;
 use Illuminate\Http\Request;
 

@@ -327,6 +327,17 @@
                         <i data-feather='book-open'></i>
                         <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Sessions</span></a>
                         <ul class="menu-content">
+
+                            <li class="{{ navActive(['schedule-session-list']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('schedule-session-list') }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">List</span>
+                                </a>
+                            </li>
+                            <li class="{{ navActive(['schedule-session-create', 'schedule-session-edit']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('schedule-session-create') }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add new</span>
+                                </a>
+                            </li>
                             <li class="{{ navActive(['grade-list', 'grade-edit']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('grade-list') }}">
                                     <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Grade list</span>
