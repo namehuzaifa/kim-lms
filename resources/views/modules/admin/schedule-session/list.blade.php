@@ -133,7 +133,7 @@
             buttons: [
 
                 {
-                    text: 'Add New grade',
+                    text: 'Add New Session',
                     className: 'add-new btn btn-primary',
                     attr: {
                         // 'data-bs-toggle': 'modal',

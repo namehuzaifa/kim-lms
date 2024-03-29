@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('user-list', [UsersController::class, 'indexApi'])->middleware('auth:sanctum');
 
-Route::get('user-list', [SessionController::class, 'listForfront'])->middleware('auth:sanctum');
+Route::get('grade-session', [SessionController::class, 'listForfront'])->middleware('auth:sanctum');
 
 Route::post('session-order', [SessionOrderController::class, 'store'])->middleware('auth:sanctum');
 

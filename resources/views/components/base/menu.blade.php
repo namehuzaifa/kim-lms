@@ -338,7 +338,7 @@
                                     <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="Add">Add new</span>
                                 </a>
                             </li>
-                            <li class="{{ navActive(['grade-list', 'grade-edit']) }}">
+                            <li class="{{ navActive(['grade-list', 'grade-edit', 'grade-create']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('grade-list') }}">
                                     <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Grade list</span>
                                 </a>
