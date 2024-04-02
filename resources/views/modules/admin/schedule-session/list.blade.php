@@ -63,7 +63,7 @@
                                             </td>
                                             <td>${{ $session->plan_price }}</td>
                                             <td>{{ $session->plan_hours }} Hours</td>
-                                            <td>{{ ($session->status) ? 'Yes' : 'No' }}</td>
+                                            <td>{{ ($session->status == 1) ? 'Yes' : 'No' }}</td>
                                             <td>{{ ($session->status) ? 'active' : 'Inactive' }}</td>
                                             <td>{{ $session->created_at->format('d-M-Y') }}</td>
                                             <td>
