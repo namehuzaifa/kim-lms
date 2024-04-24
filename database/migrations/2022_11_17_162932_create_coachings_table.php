@@ -17,9 +17,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('subject_id')->constrained('subjects');
+            $table->foreignId('class_id')->constrained('sessionclasses');
             $table->string('title')->default('no title');
+            $table->string('coach_bio')->nullable();
+            $table->string('metting_link')->default('https://meet.google.com/');
             $table->string('slug');
             $table->string('coach_name')->nullable();
+            $table->string('start_time')->nullable();
+            $table->string('end_time')->nullable();
             $table->longText('blackout_dates')->nullable();
             $table->longText('description')->nullable();
             $table->string('image_id')->nullable();

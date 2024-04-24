@@ -56,13 +56,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3 mb-1">
+                                            {{-- <div class="col-md-3 mb-1">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="fp-multiple">Blackout dates</label>
                                                     <input type="text" id="fp-multiple" class="form-control flatpickr-multiple" value="{{ ($isEdit) ? $coaching?->blackout_dates : old('blackout_dates') }}" name="blackout_dates" placeholder="YYYY-MM-DD"  />
                                                     @error('blackout_dates')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             <div class="col-md-3 col-12">
                                                 <div class="mb-1">
@@ -72,6 +72,18 @@
                                                         <option value="0" {{ ($isEdit && !$coaching?->status) ? 'selected': '' }}>Inactive</option>
                                                     </select>
                                                     @error('status')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3 col-12">
+                                                <div class="mb-1">
+                                                    <label class="form-label" for="subject_id">Select Class</label>
+                                                    <select class="form-select" id="class_id" name="class_id" required>
+                                                        @foreach ($classes as $class)
+                                                            <option value="{{ $class?->id }}" {{ ($isEdit && $class?->id == $coaching?->class_id) ? 'selected' : '' }}>{{ $class?->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('class_id')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
 
@@ -129,12 +141,12 @@
                                             <div class="col-md-3  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="price_per_session">Price Per Session $</label>
-                                                    <input readonly type="number" id="price_per_session" class="form-control" value="{{ ($isEdit) ? $coaching?->price_per_session : (old('price_per_session') ? old('price_per_session') : "0")  }}" name="price_per_session" placeholder="Price Per Session" />
+                                                    <input type="number" id="price_per_session" class="form-control" value="{{ ($isEdit) ? $coaching?->price_per_session : (old('price_per_session') ? old('price_per_session') : "0")  }}" name="price_per_session" placeholder="Price Per Session" />
                                                     @error('price_per_session')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3  col-12">
+                                            {{-- <div class="col-md-3  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="session_limit">Session limit</label>
                                                     <input type="number" id="session_limit" class="form-control" value="{{ ($isEdit) ? $coaching?->session_limit : old('session_limit')  }}" name="session_limit" placeholder="Session limit eg. 4, 5, 6" />
@@ -148,13 +160,64 @@
                                                     <input type="number" id="month_limit" class="form-control" value="{{ ($isEdit) ? $coaching?->month_limit : old('month_limit')  }}" name="month_limit" placeholder="month limit eg. 1, 3, 6, 12" />
                                                     @error('month_limit')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
+                                            </div> --}}
+
+                                            <div class="col-md-3  col-12">
+                                                <div class="mb-1">
+                                                    <label class="form-label" for="start_time">Start Time</label>
+                                                    <input type="text" id="start_time"  class="form-control flatpickr-time text-start" placeholder="HH:MM" value="{{ ($isEdit) ? $coaching?->start_time : old('start_time')  }}" name="start_time"/>
+                                                    @error('start_time')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                </div>
                                             </div>
 
                                             <div class="col-md-3  col-12">
                                                 <div class="mb-1">
-                                                    <label class="form-label" for="coach_name">Teacher name</label>
-                                                    <input type="text" id="coach_name" class="form-control" value="{{ ($isEdit) ? $coaching?->coach_name : (old('coach_name') ? old('coach_name') : Auth::user()->name) }}" name="coach_name" placeholder="Coach name" />
-                                                    @error('coach_name')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                    <label class="form-label" for="end_time">End Time</label>
+                                                    <input type="text" id="end_time"  class="form-control flatpickr-time text-start" placeholder="HH:MM" value="{{ ($isEdit) ? $coaching?->end_time : old('end_time')  }}" name="end_time" />
+                                                    @error('end_time')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                </div>
+                                            </div>
+
+                                            @if (auth()->user()->user_role == "admin")
+                                                <div class="col-md-3 col-12">
+                                                    <div class="mb-1">
+                                                        <label class="form-label" for="coach_name">Select Teacher</label>
+                                                        <select class="form-select" id="coach_name" name="coach_name" required>
+                                                            <optgroup label="Teacher">
+                                                                @foreach ($teachers as $teacher)
+                                                                    <option value="{{ $teacher?->id }}" {{ ($isEdit && $teacher?->id == $coaching?->user_id) ? 'selected' : '' }}>{{ $teacher?->name }}</option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                                <optgroup label="Admin">
+                                                                <option value="{{ auth()->user()->id }}" {{ ($isEdit && auth()->user()->id == $coaching?->user_id) ? 'selected' : '' }}>{{ auth()->user()->name }}</option>
+                                                            </optgroup>
+                                                        </select>
+                                                        @error('coach_name')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="col-md-3  col-12">
+                                                    <div class="mb-1">
+                                                        <label class="form-label" for="coach_name">Teacher name</label>
+                                                        <input type="text" id="coach_name" class="form-control" value="{{ ($isEdit) ? $coaching?->coach_name : (old('coach_name') ? old('coach_name') : Auth::user()->name) }}" name="coach_name" placeholder="Coach name" />
+                                                        @error('coach_name')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                    </div>
+                                                </div>
+                                            @endif
+
+                                            <div class="col-md-6  col-12">
+                                                <div class="mb-1">
+                                                    <label class="form-label" for="coach_bio">Teacher bio</label>
+                                                    <input type="text" id="coach_bio" class="form-control" value="{{ ($isEdit) ? $coaching?->coach_bio : old('coach_bio') }}" name="coach_bio" placeholder="Based in London, Uncode is a blog by" />
+                                                    @error('coach_bio')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6  col-12">
+                                                <div class="mb-1">
+                                                    <label class="form-label" for="metting_link">Metting link</label>
+                                                    <input type="link" id="metting_link" class="form-control" value="{{ ($isEdit) ? $coaching?->metting_link : old('metting_link') }}" name="metting_link" placeholder="https://zoom.us/, https://meet.google.com/" />
+                                                    @error('metting_link')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
                                             </div>
 
@@ -211,7 +274,8 @@
                                                 @error('session')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                             </div> --}}
 
-                                            @php $days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+
+                                            {{-- @php $days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
                                                 $returnDays = ($isEdit) ? $coaching?->getslots->pluck('days')->toArray() : $days;
                                             @endphp
 
@@ -277,7 +341,7 @@
                                                     </div>
                                                 </div>
 
-                                            @endforeach
+                                            @endforeach --}}
 
                                             <div class="col-12">
                                                 <button type="submit" class="btn btn-primary me-1">Submit</button>

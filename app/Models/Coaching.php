@@ -16,7 +16,12 @@ class Coaching extends Model
     protected $fillable = [
         'user_id',
         'subject_id',
+        'class_id',
+        'coach_bio',
+        'metting_link',
         'title',
+        'start_time',
+        'end_time',
         'slug',
         'blackout_dates',
         'coach_name',
@@ -40,6 +45,11 @@ class Coaching extends Model
     public function getSubject()
     {
        return $this->belongsTo(Subject::class,'subject_id');
+    }
+
+    public function getClass()
+    {
+       return $this->belongsTo(Sessionclass::class,'class_id');
     }
 
     public function getslots()

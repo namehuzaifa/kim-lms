@@ -7,13 +7,25 @@ use App\Models\Coaching;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Models\SessionBooking;
+use App\Models\Sessionclass;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Slot;
+use App\Services\Payments\StripeService;
 
 class UserScreenController extends Controller
 {
-    function subjects() {
-        $subjects = Subject::whereStatus(1)->get();
+
+
+    function class() {
+        $classes = Sessionclass::whereStatus(1)->get();
+        return view('modules.user.on-demand-session.class', compact('classes'));
+    }
+
+    function subjects($slug) {
+        $sessionClass = Sessionclass::whereSlug($slug)->firstOrFail();
+        $subject_id = Coaching::whereStatus(1)->whereClass_id($sessionClass->id)->pluck('subject_id');
+        $subjects = Subject::whereStatus(1)->whereIn('id',$subject_id)->get();
+        // dd($subjects);
         return view('modules.user.on-demand-session.subjects', compact('subjects'));
     }
 
@@ -49,36 +61,44 @@ class UserScreenController extends Controller
             $userId = Auth::user()->id;
             $session = Coaching::where('slug', $slug)->first();
 
-            if(empty($request->booking_date_time)){
-                return ['status' => false, 'message' => "Please select Date and slot"];
-            }
+            // if($session->price_per_session != 0){
+                $stripeService = new StripeService;
+                $charges = $stripeService->sessionCharge($session->price_per_session, $request->stripeToken, $session->name);
+                if($charges->status != "succeeded"){
+                    return ['status' => false, 'message' => "Payment failed please try again"];
+                }
+            // }
+
+            // if(empty($request->booking_date_time)){
+            //     return ['status' => false, 'message' => "Please select Date and slot"];
+            // }
             $customerId = 0;
             // if($session->price_per_session != 0){
             //     $stripeService = new StripeService;
             //     $customerId = $stripeService->createCustomer($request)->id;
             // }
 
-            $temp = [];
-            foreach ($request->booking_date_time as $key => $value) {
+            // $temp = [];
+            // foreach ($request->booking_date_time as $key => $value) {
 
-                $dateTime   = explode("=", $value);
-                $times      =  explode("-", $dateTime[1]);
-                $date       = $dateTime[0];
-                $day        = date_format(date_create($date),"l");
-                $duration   = $session->getslots->where('days', $day)->first()->duration;
-                $startTime  = $times[0];
-                $endTime    = $times[1];
+            //     $dateTime   = explode("=", $value);
+            //     $times      =  explode("-", $dateTime[1]);
+            //     $date       = $dateTime[0];
+            //     $day        = date_format(date_create($date),"l");
+            //     $duration   = $session->getslots->where('days', $day)->first()->duration;
+            //     $startTime  = $times[0];
+            //     $endTime    = $times[1];
 
                 $data = SessionBooking::create([
                     'user_id'           => $userId,
                     'coach_id'          => $session->user_id,
                     'session_id'        => $session->id,
                     'coach_name'        => $session->coach_name,
-                    'date'              => $date,
-                    'start_time'        => $startTime,
-                    'end_time'          => $endTime,
-                    'start_end_time'    => $dateTime[1],
-                    'duration'          => $duration,
+                    'date'              => time(),
+                    'start_time'        => $session->start_time,
+                    'end_time'          => $session->end_time,
+                    'start_end_time'    => $session->end_time,
+                    'duration'          => $session->end_time,
 
                     'full_name'         => $request->name,
                     'email'             => $request->email,
@@ -92,7 +112,7 @@ class UserScreenController extends Controller
                     'payment_status'    => ($customerId) ? 'pending' : 'free',
                     'session_status'    => 'pending',
                 ]);
-            }
+            // }
 
             return ['status' => true, 'message' => 'Sessions Booking successfully'];
 
@@ -123,6 +143,10 @@ class UserScreenController extends Controller
 
         if ($user->user_role == 'user') {
             $sessions = $sessions->where('user_id', $user->id);
+        }
+
+        if ($request->session != "" && is_numeric($request->session)) {
+            $sessions = $sessions->where('session_id', $request->session);
         }
 
         $sessions =  $sessions->get();

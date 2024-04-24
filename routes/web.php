@@ -18,6 +18,7 @@ use App\Http\Controllers\QueryController;
 use App\Http\Controllers\ScheduleSession\SessionController;
 use App\Http\Controllers\SessionBookingController;
 use App\Http\Controllers\ScheduleSession\SessionGradeController;
+use App\Http\Controllers\OnDemandSession\SessionclassController;
 use App\Http\Controllers\SessionPaymentController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TestimnonialController;
@@ -41,7 +42,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(UserScreenController::class)->group(function (){
-    Route::get('/subjects', 'subjects')->name('subjects')->middleware(['auth', 'Allow:user']);
+    Route::get('/class', 'class')->name('class')->middleware(['auth', 'Allow:user']);
+    Route::get('/subjects/{slug}', 'subjects')->name('subjects')->middleware(['auth', 'Allow:user']);
     Route::get('/courses/{slug}', 'courses')->name('courses')->middleware(['auth', 'Allow:user']);
     Route::get('/course-detail/{slug}', 'courseDetail')->name('course-detail')->middleware(['auth', 'Allow:user']);
     Route::post('/course-slots', 'getSlots')->name('course-slots')->middleware(['auth', 'Allow:user']);
@@ -120,6 +122,17 @@ Route::controller(SubjectController::class)->group(function (){
 
     Route::get('subject-list', 'index')->name('subject-list')->middleware(['auth', 'Allow:admin',]);
     Route::get('subject-delete/{id}', 'destroy')->name('subject-delete')->middleware(['auth', 'Allow:admin',]);
+});
+
+Route::controller(SessionclassController::class)->group(function (){
+    Route::get('class-create', 'create')->name('class-create')->middleware(['auth', 'Allow:admin',]);
+    Route::post('class-create', 'store')->name('class-store')->middleware(['auth', 'Allow:admin',]);
+
+    Route::get('class-edit/{id}', 'edit')->name('class-edit')->middleware(['auth', 'Allow:admin',]);
+    Route::post('class-update/{id}', 'update')->name('class-update')->middleware(['auth', 'Allow:admin',]);
+
+    Route::get('class-list', 'index')->name('class-list')->middleware(['auth', 'Allow:admin',]);
+    Route::get('class-delete/{id}', 'destroy')->name('class-delete')->middleware(['auth', 'Allow:admin',]);
 });
 
 // Route::controller(CoursesController::class)->group(function (){

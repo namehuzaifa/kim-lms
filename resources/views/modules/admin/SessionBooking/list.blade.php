@@ -70,13 +70,13 @@
                                             <th>id</th>
                                             <th>Student Name</th>
                                             <th>Student Phone & email</th>
-                                            <th>Duration & time</th>
-                                            <th>Session Date</th>
+                                            <th>Start & End time</th>
+                                            {{-- <th>Session Date</th> --}}
                                             <th>Course & Subject</th>
                                             <th>Teacher</th>
                                             {{-- <th>Year</th>
                                             <th>Price</th> --}}
-                                            <th>Session status</th>
+                                            {{-- <th>Session status</th> --}}
                                             {{-- <th>Payment Status</th> --}}
                                             <th>Booked Date</th>
                                             <th>Action</th>
@@ -107,14 +107,14 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-left align-items-center">
-                                                    <div class="me-1"><span class="emp_post text-truncate">{{ $session?->duration }} min</span></div>
+                                                    {{-- <div class="me-1"><span class="emp_post text-truncate">{{ $session?->duration }} min</span></div> --}}
                                                     <div class="d-flex flex-column">
                                                         <span class="emp_name text-truncate fw-bold">{{ $session?->start_time }}</span>
                                                         <span class="emp_name text-truncate fw-bold">{{ $session?->end_time }}</span>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ $session->date->format('d-M-Y') }}</td>
+                                            {{-- <td>{{ $session->date->format('d-M-Y') }}</td> --}}
                                             <td>
                                                 <div class="d-flex justify-content-left align-items-center">
                                                     {{-- <div class="avatar  me-1"><img src="{{ asset( ($session?->image_id) ? $session?->image_id : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="32" height="32"></div> --}}
@@ -129,7 +129,7 @@
                                             {{-- <td>{{ $session->date->format('Y') }}</td> --}}
 
                                             {{-- <td>${{ $session->price_per_session }}</td> --}}
-                                            <td style="text-transform: capitalize;">
+                                            {{-- <td style="text-transform: capitalize;">
                                                 @if ($session->session_status != "pending")
                                                     {{ $session->session_status }}
                                                 @else
@@ -142,14 +142,14 @@
                                                         </select>
                                                     @else
                                                         {{ $session->session_status }}
-                                                        {{-- <select name="update_status" class="update_status" id="{{ $session->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Please note you are able to cancel and reschedule up to 24 hours in advance without incurring a late cancellation fee ($75) or no show fee ($100).">
+                                                        <select name="update_status" class="update_status" id="{{ $session->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Please note you are able to cancel and reschedule up to 24 hours in advance without incurring a late cancellation fee ($75) or no show fee ($100).">
                                                             <option {{ ($session->session_status == 'pending') ? 'selected':'' }} value="pending">Pending</option>
                                                             <option {{ ($session->session_status == 'canceled') ? 'selected':'' }} value="canceled">Canceled</option>
-                                                        </select> --}}
+                                                        </select>
                                                     @endif
 
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             {{-- <td><span class="badge badge-light-{{ ($session->payment_status=='success' || $session->payment_status=='free' ? "success":($session->payment_status=='pending' ? "warning":"danger") ) }}">{{ $session->payment_status }}</span></td> --}}
                                             <td>{{ $session->created_at->format('d-M-Y') }}</td>
                                             <td>
@@ -167,8 +167,14 @@
                                                     </a>
                                                 @endif --}}
 
-                                                <a href="{{ route('user-edit', $session->user_id) }}" class="delete-record">
-                                                    <i data-feather='user'></i>
+                                                @if (auth()->user()->user_role == "admin")
+                                                    <a href="{{ route('user-edit', $session->user_id) }}" class="delete-record">
+                                                        <i data-feather='user'></i>
+                                                    </a>
+                                                @endif
+
+                                                <a href="{{ $session?->getSession?->metting_link }}" target="_blank" class="delete-record">
+                                                    <i data-feather='link'></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -212,7 +218,7 @@
         // .appendTo('.datatables-basic thead');
 
         var table = $('.datatables-basic').DataTable({
-                scrollX: true,
+                //scrollX: true,
                 order: [[0, 'desc']],
                 dom:
                     '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +

@@ -98,28 +98,11 @@
 
     <style>
 
-        div#card-number-element, div#card-expiry-element, div#card-cvc-element {
-            display: block;
+        div#card-element {
             width: 100%;
-            padding: 0.571rem 1rem;
-            font-size: 1rem;
-            font-weight: 400;
-            line-height: 1.45;
-            color: #6e6b7b;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #d8d6de;
-            appearance: none;
-            border-radius: 0.357rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-        div#card-number-element:focus, div#card-expiry-element:focus, div#card-cvc-element:focus {
-            color: #6e6b7b;
-            background-color: #fff;
-            border-color: #7367f0;
-            outline: 0;
-            box-shadow: 0 3px 10px 0 rgb(34 41 47 / 10%);
+            padding: 20px;
+            background-color: whitesmoke;
+            margin-bottom: 20px;
         }
 
         #calendar{
@@ -447,8 +430,7 @@
                                             <div class="author-info">
                                                 <h6 class="fw-bolder">{{ $course?->coach_name ? $course?->coach_name : $course?->getUser->name }}</h6>
                                                 <p class="card-text mb-0">
-                                                    Based in London, Uncode is a blog by Willie Clark. His posts explore modern design trends through photos
-                                                    and quotes by influential creatives and web designer around the world.
+                                                    {{ $course?->coach_bio}}
                                                 </p>
                                             </div>
                                         </div>
@@ -462,12 +444,10 @@
                     </div>
                     <!--/ Blog Detail -->
 
-                </div>
-
-                <!-- Leave a Blog Comment -->
+                     <!-- Leave a Blog Comment -->
                 <form id="msform" method="POST" action="{{ route('course-booking', $course->slug) }}" class="form" >
                     @csrf
-                    <div class="row justify-content-center card card-body" style="flex-direction: unset;">
+                    <div class="row justify-content-center card card-body" style="flex-direction: unset; display:none">
 
                         <div class="col-md-3" id="calendar">
                             <div id="calendar_header">
@@ -511,7 +491,7 @@
 
                     <div class="row justify-content-center">
                         <div class="col-12 mt-1">
-                            <h6 class="section-label mt-25">User Information</h6>
+                            <h6 class="section-label mt-25">User & Payment Information</h6>
                             <div class="card">
                                 <div class="card-body">
                                         <div class="row">
@@ -534,6 +514,9 @@
                                                 <textarea class="form-control mb-2" rows="4" placeholder="Notes" name="note"></textarea>
                                             </div>
                                             <div class="col-12">
+                                                <div id="card-element"></div>
+                                            </div>
+                                            <div class="col-12">
                                                 <button type="submit" class="btn btn-primary">Subimt</button>
                                             </div>
                                         </div>
@@ -545,6 +528,11 @@
                 </form>
 
                 <!--/ Leave a Blog Comment -->
+
+
+                </div>
+
+
             </div>
 
 
@@ -620,6 +608,7 @@
 @section('scripts')
   <!-- BEGIN: Page JS-->
   <script src="{{ asset('') }}app-assets/js/scripts/pages/app-ecommerce-wishlist.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <!-- END: Page JS-->
 
@@ -709,57 +698,79 @@
 
         })
 
+        // stripe
+        var stripe = Stripe('pk_test_51MAZe4HnBjRuAp0ig9aBTPdENBP8OcVtiSIOHXv9EYDFVg2fuyq8nYs15fHWsQ3TWTnJ9sYvdHp65n8m6ZzvckIK00LDa3LnBE');
+		var elements = stripe.elements();
+		// var cardElement = elements.create('card');
+        var cardElement = elements.create('card', {
+            hidePostalCode: true,
+        });
+		cardElement.mount('#card-element');
+
+
         $('#msform').submit(function(e){
             e.preventDefault();
-            var stripeForm = $('#msform').serialize();
-            // let stripeForm = new FormData($('form.msform')[0]);
-            let url = $('#msform').attr('action');
-            $('#msform').find('button[type="submit"]').append('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
-            $('#msform').find('button[type="submit"]').prop('disabled',true);
+            var stripeForm = new FormData(this);
+            stripe.createToken(cardElement).then(function(result) {
+            if (result.error) {
+                // Handle error
+                console.error(result.error);
+            } else {
+                // Attach the token or source to the form data
+                stripeForm.append('stripeToken', result.token.id);
+                // let stripeForm = new FormData($('form.msform')[0]);
+                let url = $('#msform').attr('action');
+                $('#msform').find('button[type="submit"]').append('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
+                $('#msform').find('button[type="submit"]').prop('disabled',true);
 
-            $.ajax({
-                type: 'post',
-                url: url,
-                data: stripeForm,
-                dataType : 'json',
-                success: function (response) {
-                    $('#msform').find('button[type="submit"]').prop('disabled',false);
-                    $(".fa-spinner").remove();
-                    console.log(response);
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: stripeForm,
+                    dataType : 'json',
+                    cache:false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $('#msform').find('button[type="submit"]').prop('disabled',false);
+                        $(".fa-spinner").remove();
+                        console.log(response);
 
-                    if(!response.status){
+                        if(!response.status){
 
+                            swal({
+                                title: "Error!",
+                                text: response.message,
+                                icon: "warning",
+                                button: "Close",
+                            });
+                        }
+                        else{
+                            if (response.auto_redirect) {window.location.href = response.redirect_url;}
+                            else{
+                                swal({
+                                    //title: "Good job!",
+                                    text: response.message,
+                                    icon: "success",
+                                    button: "Close",
+                                }).then((willDelete) => {
+                                    window.location.href = "{{ route('ondemain-order-list') }}";
+                                });
+                            }
+                        }
+                    },
+                    error : function(errorThrown){
+                        console.log(errorThrown);
                         swal({
                             title: "Error!",
-                            text: response.message,
+                            text: errorThrown,
                             icon: "warning",
                             button: "Close",
                         });
                     }
-                    else{
-                        if (response.auto_redirect) {window.location.href = response.redirect_url;}
-                        else{
-                            swal({
-                                //title: "Good job!",
-                                text: response.message,
-                                icon: "success",
-                                button: "Close",
-                            }).then((willDelete) => {
-                                window.location.href = "{{ route('ondemain-order-list') }}";
-                            });
-                        }
-                    }
-                },
-                error : function(errorThrown){
-                    console.log(errorThrown);
-                    swal({
-                        title: "Error!",
-                        text: errorThrown,
-                        icon: "warning",
-                        button: "Close",
-                    });
-                }
-            });
+                });
+            }
+        });
         });
 
         $(function () {

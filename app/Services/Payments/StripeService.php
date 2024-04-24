@@ -34,6 +34,16 @@ class StripeService
         return $customer;
     }
 
+    public function sessionCharge($amount, $token, $session)
+    {
+        return $this->stripe->charges->create([
+            'amount' => $amount*100,
+            'currency' => 'usd',
+            'source' => $token,
+            'description' => "Booking for ". $session,
+        ]);
+    }
+
     public function chargeCustomer($amount, $customerID, $description = "", $session)
     {
         $charges =  $this->stripe->charges->create([

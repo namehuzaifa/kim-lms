@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coaching;
+use App\Models\Sessionclass;
 use App\Models\Slot;
 use App\Models\Subject;
+use App\Models\User;
 use App\Services\Payments\StripeService;
 use DateTime;
 use Illuminate\Http\Request;
@@ -26,7 +28,7 @@ class CoachingController extends Controller
             $coachings = Coaching::where('user_id', $user->id)->get();
         }
 
-        return view('modules.admin.coaching.list', compact('coachings'));
+        return view('modules.admin.coaching.list', compact('coachings',));
     }
 
     /**
@@ -38,7 +40,10 @@ class CoachingController extends Controller
     {
         $isEdit = false;
         $subjects = Subject::whereStatus(1)->get();
-        return view('modules.admin.coaching.forms', compact('isEdit', 'subjects'));
+        $classes = Sessionclass::whereStatus(1)->get();
+        $teachers = User::where('user_role', 'coach')->get();
+
+        return view('modules.admin.coaching.forms', compact('isEdit', 'subjects', 'classes', 'teachers'));
     }
 
     /**
@@ -53,27 +58,35 @@ class CoachingController extends Controller
             'title'             => ['required', 'string', 'max:255'],
             'coach_name'        => ['required', 'string', 'max:255'],
             'subject_id'        => ['required', 'string'],
-            'start_time'        => ['required', 'array'],
-            'end_time'          => ['required', 'array'],
-            'duration'          => ['required', 'array'],
+            'class_id'          => ['required', 'string'],
+            'start_time'        => ['required', 'string'],
+            'end_time'          => ['required', 'string'],
+            'metting_link'      => ['required', 'string'],
+            // 'duration'          => ['required', 'array'],
             'price_per_session' => ['sometimes', 'integer'],
-            'session_limit'     => ['required', 'integer'],
-            'month_limit'       => ['required', 'integer'],
-            'days'              => ['required', 'array'],
-            'session'           => ['required', 'array'],
+            // 'session_limit'     => ['required', 'integer'],
+            // 'month_limit'       => ['required', 'integer'],
+            // 'days'              => ['required', 'array'],
+            // 'session'           => ['required', 'array'],
             'image'             => 'mimes:jpeg,png,jpg'
 
         ]);
 
         try {
-            if($request->price_per_session) {
-                $stripe                 = new StripeService;
-                $ids                    = $stripe->createProductOrPriceId($request->price_per_session, $request->title);
-                $request['product_id']  = $ids['productId'];
-                $request['price_id']    = $ids['priceId'];
-            }
+            // if($request->price_per_session) {
+            //     $stripe                 = new StripeService;
+            //     $ids                    = $stripe->createProductOrPriceId($request->price_per_session, $request->title);
+            //     $request['product_id']  = $ids['productId'];
+            //     $request['price_id']    = $ids['priceId'];
+            // }
+
 
             $userId               = Auth::user()->id;
+            if (Auth::user()->user_role == "admin"){
+                $userId               = $request['coach_name'];
+                $request['coach_name']  = User::where('id', $userId)->first()->name;
+            }
+
             $request['slug']      = slugGenerator($request->title, Coaching::class, 'slug');
             $request['image_id']  = "/assets/images/no-preview.png";
             $request['user_id']   = $userId;
@@ -84,21 +97,21 @@ class CoachingController extends Controller
                 $request['image_id']  = $attachment_url;
             }
 
-            $coachingId = Coaching::create($request->except('_token', 'image' ,'start_time','end_time','duration','days','session',));
+            $coachingId = Coaching::create($request->except('_token', 'image','duration','days','session',));
 
-            if ($coachingId->id) {
-                foreach ($request->days as $keys => $value) {
-                    Slot::create([
-                    'user_id'       => $userId,
-                    'coaching_id'   => $coachingId->id,
-                    'days'          => $value,
-                    'start_time'    => $request->start_time[$keys],
-                    'end_time'      => $request->end_time[$keys],
-                    'duration'      => $request->duration[$keys],
-                    'session'       => $request->session[$keys],
-                ]);
-                }
-            }
+            // if ($coachingId->id) {
+            //     foreach ($request->days as $keys => $value) {
+            //         Slot::create([
+            //         'user_id'       => $userId,
+            //         'coaching_id'   => $coachingId->id,
+            //         'days'          => $value,
+            //         'start_time'    => $request->start_time[$keys],
+            //         'end_time'      => $request->end_time[$keys],
+            //         'duration'      => $request->duration[$keys],
+            //         'session'       => $request->session[$keys],
+            //     ]);
+            //     }
+            // }
 
             return redirect()->route('coaching-list')->with(['status' => 'success', 'message' => "Sessions add successfully"]);
 
@@ -131,7 +144,11 @@ class CoachingController extends Controller
         $coaching = Coaching::findOrFail($id);
         $isEdit = true;
         $subjects = Subject::whereStatus(1)->get();
-        return view('modules.admin.coaching.forms', compact('id', 'coaching', 'isEdit', 'subjects'));
+        $classes = Sessionclass::whereStatus(1)->get();
+        $teachers = User::where('user_role', 'coach')->get();
+
+
+        return view('modules.admin.coaching.forms', compact('id', 'coaching', 'isEdit', 'subjects', 'classes', 'teachers'));
     }
 
     /**
@@ -146,36 +163,44 @@ class CoachingController extends Controller
         $request->validate([
             'title'             => ['required', 'string', 'max:255'],
             'coach_name'        => ['required', 'string', 'max:255'],
-            'start_time'        => ['required', 'array'],
-            'end_time'          => ['required', 'array'],
-            'duration'          => ['required', 'array'],
+            'subject_id'        => ['required', 'string'],
+            'class_id'          => ['required', 'string'],
+            'start_time'        => ['required', 'string'],
+            'end_time'          => ['required', 'string'],
+            'metting_link'      => ['required', 'string'],
+            // 'duration'          => ['required', 'array'],
             'price_per_session' => ['sometimes', 'integer'],
-            'session_limit'     => ['required', 'integer'],
-            'month_limit'       => ['required', 'integer'],
-            'days'              => ['required', 'array'],
-            'session'           => ['required', 'array'],
+            // 'session_limit'     => ['required', 'integer'],
+            // 'month_limit'       => ['required', 'integer'],
+            // 'days'              => ['required', 'array'],
+            // 'session'           => ['required', 'array'],
             'image'             => 'mimes:jpeg,png,jpg'
-
         ]);
 
         $coaching  = Coaching::findOrFail($id);
-        $userId    = Auth::user()->id;
-
-        if($request->price_per_session) {
-            $stripe                 = new StripeService;
-            if($coaching->product_id != '' && $coaching->price_id != ''){
-                $title                  = ($request->title == $coaching->title) ? "" : $request->title;
-                $price                  = ($request->price_per_session == $coaching->price_per_session) ? "" : $request->price_per_session;
-                $ids                    = $stripe->updateProductOrPriceId($coaching->product_id, $coaching->price_id, $title, $price);
-            } else{
-                $ids                = $stripe->createProductOrPriceId($request->price_per_session, $request->title);
-            }
-            $request['product_id']  = $ids['productId'];
-            $request['price_id']    = $ids['priceId'];
-        }
 
         try {
 
+            $userId    = Auth::user()->id;
+            if (Auth::user()->user_role == "admin"){
+                $userId               = $request['coach_name'];
+                $request['coach_name']  = User::where('id', $userId)->first()->name;
+            }
+
+            // if($request->price_per_session) {
+            //     $stripe                 = new StripeService;
+            //     if($coaching->product_id != '' && $coaching->price_id != ''){
+            //         $title                  = ($request->title == $coaching->title) ? "" : $request->title;
+            //         $price                  = ($request->price_per_session == $coaching->price_per_session) ? "" : $request->price_per_session;
+            //         $ids                    = $stripe->updateProductOrPriceId($coaching->product_id, $coaching->price_id, $title, $price);
+            //     } else{
+            //         $ids                = $stripe->createProductOrPriceId($request->price_per_session, $request->title);
+            //     }
+            //     $request['product_id']  = $ids['productId'];
+            //     $request['price_id']    = $ids['priceId'];
+            // }
+
+            $request['user_id']   = $userId;
             if (!empty($request->file('image'))) {
                 $old_url = str_replace("storage", "public", "/" . $coaching->image_id);
                 Storage::delete($old_url);
@@ -185,22 +210,22 @@ class CoachingController extends Controller
                 $request['image_id']  = $attachment_url;
             }
 
-            $isUpdate = Coaching::where('id', $id)->update($request->except('_token', 'image' ,'start_time','end_time','duration','days','session',));
+            $isUpdate = Coaching::where('id', $id)->update($request->except('_token', 'image','duration','days','session',));
 
-            if ($isUpdate) {
-                Slot::where('coaching_id', $coaching->id)->delete();
-                foreach ($request->days as $keys => $value) {
-                    Slot::create([
-                        'user_id'       => $userId,
-                        'coaching_id'   => $coaching->id,
-                        'days'          => $value,
-                        'start_time'    => $request->start_time[$keys],
-                        'end_time'      => $request->end_time[$keys],
-                        'duration'      => $request->duration[$keys],
-                        'session'       => $request->session[$keys],
-                    ]);
-                }
-            }
+            // if ($isUpdate) {
+            //     Slot::where('coaching_id', $coaching->id)->delete();
+            //     foreach ($request->days as $keys => $value) {
+            //         Slot::create([
+            //             'user_id'       => $userId,
+            //             'coaching_id'   => $coaching->id,
+            //             'days'          => $value,
+            //             'start_time'    => $request->start_time[$keys],
+            //             'end_time'      => $request->end_time[$keys],
+            //             'duration'      => $request->duration[$keys],
+            //             'session'       => $request->session[$keys],
+            //         ]);
+            //     }
+            // }
 
             return redirect()->route('coaching-list')->with(['status' => 'success', 'message' => "Session updated successfully"]);
 

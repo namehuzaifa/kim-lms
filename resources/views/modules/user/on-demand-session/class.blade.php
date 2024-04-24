@@ -1,6 +1,6 @@
 
 @extends('layouts.master')
-@section('title','Subjects List | '.config('app.name'))
+@section('title','Class List | '.config('app.name'))
 @section('style')
     {{-- <link rel="stylesheet" type="text/css" href="{{ asset('') }}app-assets/vendors/css/vendors.min.css"> --}}
      <!-- BEGIN: Page CSS-->
@@ -140,9 +140,9 @@
                             <div class="col-sm-6 d-flex flex-column align-items-center">
                                 <img class="mb-3" src="{{ asset('')}}assets/images/on-demand-session/Vector.png" alt="">
                                 <h1 class="text-light">Schedule Sessions</h1>
-                                <p class="text-light">Select a subject & book a session with your desired teacher.</p>
+                                <p class="text-light">Select a Class & book a session with your desired teacher.</p>
                                 <div class="input-group input-group-merge">
-                                    <input type="text" class="form-control search-product" id="subject-search" placeholder="Search Product" aria-label="Search..." aria-describedby="shop-search" />
+                                    <input type="text" class="form-control search-product" id="class-search" placeholder="Search Product" aria-label="Search..." aria-describedby="shop-search" />
                                     <span class="input-group-text search"><i data-feather="search" class="text-light"></i></span>
                                 </div>
                             </div>
@@ -153,16 +153,16 @@
                     <!-- E-commerce Products Starts -->
                     <section id="ecommerce-products" class="grid-view">
 
-                        @forelse ($subjects as $subject)
+                        @forelse ($classes as $class)
                             <div class="card1 ecommerce-card1 mb-2">
                                 <div class="item-img text-center">
-                                    <a href="{{ route('courses', $subject->slug) }}">
-                                        <img class="img-fluid card-img-top" src="{{ asset( ($subject?->image_url) ? $subject?->image_url : 'assets/images/no-preview.png' ) }}" alt="img-placeholder" /></a>
+                                    <a href="{{ route('subjects', $class->slug) }}">
+                                        <img class="img-fluid card-img-top" src="{{ asset( ($class?->image_url) ? $class?->image_url : 'assets/images/no-preview.png' ) }}" alt="img-placeholder" /></a>
                                 </div>
                                 <div class="item-options text-center mt-1">
 
-                                    <a href="{{ route('courses', $subject->slug) }}" class="text-light">
-                                        <span class="add-to-cart">{{ $subject->name }}</span>
+                                    <a href="{{ route('subjects', $class->slug) }}" class="text-light">
+                                        <span class="add-to-cart">{{ $class->name }}</span>
                                     </a>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@
                             <div class="card1 ecommerce-card1 mb-2">
                                 <div class="item-options text-center mt-1">
                                     <a href="javascript:;" class="text-light">
-                                        <span class="add-to-cart">No Subject added</span>
+                                        <span class="add-to-cart">No Class added</span>
                                     </a>
                                 </div>
                             </div>
@@ -306,7 +306,7 @@
   <script>
 
     $(document).ready(function(){
-    $("#subject-search").on("keyup", function() {
+    $("#class-search").on("keyup", function() {
         var value = $(this).val().toLowerCase();
         $("#ecommerce-products .card1").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)

@@ -149,14 +149,14 @@
                 <p class="card-text text-light mb-2">or choose a Course to quickly find the help you need</p>
 
                 <!-- search input -->
-                <form class="faq-search-input">
+                <form1 class="faq-search-input">
                     <div class="input-group input-group-merge">
                         <div class="input-group-text">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </div>
-                        <input type="text" class="form-control" placeholder="Search faq...">
+                        <input type="text" id="search-session" class="form-control" placeholder="Search faq...">
                     </div>
-                </form>
+                </form1>
             </div>
         </div>
     </section>
@@ -174,7 +174,7 @@
 
                     @forelse ($courses as $course)
                         <div class="card ecommerce-card">
-                            <div class="item-img1 text-center1">
+                            <div class="item-img1 text-center1" style="display: flex; justify-content: center;">
                                 <a href="{{ route('course-detail', $course?->slug) }}">
                                     <img src="{{ asset($course->image_id) }}" class="img-fluid" alt="img-placeholder" />
                                 </a>
@@ -191,9 +191,9 @@
                                         </ul>
                                     </div> --}}
                                     <div class="item-name">
-                                        <h3 class="fw-bolder">
+                                        <h4 class="fw-bolder">
                                             <a class="text-dark" href="{{ route('course-detail', $course?->slug) }}">{{ $course?->title }}</a>
-                                        </h3>
+                                        </h4>
                                     </div>
                                     <div class="item-cost">
                                         <h6 class="item-price">{{ $course?->price_per_session == 0 ? "Free" : "$".$course?->price_per_session  }}</h6>
@@ -203,7 +203,7 @@
                                     <a href="{{ route('course-detail', $course?->slug) }}">{{ $course?->title }}</a>
                                 </div> --}}
                                 <p class="card-text item-description mt-1">
-                                    {{ $course?->description }}
+                                    {{substr($course?->description, 0, 100) . '...'; }}
                                 </p>
                                 <div class="d-flex align-items-start">
                                     <div class="avatar me-2">
@@ -212,7 +212,7 @@
                                     <div class="author-info">
                                         <h6 class="fw-bolder">{{ $course?->coach_name ? $course?->coach_name : $course?->getUser->name }}</h6>
                                         <p class="card-text mb-0 teacher-bio">
-                                            Based in London, Uncode is a blog by Willie Clark.
+                                            {{ substr($course?->coach_bio, 0, 50) . '...'; }}
                                         </p>
                                     </div>
                                 </div>
@@ -280,4 +280,15 @@
   <!-- BEGIN: Page JS-->
   <script src="{{ asset('') }}app-assets/js/scripts/pages/app-ecommerce-wishlist.js"></script>
   <!-- END: Page JS-->
+
+  <script>
+    $(document).ready(function(){
+    $("#search-session").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#wishlist .card").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    });
+  </script>
 @endsection
