@@ -66,11 +66,11 @@
                                                     <x-detail-icon/>
                                                 </a> --}}
 
-                                                <a href="{{ route('subject-edit', $subject->id) }}" class="item-edit">
+                                                <a href="{{ route('class-edit', $subject->id) }}" class="item-edit">
                                                     <x-edit-icon/>
                                                 </a>
 
-                                                <a href="{{ route('subject-delete', $subject->id) }}" class="delete-record">
+                                                <a href="{{ route('class-delete', $subject->id) }}" class="delete-record">
                                                     <x-trash-icon/>
                                                 </a>
                                             </td>
