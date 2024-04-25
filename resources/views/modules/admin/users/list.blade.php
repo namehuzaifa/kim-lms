@@ -178,7 +178,7 @@
             });
 
             $(document).on("click",".add-new",function() {
-                $(location).prop('href', "#");
+                $(location).prop('href', "{{ route('create-user') }}");
             });
 
             table.on('draw', function () {
