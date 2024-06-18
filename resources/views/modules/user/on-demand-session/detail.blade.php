@@ -332,7 +332,7 @@
                 <h2 class="text-light">Course Details</h2>
 
                 <!-- subtitle -->
-                <p class="card-text text-light mb-2">Select your desired teacher to enroll in your course today!</p>
+                <p class="card-text text-light mb-2">Select date & time to enroll in your course today!</p>
 
                 <!-- search input -->
                 <form class="faq-search-input">
