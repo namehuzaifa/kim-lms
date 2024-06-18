@@ -71,14 +71,14 @@
                                             <th>Student Name</th>
                                             <th>Student Phone & email</th>
                                             <th>Start & End time</th>
-                                            {{-- <th>Session Date</th> --}}
+                                            <th>Session Date</th>
                                             <th>Course & Subject</th>
                                             <th>Teacher</th>
                                             {{-- <th>Year</th>
                                             <th>Price</th> --}}
-                                            {{-- <th>Session status</th> --}}
-                                            {{-- <th>Payment Status</th> --}}
                                             <th>Booked Date</th>
+                                            <th>Attendance</th>
+                                            {{-- <th>Payment Status</th> --}}
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -114,7 +114,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            {{-- <td>{{ $session->date->format('d-M-Y') }}</td> --}}
+                                            <td>{{ $session->date->format('d-M-Y') }}</td>
                                             <td>
                                                 <div class="d-flex justify-content-left align-items-center">
                                                     {{-- <div class="avatar  me-1"><img src="{{ asset( ($session?->image_id) ? $session?->image_id : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="32" height="32"></div> --}}
@@ -129,7 +129,9 @@
                                             {{-- <td>{{ $session->date->format('Y') }}</td> --}}
 
                                             {{-- <td>${{ $session->price_per_session }}</td> --}}
-                                            {{-- <td style="text-transform: capitalize;">
+                                            <td>{{ $session->created_at->format('d-M-Y') }}</td>
+
+                                            <td style="text-transform: capitalize;">
                                                 @if ($session->session_status != "pending")
                                                     {{ $session->session_status }}
                                                 @else
@@ -137,21 +139,20 @@
 
                                                         <select name="update_status" class="update_status" id="{{ $session->id }}">
                                                             <option {{ ($session->session_status == 'pending') ? 'selected':'' }} value="pending">Pending</option>
-                                                            <option {{ ($session->session_status == 'done') ? 'selected':'' }} value="done">Done</option>
-                                                            <option {{ ($session->session_status == 'no-show') ? 'selected':'' }} value="no-show">No Show</option>
+                                                            <option {{ ($session->session_status == 'attended') ? 'selected':'' }} value="attended">Attended </option>
+                                                            <option {{ ($session->session_status == 'no-show') ? 'selected':'' }} value="not-attended">Not Attended</option>
                                                         </select>
                                                     @else
                                                         {{ $session->session_status }}
-                                                        <select name="update_status" class="update_status" id="{{ $session->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Please note you are able to cancel and reschedule up to 24 hours in advance without incurring a late cancellation fee ($75) or no show fee ($100).">
+                                                        {{-- <select name="update_status" class="update_status" id="{{ $session->id }}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Please note you are able to cancel and reschedule up to 24 hours in advance without incurring a late cancellation fee ($75) or no show fee ($100).">
                                                             <option {{ ($session->session_status == 'pending') ? 'selected':'' }} value="pending">Pending</option>
                                                             <option {{ ($session->session_status == 'canceled') ? 'selected':'' }} value="canceled">Canceled</option>
-                                                        </select>
+                                                        </select> --}}
                                                     @endif
 
                                                 @endif
-                                            </td> --}}
+                                            </td>
                                             {{-- <td><span class="badge badge-light-{{ ($session->payment_status=='success' || $session->payment_status=='free' ? "success":($session->payment_status=='pending' ? "warning":"danger") ) }}">{{ $session->payment_status }}</span></td> --}}
-                                            <td>{{ $session->created_at->format('d-M-Y') }}</td>
                                             <td>
                                                 {{-- <a href="{{ route('app-session-detail', $session->id) }}" class="">
                                                     <x-detail-icon/>
@@ -161,11 +162,11 @@
                                                     <i data-feather='bookmark'></i>
                                                 </a>
 
-                                                {{-- @if ($session->session_status == 'pending')
+                                                @if ($session->session_status == 'pending')
                                                     <a title="Reschedule" href="{{ route('session-edit', $session->id) }}" class="item-edit">
                                                         <x-edit-icon/>
                                                     </a>
-                                                @endif --}}
+                                                @endif
 
                                                 @if (auth()->user()->user_role == "admin")
                                                     <a href="{{ route('user-edit', $session->user_id) }}" class="delete-record">

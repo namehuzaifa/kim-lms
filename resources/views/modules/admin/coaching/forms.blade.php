@@ -56,14 +56,6 @@
                                                 </div>
                                             </div>
 
-                                            {{-- <div class="col-md-3 mb-1">
-                                                <div class="mb-1">
-                                                    <label class="form-label" for="fp-multiple">Blackout dates</label>
-                                                    <input type="text" id="fp-multiple" class="form-control flatpickr-multiple" value="{{ ($isEdit) ? $coaching?->blackout_dates : old('blackout_dates') }}" name="blackout_dates" placeholder="YYYY-MM-DD"  />
-                                                    @error('blackout_dates')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
-                                                </div>
-                                            </div> --}}
-
                                             <div class="col-md-3 col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="status">Session Status</label>
@@ -146,7 +138,15 @@
                                                 </div>
                                             </div>
 
-                                            {{-- <div class="col-md-3  col-12">
+                                            <div class="col-md-3 mb-1">
+                                                <div class="mb-1">
+                                                    <label class="form-label" for="fp-multiple">Blackout dates</label>
+                                                    <input type="text" id="fp-multiple" class="form-control flatpickr-multiple" value="{{ ($isEdit) ? $coaching?->blackout_dates : old('blackout_dates') }}" name="blackout_dates" placeholder="YYYY-MM-DD"  />
+                                                    @error('blackout_dates')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="session_limit">Session limit</label>
                                                     <input type="number" id="session_limit" class="form-control" value="{{ ($isEdit) ? $coaching?->session_limit : old('session_limit')  }}" name="session_limit" placeholder="Session limit eg. 4, 5, 6" />
@@ -160,9 +160,9 @@
                                                     <input type="number" id="month_limit" class="form-control" value="{{ ($isEdit) ? $coaching?->month_limit : old('month_limit')  }}" name="month_limit" placeholder="month limit eg. 1, 3, 6, 12" />
                                                     @error('month_limit')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
-                                            </div> --}}
+                                            </div>
 
-                                            <div class="col-md-3  col-12">
+                                            {{-- <div class="col-md-3  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="start_time">Start Time</label>
                                                     <input type="text" id="start_time"  class="form-control flatpickr-time text-start" placeholder="HH:MM" value="{{ ($isEdit) ? $coaching?->start_time : old('start_time')  }}" name="start_time"/>
@@ -176,7 +176,7 @@
                                                     <input type="text" id="end_time"  class="form-control flatpickr-time text-start" placeholder="HH:MM" value="{{ ($isEdit) ? $coaching?->end_time : old('end_time')  }}" name="end_time" />
                                                     @error('end_time')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                 </div>
-                                            </div>
+                                            </div> --}}
 
                                             @if (auth()->user()->user_role == "admin")
                                                 <div class="col-md-3 col-12">
@@ -205,7 +205,7 @@
                                                 </div>
                                             @endif
 
-                                            <div class="col-md-6  col-12">
+                                            <div class="col-md-5  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="coach_bio">Teacher bio</label>
                                                     <input type="text" id="coach_bio" class="form-control" value="{{ ($isEdit) ? $coaching?->coach_bio : old('coach_bio') }}" name="coach_bio" placeholder="Based in London, Uncode is a blog by" />
@@ -213,7 +213,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6  col-12">
+                                            <div class="col-md-4  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="metting_link">Metting link</label>
                                                     <input type="link" id="metting_link" class="form-control" value="{{ ($isEdit) ? $coaching?->metting_link : old('metting_link') }}" name="metting_link" placeholder="https://zoom.us/, https://meet.google.com/" />
@@ -275,7 +275,7 @@
                                             </div> --}}
 
 
-                                            {{-- @php $days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+                                            @php $days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
                                                 $returnDays = ($isEdit) ? $coaching?->getslots->pluck('days')->toArray() : $days;
                                             @endphp
 
@@ -298,13 +298,13 @@
 
                                                     <div class="col-md-2 mb-1">
                                                         <label class="form-label" for="start_time-{{ $key }}">Start Time</label>
-                                                        <input type="text" id="start_time-{{ $key }}" value="{{ ($isEdit) ? $slot?->start_time : (old('start_time') ? old('start_time') : "10:00")  }}"  name="start_time[{{ $key }}]" class="form-control flatpickr-time text-start start_time" placeholder="HH:MM" />
+                                                        <input type="text" id="start_time-{{ $key }}" value="{{ ($isEdit) ? $slot?->start_time : (old('start_time'.$key) ? old('start_time'.$key) : "10:00")  }}"  name="start_time[{{ $key }}]" class="form-control flatpickr-time text-start start_time" placeholder="HH:MM" />
                                                         @error('start_time')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                     </div>
 
                                                     <div class="col-md-2 mb-1">
                                                         <label class="form-label" for="end_time-{{ $key }}">End Time</label>
-                                                        <input type="text" id="end_time-{{ $key }}" value="{{ ($isEdit) ? $slot?->end_time : (old('end_time') ? old('end_time') : "12:00") }}" name="end_time[{{ $key }}]" class="form-control flatpickr-time text-start end_time" placeholder="HH:MM" />
+                                                        <input type="text" id="end_time-{{ $key }}" value="{{ ($isEdit) ? $slot?->end_time : (old('end_time'.$key) ? old('end_time'.$key) : "12:00") }}" name="end_time[{{ $key }}]" class="form-control flatpickr-time text-start end_time" placeholder="HH:MM" />
                                                         @error('end_time')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
                                                     </div>
 
@@ -314,6 +314,7 @@
                                                             @php $durations = [15, 20, 25, 30, 40, 45, 60, 90, 120] @endphp
                                                             @foreach ($durations as $duration)
                                                                 <option value="{{ $duration }}" {{ ($isEdit && $slot?->duration == $duration) ? "selected" : '' }} >{{ $duration }} min</option>
+                                                                {{-- <option value="{{ $duration }}" {{ (old('duration'.$key) && old('duration'.$key) == $duration) ? "selected" : ($isEdit && $slot?->duration == $duration ? "selected" : '') }} >{{ $duration }} min</option> --}}
                                                             @endforeach
 
                                                         </select>
@@ -341,7 +342,7 @@
                                                     </div>
                                                 </div>
 
-                                            @endforeach --}}
+                                            @endforeach
 
                                             <div class="col-12">
                                                 <button type="submit" class="btn btn-primary me-1">Submit</button>

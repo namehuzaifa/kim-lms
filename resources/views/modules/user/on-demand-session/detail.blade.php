@@ -166,8 +166,8 @@
             width: 100%;
             /* height: 37px; */
             text-align: center;
-            /* background-color: #191970; */
-            background-color: rgb(184 96 249);
+            background-color: #118cff;
+            /* background-color: rgb(184 96 249); */
             padding: 14px 0px 5px 0px;
             -webkit-border-radius: 12px 12px 0px 0px;
             -moz-border-radius: 12px 12px 0px 0px;
@@ -443,11 +443,12 @@
                         </div>
                     </div>
                     <!--/ Blog Detail -->
+                </div>
 
-                     <!-- Leave a Blog Comment -->
+                <!-- Leave a Blog Comment -->
                 <form id="msform" method="POST" action="{{ route('course-booking', $course->slug) }}" class="form" >
                     @csrf
-                    <div class="row justify-content-center card card-body" style="flex-direction: unset; display:none">
+                    <div class="row justify-content-center card card-body" style="flex-direction: unset;">
 
                         <div class="col-md-3" id="calendar">
                             <div id="calendar_header">
@@ -466,7 +467,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-5 select_list">
+                        <div class="col-md-4 select_list">
                             <table class="table setup_table  table-striped main__table">
                                 <thead>
                                     <tr>
@@ -528,9 +529,6 @@
                 </form>
 
                 <!--/ Leave a Blog Comment -->
-
-
-                </div>
 
 
             </div>

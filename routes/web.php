@@ -52,7 +52,8 @@ Route::controller(UserScreenController::class)->group(function (){
     Route::get('ondemain-order-list/{id?}', 'orderList')->name('ondemain-order-list')->middleware(['auth']);
     Route::get('today-ondemain-list/', 'orderList')->name('today-ondemain-list')->middleware(['auth']);
     Route::get('pending-ondemain-list/', 'orderList')->name('pending-ondemain-list')->middleware(['auth',]);
-    Route::get('done-ondemain-list/', 'orderList')->name('done-ondemain-list')->middleware(['auth',]);
+    Route::get('attended-ondemain-list/', 'orderList')->name('attended-ondemain-list')->middleware(['auth',]);
+    Route::get('not-attended-ondemain-list/', 'orderList')->name('not-attended-ondemain-list')->middleware(['auth',]);
 
 });
 

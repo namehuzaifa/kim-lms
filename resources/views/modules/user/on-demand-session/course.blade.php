@@ -146,7 +146,7 @@
                 <h2 class="text-light">Let's answer some questions</h2>
 
                 <!-- subtitle -->
-                <p class="card-text text-light mb-2">or choose a Course to quickly find the help you need</p>
+                <p class="card-text text-light mb-2">or choose a teacher to quickly find the help you need</p>
 
                 <!-- search input -->
                 <form1 class="faq-search-input">
@@ -168,7 +168,7 @@
             <div class="content-body">
 
                 <h2><b>{{ $subject?->name }}</b></h2>
-                <p>Select your desired subject from the sections below</p>
+                <p>Select your desired teacher from the sections below</p>
                 <!-- Wishlist Starts -->
                 <section id="wishlist" class="grid-view wishlist-items">
 
@@ -192,7 +192,8 @@
                                     </div> --}}
                                     <div class="item-name">
                                         <h4 class="fw-bolder">
-                                            <a class="text-dark" href="{{ route('course-detail', $course?->slug) }}">{{ $course?->title }}</a>
+                                            <a class="text-dark" href="{{ route('course-detail', $course?->slug) }}">{{ $course?->coach_name ? $course?->coach_name : $course?->getUser->name }}</a>
+                                            {{-- <a class="text-dark" href="{{ route('course-detail', $course?->slug) }}">{{ $course?->title }}</a> --}}
                                         </h4>
                                     </div>
                                     <div class="item-cost">
@@ -205,7 +206,7 @@
                                 <p class="card-text item-description mt-1">
                                     {{substr($course?->description, 0, 100) . '...'; }}
                                 </p>
-                                <div class="d-flex align-items-start">
+                                {{-- <div class="d-flex align-items-start">
                                     <div class="avatar me-2">
                                         <img src="{{ asset('assets/images/avatar.png') }}" width="50" height="50" alt="Avatar">
                                     </div>
@@ -215,7 +216,7 @@
                                             {{ substr($course?->coach_bio, 0, 50) . '...'; }}
                                         </p>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="item-options text-center">
                                 <a href="{{ route('course-detail', $course?->slug) }}" class="btn btn-dark btn-cart rounded">

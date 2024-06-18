@@ -59,18 +59,21 @@ class CoachingController extends Controller
             'coach_name'        => ['required', 'string', 'max:255'],
             'subject_id'        => ['required', 'string'],
             'class_id'          => ['required', 'string'],
-            'start_time'        => ['required', 'string'],
-            'end_time'          => ['required', 'string'],
+            'start_time'        => ['required', 'array'],
+            'end_time'          => ['required', 'array'],
             'metting_link'      => ['required', 'string'],
-            // 'duration'          => ['required', 'array'],
+            'duration'          => ['required', 'array'],
             'price_per_session' => ['sometimes', 'integer'],
-            // 'session_limit'     => ['required', 'integer'],
-            // 'month_limit'       => ['required', 'integer'],
-            // 'days'              => ['required', 'array'],
-            // 'session'           => ['required', 'array'],
+            'session_limit'     => ['required', 'integer'],
+            'month_limit'       => ['required', 'integer'],
+            'days'              => ['required', 'array'],
+            'session'           => ['required', 'array'],
             'image'             => 'mimes:jpeg,png,jpg'
 
         ]);
+
+        // dd($request->all());
+
 
         try {
             // if($request->price_per_session) {
@@ -97,21 +100,21 @@ class CoachingController extends Controller
                 $request['image_id']  = $attachment_url;
             }
 
-            $coachingId = Coaching::create($request->except('_token', 'image','duration','days','session',));
+            $coachingId = Coaching::create($request->except('_token', 'image','duration','days','session','start_time', 'end_time'));
 
-            // if ($coachingId->id) {
-            //     foreach ($request->days as $keys => $value) {
-            //         Slot::create([
-            //         'user_id'       => $userId,
-            //         'coaching_id'   => $coachingId->id,
-            //         'days'          => $value,
-            //         'start_time'    => $request->start_time[$keys],
-            //         'end_time'      => $request->end_time[$keys],
-            //         'duration'      => $request->duration[$keys],
-            //         'session'       => $request->session[$keys],
-            //     ]);
-            //     }
-            // }
+            if ($coachingId->id) {
+                foreach ($request->days as $keys => $value) {
+                    Slot::create([
+                    'user_id'       => $userId,
+                    'coaching_id'   => $coachingId->id,
+                    'days'          => $value,
+                    'start_time'    => $request->start_time[$keys],
+                    'end_time'      => $request->end_time[$keys],
+                    'duration'      => $request->duration[$keys],
+                    'session'       => $request->session[$keys],
+                ]);
+                }
+            }
 
             return redirect()->route('coaching-list')->with(['status' => 'success', 'message' => "Sessions add successfully"]);
 
@@ -168,12 +171,12 @@ class CoachingController extends Controller
             'start_time'        => ['required', 'string'],
             'end_time'          => ['required', 'string'],
             'metting_link'      => ['required', 'string'],
-            // 'duration'          => ['required', 'array'],
+            'duration'          => ['required', 'array'],
             'price_per_session' => ['sometimes', 'integer'],
-            // 'session_limit'     => ['required', 'integer'],
-            // 'month_limit'       => ['required', 'integer'],
-            // 'days'              => ['required', 'array'],
-            // 'session'           => ['required', 'array'],
+            'session_limit'     => ['required', 'integer'],
+            'month_limit'       => ['required', 'integer'],
+            'days'              => ['required', 'array'],
+            'session'           => ['required', 'array'],
             'image'             => 'mimes:jpeg,png,jpg'
         ]);
 
@@ -212,20 +215,20 @@ class CoachingController extends Controller
 
             $isUpdate = Coaching::where('id', $id)->update($request->except('_token', 'image','duration','days','session',));
 
-            // if ($isUpdate) {
-            //     Slot::where('coaching_id', $coaching->id)->delete();
-            //     foreach ($request->days as $keys => $value) {
-            //         Slot::create([
-            //             'user_id'       => $userId,
-            //             'coaching_id'   => $coaching->id,
-            //             'days'          => $value,
-            //             'start_time'    => $request->start_time[$keys],
-            //             'end_time'      => $request->end_time[$keys],
-            //             'duration'      => $request->duration[$keys],
-            //             'session'       => $request->session[$keys],
-            //         ]);
-            //     }
-            // }
+            if ($isUpdate) {
+                Slot::where('coaching_id', $coaching->id)->delete();
+                foreach ($request->days as $keys => $value) {
+                    Slot::create([
+                        'user_id'       => $userId,
+                        'coaching_id'   => $coaching->id,
+                        'days'          => $value,
+                        'start_time'    => $request->start_time[$keys],
+                        'end_time'      => $request->end_time[$keys],
+                        'duration'      => $request->duration[$keys],
+                        'session'       => $request->session[$keys],
+                    ]);
+                }
+            }
 
             return redirect()->route('coaching-list')->with(['status' => 'success', 'message' => "Session updated successfully"]);
 

@@ -211,8 +211,8 @@ class SessionBookingController extends Controller
         $diff_mins = $this->getTimeDiffer($session->date, $session->start_time);
 
         if($diff_mins <= 1435){
-            $StripeService = new StripeService();
-            $charge = $StripeService->chargeCustomer(75, $session->customer_id, '',$session);
+            // $StripeService = new StripeService();
+            // $charge = $StripeService->chargeCustomer(75, $session->customer_id, '',$session);
         }
         return redirect()->back()->with(['status' => 'success', 'message' => "Session reschedule successfully" ]);
     }
@@ -233,6 +233,19 @@ class SessionBookingController extends Controller
         try {
 
             $session = SessionBooking::where('id', $request->id)->first();
+
+            if (Auth::user()->user_role == "admin") {
+                SessionBooking::where('id', $request->id)->update([
+                    "payment_status" => $request->status,
+                    "session_status" => $request->status
+                ]);
+                return ["status" => true , "message" => "Session done successfully"];
+            } else{
+                return ["status" => false , "message" => "Something Went Wrong"];
+            }
+
+            return true;
+
             $stripeService = new StripeService;
 
             if ($request->status == "done" && Auth::user()->user_role == "admin") {

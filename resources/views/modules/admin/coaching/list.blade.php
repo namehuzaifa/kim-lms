@@ -41,8 +41,8 @@
                                             <th>id</th>
                                             <th>Name</th>
                                             <th>Class</th>
-                                            <th>Start</th>
-                                            <th>End</th>
+                                            {{-- <th>Start</th> --}}
+                                            {{-- <th>End</th> --}}
                                             <th>Price</th>
                                             {{-- <th>Limit</th> --}}
                                             <th>Teacher</th>
@@ -66,8 +66,8 @@
                                                 </div>
                                             </td>
                                             <td>{{ $coaching?->getclass?->name }}</td>
-                                            <td>{{ $coaching->start_time }}</td>
-                                            <td>{{ $coaching->end_time }}</td>
+                                            {{-- <td>{{ $coaching->start_time }}</td> --}}
+                                            {{-- <td>{{ $coaching->end_time }}</td> --}}
                                             {{-- <td>{{ $coaching->getsubject->name }}</td> --}}
                                             <td>${{ $coaching->price_per_session }}</td>
                                             {{-- <td>{{ $coaching->session_limit }}</td> --}}

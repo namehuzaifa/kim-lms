@@ -246,7 +246,7 @@
 
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='book-open'></i>
-                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Sessions</span></a>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">On demand Sessions</span></a>
                         <ul class="menu-content">
                             <li class="{{ navActive(['coaching-list', 'coaching-edit']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('coaching-list') }}">
@@ -297,7 +297,7 @@
 
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='calendar'></i>
-                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Booking</span></a>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">On demand Booking</span></a>
                         <ul class="menu-content">
                             <li class="{{ navActive(['ondemain-order-list', 'ondemain-order-list']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('ondemain-order-list') }}">
@@ -306,17 +306,22 @@
                             </li>
                             <li class="{{ navActive(['today-ondemain-list']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('today-ondemain-list','today=true') }}">
-                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Today session</span>
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Today Booking</span>
                                 </a>
                             </li>
                             <li class="{{ navActive(['pending-ondemain-list']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('pending-ondemain-list', "status=pending") }}">
-                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Pending session</span>
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Pending List</span>
                                 </a>
                             </li>
-                            <li class="{{ navActive(['done-ondemain-list']) }}">
-                                <a class="d-flex align-items-center" href="{{ route('done-ondemain-list', "status=done") }}">
-                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Done session</span>
+                            <li class="{{ navActive(['attended-ondemain-list']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('attended-ondemain-list', "status=attended") }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Attended List</span>
+                                </a>
+                            </li>
+                            <li class="{{ navActive(['not-attended-ondemain-list']) }}">
+                                <a class="d-flex align-items-center" href="{{ route('not-attended-ondemain-list', "status=not-attended") }}">
+                                    <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Not Attended list</span>
                                 </a>
                             </li>
 
@@ -533,7 +538,7 @@
 
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='book-open'></i>
-                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Sessions</span></a>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">On demand Sessions</span></a>
                         <ul class="menu-content">
                             <li class="{{ navActive(['coaching-list', 'coaching-edit']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('coaching-list') }}">
@@ -551,7 +556,7 @@
 
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='calendar'></i>
-                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule Booking</span></a>
+                        <span class="menu-title text-truncate" data-i18n="Invoice">On demand Booking</span></a>
                         <ul class="menu-content">
                             <li class="{{ navActive(['ondemain-order-list', 'ondemain-order-list']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('ondemain-order-list') }}">
@@ -638,13 +643,13 @@
                     </li> --}}
                     <li class="nav-item"><a class="d-flex align-items-center" href="#">
                         <i data-feather='book-open'></i>
-                        <span class="menu-title text-truncate" data-i18n="Invoice">Schedule session</span></a>
+                        <span class="menu-title text-truncate" data-i18n="Invoice"> Booking History</span></a>
                         <ul class="menu-content">
-                            <li class="{{ navActive(['subjects']) }}">
+                            {{-- <li class="{{ navActive(['subjects']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('class') }}">
                                     <i data-feather="circle"></i><span class="menu-item text-truncate" data-i18n="List">Book New</span>
                                 </a>
-                            </li>
+                            </li> --}}
 
                             <li class="{{ navActive(['ondemain-order-list']) }}">
                                 <a class="d-flex align-items-center" href="{{ route('ondemain-order-list',auth()->user()->id) }}">
@@ -660,7 +665,7 @@
                             {{-- <div class="card">
                                 <div class="card-body">
                                     <p>Once it has been set up you can do these things</p> --}}
-                                    <a href="https://tothestar.org/on-demand-sessions/" class="btn btn-primary me-1 waves-effect waves-float waves-light zoominout">Book On demand session</a>
+                                    <a href="{{ route('class') }}" class="btn btn-primary me-1 waves-effect waves-float waves-light zoominout">Book On demand session</a>
                                 {{-- </div>
                             </div> --}}
                         </li>

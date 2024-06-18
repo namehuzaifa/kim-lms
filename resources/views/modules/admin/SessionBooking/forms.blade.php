@@ -53,14 +53,14 @@
         }
         #calendar_content div.active{
             color: #FFFFFF;
-            background-color: #191970;
+            background-color: #118CFF;
 
         }
         #calendar_header{
             width: 100%;
             height: 37px;
             text-align: center;
-            background-color: #191970;
+            background-color: #118CFF;
             padding: 18px 0;
             -webkit-border-radius: 12px 12px 0px 0px;
             -moz-border-radius: 12px 12px 0px 0px;
@@ -94,7 +94,7 @@
         }
 
         .sessions_select{
-            border: 1.5px solid midnightblue;
+            border: 1.5px solid #118cff;
             border-radius: 10px;
             height: 150%;
 
@@ -117,11 +117,11 @@
             margin-right: 20px;
             width: fit-content;
             padding: 4px 8px;
-            color: midnightblue;
+            color: #118cff;
             border-radius: 4px;
             cursor: pointer;
-            /* background: midnightblue; */
-            border: 2px solid midnightblue;
+            /* background: #118cff; */
+            border: 2px solid #118cff;
             font-size: 18px;
         }
         div#session{
@@ -133,7 +133,7 @@
         }
 
         div#session .slots.active {
-            background: midnightblue;
+            background: #118cff;
             color: white;
         }
 
@@ -178,9 +178,9 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    @if ($remainLessThan24h)
+                                    {{-- @if ($remainLessThan24h)
                                         <p class="text-danger">Please note you are able to cancel and reschedule up to 24 hours in advance without incurring a late cancellation fee ($75) or no show fee ($100).</p>
-                                    @endif
+                                    @endif --}}
                                     <form class="form form-vertical" method="POST" action="{{ ($isEdit) ?  route('session-update', $id) : route('session-store') }}" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" value="{{ $session?->date }}" name="date" />
@@ -397,7 +397,7 @@
             .text(i[n - 1] + " " + t);
             f.find("div").css("color", y);
             // l.find(".active").css("background-color", y);
-            // l.find(".active").css("background-color", '#191970');
+            // l.find(".active").css("background-color", '#118CFF');
             d();
         }
         function twoDateDiffr(start){
@@ -497,7 +497,7 @@
             "Saturday"
         ];
         var o = [
-            "#191970",
+            "#118CFF",
             "#006d5b",
             // "#16a085",
             // "#1abc9c",
@@ -538,6 +538,9 @@
             }
         });
     });
+
+        // var date = "{{ $session?->date->format('Y-m-d') }}";
+        // alert(date);
+        // $('#calendar_content').find('div[date="'+date+'"]').click()
     </script>
 @endsection
-

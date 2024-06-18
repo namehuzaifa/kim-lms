@@ -96,7 +96,7 @@
                                                     <x-trash-icon/>
                                                 </a>
                                                 @if ($user->user_role == 'user')
-                                                    <a href="{{ route('session-list', $user->id) }}" class="item-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Open User Booked Session">
+                                                    <a href="{{ route('ondemain-order-list', $user->id) }}" class="item-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Open User Booked Session">
                                                         <i data-feather='calendar'></i>
                                                     </a>
                                                     {{-- <a href="{{ route('add-user-session', $user->id) }}" class="item-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Add User Session">

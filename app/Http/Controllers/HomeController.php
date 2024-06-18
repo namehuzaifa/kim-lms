@@ -29,7 +29,8 @@ class HomeController extends Controller
             $poadcast = Poadcast::count();
             $session = Coaching::count();
             $sessionBooking = SessionBooking::count();
-            $totalearning = SessionBooking::where('payment_status','success')->sum('price_per_session');
+            $totalearning = SessionBooking::sum('price_per_session');
+            // $totalearning = SessionBooking::where('payment_status','success')->sum('price_per_session');
 
             $bookingCountPerMonth = SessionBooking::all()->groupBy(function($val) {
                 return Carbon::parse($val->created_at)->format('YM');
@@ -43,8 +44,10 @@ class HomeController extends Controller
             $revenueChatData[] = (isset($bookingCountPerMonth[$currentYear.$value]) ? $bookingCountPerMonth[$currentYear.$value]->sum('price_per_session') : 0);
             }
 
-            $curentMonthEarning = SessionBooking::where('payment_status','success')->whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
-            $lastMonthEarning = SessionBooking::where('payment_status','success')->whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
+            // $curentMonthEarning = SessionBooking::where('payment_status','success')->whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
+            // $lastMonthEarning = SessionBooking::where('payment_status','success')->whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
+            $curentMonthEarning = SessionBooking::whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
+            $lastMonthEarning = SessionBooking::whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
 
 
             // dd($lastMonthEarning);
@@ -55,7 +58,8 @@ class HomeController extends Controller
 
             $session = Coaching::where('user_id', $user->id)->count();
             $sessionBooking = SessionBooking::where('coach_id', $user->id)->count();
-            $totalearning = SessionBooking::where('coach_id', $user->id)->where('payment_status','success')->sum('price_per_session');
+            $totalearning = SessionBooking::where('coach_id', $user->id)->sum('price_per_session');
+            // $totalearning = SessionBooking::where('coach_id', $user->id)->where('payment_status','success')->sum('price_per_session');
 
             $bookingCountPerMonth = SessionBooking::where('coach_id', $user->id)->get()->groupBy(function($val) {
                 return Carbon::parse($val->created_at)->format('YM');
@@ -69,8 +73,10 @@ class HomeController extends Controller
             $revenueChatData[] = (isset($bookingCountPerMonth[$currentYear.$value]) ? $bookingCountPerMonth[$currentYear.$value]->sum('price_per_session') : 0);
             }
 
-            $curentMonthEarning = SessionBooking::where('coach_id', $user->id)->where('payment_status','success')->whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
-            $lastMonthEarning = SessionBooking::where('coach_id', $user->id)->where('payment_status','success')->whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
+            $curentMonthEarning = SessionBooking::where('coach_id', $user->id)->whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
+            $lastMonthEarning = SessionBooking::where('coach_id', $user->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
+            // $curentMonthEarning = SessionBooking::where('coach_id', $user->id)->where('payment_status','success')->whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
+            // $lastMonthEarning = SessionBooking::where('coach_id', $user->id)->where('payment_status','success')->whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
             // dd($lastMonthEarning);
             return view('modules.admin.dashboard.index',compact('session', 'sessionBooking', 'totalearning', 'bookingChartData', 'revenueChatData', 'curentMonthEarning', 'lastMonthEarning'));
         }
@@ -92,9 +98,12 @@ class HomeController extends Controller
             $revenueChatData[] = (isset($bookingCountPerMonth[$currentYear.$value]) ? $bookingCountPerMonth[$currentYear.$value]->sum('price_per_session') : 0);
             }
 
-            $totalPayment = SessionBooking::where('user_id', $user->id)->where('payment_status','success')->sum('price_per_session');
-            $curentMonthPayment = SessionBooking::where('user_id', $user->id)->where('payment_status','success')->whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
-            $lastMonthPayment = SessionBooking::where('user_id', $user->id)->where('payment_status','success')->whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
+            // $totalPayment = SessionBooking::where('user_id', $user->id)->where('payment_status','success')->sum('price_per_session');
+            $totalPayment = SessionBooking::where('user_id', $user->id)->sum('price_per_session');
+            $curentMonthPayment = SessionBooking::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
+            // $curentMonthPayment = SessionBooking::where('user_id', $user->id)->where('payment_status','success')->whereMonth('created_at', Carbon::now()->month)->get()->sum('price_per_session');
+            // $lastMonthPayment = SessionBooking::where('user_id', $user->id)->where('payment_status','success')->whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
+            $lastMonthPayment = SessionBooking::where('user_id', $user->id)->whereMonth('created_at', Carbon::now()->subMonth()->month)->get()->sum('price_per_session');
 
 
             // dd($lastMonthpPayment);
