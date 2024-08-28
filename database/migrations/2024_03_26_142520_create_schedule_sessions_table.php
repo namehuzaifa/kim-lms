@@ -15,15 +15,23 @@ return new class extends Migration
     {
         Schema::create('schedule_sessions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('grade_id')->constrained('session_grades');
             $table->string('title');
             $table->string('plan_price')->default(0);
             $table->string('plan_hours');
-            $table->string('customize_hour');
+            $table->string('unique_color');
+            $table->string('blackout_dates')->nullable();
+            $table->string('month_limit');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('duration');
+            $table->json('days');
+            $table->json('teachers');
             $table->longText('description')->nullable();
             $table->boolean('recommended')->default(0);
             $table->boolean('status')->default(1);
             $table->timestamps();
+            // $table->foreignId('grade_id')->constrained('session_grades');
+            // $table->string('customize_hour');
         });
     }
 

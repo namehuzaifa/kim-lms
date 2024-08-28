@@ -119,8 +119,13 @@
                                                 <div class="d-flex justify-content-left align-items-center">
                                                     {{-- <div class="avatar  me-1"><img src="{{ asset( ($session?->image_id) ? $session?->image_id : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="32" height="32"></div> --}}
                                                     <div class="d-flex flex-column">
-                                                        <span class="emp_name text-truncate fw-bold">{{ $session?->getSession?->title }}</span>
-                                                        <small class="emp_post text-truncate text-muted">{{ $session?->getSession?->getSubject->name }}</small>
+                                                        @if ($session->session_type == 'regular')
+                                                            <span class="emp_name text-truncate fw-bold">{{ $session?->getSession?->title }}</span>
+                                                            <small class="emp_post text-truncate text-muted">{{ $session?->getSession?->getSubject->name }}</small>
+                                                        @else
+                                                            <span class="emp_name text-truncate fw-bold">{{ $session?->getOnDemandSession?->title }}</span>
+                                                            {{-- <small class="emp_post text-truncate text-muted">{{ $session?->getSession?->getSubject->name }}</small> --}}
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -162,7 +167,7 @@
                                                     <i data-feather='bookmark'></i>
                                                 </a>
 
-                                                @if ($session->session_status == 'pending')
+                                                @if ($session->session_status == 'pending' && $session->session_type == 'regular')
                                                     <a title="Reschedule" href="{{ route('session-edit', $session->id) }}" class="item-edit">
                                                         <x-edit-icon/>
                                                     </a>
@@ -174,9 +179,16 @@
                                                     </a>
                                                 @endif
 
-                                                <a href="{{ $session?->getSession?->metting_link }}" target="_blank" class="delete-record">
-                                                    <i data-feather='link'></i>
-                                                </a>
+                                                @if ($session->session_type == 'regular')
+                                                    <a href="{{ $session?->getSession?->metting_link }}" target="_blank" class="delete-record">
+                                                        <i data-feather='link'></i>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ $session?->getTeacher?->metting_link }}" target="_blank" class="delete-record">
+                                                        <i data-feather='link'></i>
+                                                    </a>
+                                                @endif
+
                                             </td>
                                         </tr>
 

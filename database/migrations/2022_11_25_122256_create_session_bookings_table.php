@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('coach_id')->constrained('users');
             $table->foreignId('session_id')->constrained('coachings');
+            $table->string('session_type')->default('regular');
             $table->string('coach_name')->nullable();
             $table->date('date');
             $table->time('start_time');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ScheduleSession;
 use App\Http\Controllers\Controller;
 use App\Models\ScheduleSession;
 use App\Models\SessionGrade;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SessionController extends Controller
@@ -36,7 +37,8 @@ class SessionController extends Controller
     {
         $isEdit = false;
         $grades = SessionGrade::whereStatus(1)->get();
-        return view('modules.admin.schedule-session.forms', compact('isEdit', 'grades'));
+        $teachers = User::where('user_role', 'coach')->get();
+        return view('modules.admin.schedule-session.forms', compact('isEdit', 'grades', 'teachers'));
     }
 
     /**
@@ -48,12 +50,19 @@ class SessionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'grade_id'          => ['required', 'string'],
             'title'             => ['required', 'string'],
+            'status'            => ['required', 'string'],
             'plan_price'        => ['required', 'string'],
             'plan_hours'        => ['required', 'string'],
-            'customize_hour'    => ['required', 'string'],
-            'status'            => ['required', 'string'],
+            'unique_color'      => ['required', 'string'],
+            'month_limit'       => ['required', 'string'],
+            'start_time'        => ['required', 'string'],
+            'end_time'          => ['required', 'string'],
+            'duration'          => ['required', 'string'],
+            'days'              => ['required', 'array'],
+            'teachers'          => ['required', 'array'],
+            // 'grade_id'          => ['required', 'string'],
+            // 'customize_hour'    => ['required', 'string'],
         ]);
 
         try {
@@ -88,8 +97,9 @@ class SessionController extends Controller
     {
         $session = ScheduleSession::findOrFail($id);
         $grades = SessionGrade::whereStatus(1)->get();
+        $teachers = User::where('user_role', 'coach')->get();
         $isEdit = true;
-        return view('modules.admin.schedule-session.forms', compact('id', 'grades', 'session', 'isEdit'));
+        return view('modules.admin.schedule-session.forms', compact('id', 'grades', 'session', 'isEdit', 'teachers'));
     }
 
     /**

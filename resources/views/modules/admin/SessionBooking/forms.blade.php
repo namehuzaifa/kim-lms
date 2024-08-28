@@ -337,12 +337,13 @@
             var weekday     =   $(this).attr('weekday');
 
             $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-            url = "{{ route('get-slots') }}"
+            url = "{{ route('course-slots') }}"
 
             $.ajax({
                 url: url,
                 type: "POST",
-                data: {date : date, id : sessionId, weekday : weekday},
+                dataType : 'json',
+                data: {date : date, id : sessionId, weekday : weekday, session_type: 'regular',},
             }).done(function (data) {
 
                 var html = '';
@@ -355,7 +356,7 @@
                                 </label>`;
                     }
                 });
-                // console.log(data);
+                console.log(data);
                 $('#session').html(html);
             });
         })

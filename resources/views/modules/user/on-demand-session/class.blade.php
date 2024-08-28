@@ -139,7 +139,7 @@
                         <div class="row mt-1 justify-content-center">
                             <div class="col-sm-6 d-flex flex-column align-items-center">
                                 <img class="mb-3" src="{{ asset('')}}assets/images/on-demand-session/Vector.png" alt="">
-                                <h1 class="text-light">On demand Sessions</h1>
+                                <h1 class="text-light">Regular Sessions</h1>
                                 <p class="text-light">Select a Class & book a session with your desired teacher.</p>
                                 <div class="input-group input-group-merge">
                                     <input type="text" class="form-control search-product" id="class-search" placeholder="Search Product" aria-label="Search..." aria-describedby="shop-search" />

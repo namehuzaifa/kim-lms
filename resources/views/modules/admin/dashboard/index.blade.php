@@ -48,7 +48,7 @@
                                                 <div class="d-flex flex-row">
                                                     <div class="avatar bg-light-primary me-2">
                                                         <div class="avatar-content">
-                                                            <i data-feather="trending-up" class="avatar-icon"></i>
+                                                            <i data-feather="user" class="avatar-icon"></i>
                                                         </div>
                                                     </div>
                                                     <div class="my-auto">
@@ -61,12 +61,12 @@
                                                 <div class="d-flex flex-row">
                                                     <div class="avatar bg-light-info me-2">
                                                         <div class="avatar-content">
-                                                            <i data-feather="airplay" class="avatar-icon"></i>
+                                                            <i data-feather="users" class="avatar-icon"></i>
                                                         </div>
                                                     </div>
                                                     <div class="my-auto">
-                                                        <h4 class="fw-bolder mb-0">{{ $courses }}</h4>
-                                                        <p class="card-text font-small-3 mb-0">Courses</p>
+                                                        <h4 class="fw-bolder mb-0">{{ $teacher }}</h4>
+                                                        <p class="card-text font-small-3 mb-0">Teachers</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -74,12 +74,12 @@
                                                 <div class="d-flex flex-row">
                                                     <div class="avatar bg-light-danger me-2">
                                                         <div class="avatar-content">
-                                                            <i data-feather="message-circle" class="avatar-icon"></i>
+                                                            <i data-feather="book-open" class="avatar-icon"></i>
                                                         </div>
                                                     </div>
                                                     <div class="my-auto">
-                                                        <h4 class="fw-bolder mb-0">{{ $blog }}</h4>
-                                                        <p class="card-text font-small-3 mb-0">Blogs</p>
+                                                        <h4 class="fw-bolder mb-0">{{ $session }}</h4>
+                                                        <p class="card-text font-small-3 mb-0">Regular</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -87,12 +87,12 @@
                                                 <div class="d-flex flex-row">
                                                     <div class="avatar bg-light-success me-2">
                                                         <div class="avatar-content">
-                                                            <i data-feather="mic" class="avatar-icon"></i>
+                                                            <i data-feather="book" class="avatar-icon"></i>
                                                         </div>
                                                     </div>
                                                     <div class="my-auto">
-                                                        <h4 class="fw-bolder mb-0">{{ $poadcast }}</h4>
-                                                        <p class="card-text font-small-3 mb-0">Podcasts</p>
+                                                        <h4 class="fw-bolder mb-0">{{ $ondemand }}</h4>
+                                                        <p class="card-text font-small-3 mb-0">On Demand</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -111,7 +111,7 @@
                                         <div class="card">
                                             <div class="card-body pb-50">
                                                 <h6>Total Sessions</h6>
-                                                <h2 class="fw-bolder mb-1">{{ $session }}</h2>
+                                                <h2 class="fw-bolder mb-1">{{ $session+$ondemand }}</h2>
                                                 <div id="statistics-order-chart"></div>
                                             </div>
                                         </div>

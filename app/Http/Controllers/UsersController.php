@@ -16,9 +16,9 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($role)
     {
-        $users = User::all()->except(Auth::user()->id);
+        $users = User::where('user_role', $role)->get()->except(Auth::user()->id);
         return view('modules.admin.users.list', compact('users'));
     }
 
@@ -73,7 +73,7 @@ class UsersController extends Controller
             $request['password']  = Hash::make($request->password);
 
             User::create(['name' => $request->name, 'email' => $request->email, 'password' => $request->password,
-            'phone' => $request->phone, 'user_role' => $request->user_role]);
+            'phone' => $request->phone, 'metting_link' => $request->metting_link, 'user_role' => $request->user_role]);
             // User_metas::create($request->except('_token','name','email','password'));
 
             return redirect()->route('user-list')->with(['status' => 'success', 'message' => "User add successfully"]);
@@ -134,6 +134,7 @@ class UsersController extends Controller
                 'email' => $request->email,
                 'password' => $request->password,
                 'phone' => $request->phone,
+                'metting_link' => $request->metting_link,
                 'user_role' => $request->user_role
             ])->filter()->all();
 
@@ -141,10 +142,10 @@ class UsersController extends Controller
             // User_metas::where('id', $id)->update($request->except('_token','name','email','password'));
 
 
-            return redirect()->route('user-list')->with(['status' => 'success', 'message' => "User update successfully"]);
+            return redirect()->route('user-edit', $id)->with(['status' => 'success', 'message' => "User update successfully"]);
 
         } catch (\Exception $e) {
-            return redirect()->route('user-list')->with(['status' => 'failed', 'message' => $e->getMessage() ]);
+            return redirect()->route('user-edit', $id)->with(['status' => 'failed', 'message' => $e->getMessage() ]);
         }
     }
 

@@ -68,6 +68,14 @@
                                                 </div>
                                             @endif
 
+                                            <div class="col-md-6  col-12 metting_link " {{ ($isEdit && $user?->user_role == 'coach') ? "" : "style=display:none" }}>
+                                                <div class="mb-1">
+                                                    <label class="form-label" for="metting_link">Metting Link</label>
+                                                    <input type="text" id="metting_link" class="form-control" value="{{ ($isEdit) ? $user?->metting_link : old('metting_link')  }}" name="metting_link" placeholder="Metting link" />
+                                                    @error('metting_link')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                                                </div>
+                                            </div>
+
                                             {{-- <div class="col-md-6  col-12">
                                                 <div class="mb-1">
                                                     <label class="form-label" for="date_of_barth">Date of Birth</label>
@@ -114,5 +122,15 @@
 
 @section('scripts')
 
+<script>
+
+    $('select[name=user_role]').change(function(e){
+        if ( $(this).val() == "coach") {
+           $('.metting_link').show()
+        } else {
+            $('.metting_link').hide()
+        }
+    })
+</script>
 @endsection
 

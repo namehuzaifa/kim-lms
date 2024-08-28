@@ -1,6 +1,6 @@
 
 @extends('layouts.master')
-@section('title','Grade List | '.config('app.name'))
+@section('title','On-Demand Session | '.config('app.name'))
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}app-assets/vendors/css/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('') }}app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css">
@@ -21,7 +21,7 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">Schedule Session List</h2>
+                            <h2 class="content-header-title float-start mb-0">On-Demand Session List</h2>
                         </div>
                     </div>
                 </div>
@@ -42,8 +42,8 @@
                                             <th>Title</th>
                                             <th>Plan Price</th>
                                             <th>Plan hours</th>
-                                            <th>Recommended</th>
-                                            <th>Stats</th>
+                                            <th>Duration</th>
+                                            <th>Status</th>
                                             <th>Create Date</th>
                                             <th>Action</th>
                                         </tr>
@@ -57,13 +57,13 @@
                                                 <div class="d-flex justify-content-left align-items-center">
                                                     <div class="d-flex flex-column">
                                                         <span class="emp_name text-truncate fw-bold">{{ $session->title }}</span>
-                                                        <small class="emp_post text-truncate text-muted">{{ $session->getGrade->name }}</small>
+                                                        {{-- <small class="emp_post text-truncate text-muted">{{ $session->getGrade->name }}</small> --}}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>${{ $session->plan_price }}</td>
                                             <td>{{ $session->plan_hours }} Hours</td>
-                                            <td>{{ ($session->status == 1) ? 'Yes' : 'No' }}</td>
+                                            <td>{{ $session->duration }} min</td>
                                             <td>{{ ($session->status) ? 'active' : 'Inactive' }}</td>
                                             <td>{{ $session->created_at->format('d-M-Y') }}</td>
                                             <td>

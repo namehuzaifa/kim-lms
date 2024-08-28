@@ -20,7 +20,7 @@
         }
 
         .faq-search .card-body {
-            padding: 4rem !important;
+            padding: 0rem !important;
             padding-top: 7rem !important;
         }
 
@@ -34,12 +34,12 @@
         .card.ecommerce-card {
             border: 1px solid #cdcccc;
         }
-        .ecommerce-application .content-body{
-            padding: 30px;
+        .content-body{
+            margin: unset!important;
         }
 
 
-        .card.faq-search:before {
+        /* .card.faq-search:before {
             content: '';
             background-image: url("{{asset('/')}}assets/images/on-demand-session/Vector-top.png");
             width: 82px;
@@ -47,9 +47,9 @@
             position: absolute;
             background-repeat: no-repeat;
             right: 0;
-        }
+        } */
 
-        body .card.faq-search:after {
+        /* body .card.faq-search:after {
             content: '';
             background-image: url("{{asset('/')}}assets/images/on-demand-session/Vector-bottom.png");
             width: 81px;
@@ -58,7 +58,7 @@
             background-repeat: no-repeat;
             top: 340px;
             left: 0px;
-        }
+        } */
 
         .main-menu{
             overflow: unset;
@@ -83,7 +83,7 @@
             .faq-search .card-body {
                 padding-top: 4rem !important;
             }
-            body .card.faq-search:after {
+            /* body .card.faq-search:after {
                 content: '';
                 background-image: url("{{asset('/')}}assets/images/on-demand-session/Vector-bottom.png");
                 width: 81px;
@@ -92,7 +92,7 @@
                 background-repeat: no-repeat;
                 top: 298px;
                 left: 80px;
-            }
+            } */
         }
     </style>
 
@@ -325,14 +325,14 @@
     <!-- BEGIN: Content-->
 
     <section id="faq-search-filter">
-        <div class="card faq-search">
+        <div class="card faq-search" style="background: {{ $session->unique_color }}!important;">
             <div class="card-body text-center">
                 <!-- main title -->
                 <img class="mb-3" src="{{ asset('')}}assets/images/on-demand-session/Vector.png" alt="">
-                <h2 class="text-light">Course Details</h2>
+                <h2 class="text-light">{{ $session?->title }} <br> <small class="text-light">{{ $session->created_at->format('M d, Y') }}</small> </h2>
 
                 <!-- subtitle -->
-                <p class="card-text text-light mb-2">Select date & time to enroll in your course today!</p>
+                <p class="card-text text-light mb-2">{{ $session?->description }}</p>
 
                 <!-- search input -->
                 <form class="faq-search-input">
@@ -356,46 +356,46 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-start mb-0">{{ $course?->title }}</h2>
+                            <h2 class="content-header-title float-start mb-0">{{ $session?->title }}</h2>
                         </div>
                     </div>
                 </div>
 
             </div> --}}
             <div class="content-detached content-left">
-                <div class="content-body">
+                {{-- <div class="content-body">
                     <!-- Blog Detail -->
                     <div class="blog-detail-wrapper">
                         <div class="row">
                             <!-- Blog -->
                             <div class="col-12">
                                 <div class="card">
-                                    <img src="{{ asset($course->image_id) }}" class="img-fluid card-img-top" alt="Blog Detail Pic" />
+                                    <img src="{{ asset($session?->image_id) }}" class="img-fluid card-img-top" alt="Blog Detail Pic" />
                                     <div class="card-body">
-                                        <h4 class="card-title">{{ $course?->title }}</h4>
+                                        <h3 class="card-title">{{ $session?->title }}</h3>
                                         <div class="d-flex">
                                             <div class="avatar me-50">
-                                                <img src="{{ asset( ($course?->getSubject?->image_url) ? $course?->getSubject?->image_url : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="24" height="24" />
+                                                <img src="{{ asset( ($session?->getSubject?->image_url) ? $session?->getSubject?->image_url : 'assets/images/no-preview.png' ) }}" alt="Avatar" width="24" height="24" />
                                             </div>
                                             <div class="author-info">
                                                 <small class="text-muted me-25">Subject : </small>
-                                                <small><a href="#" class="text-body">{{ $course?->getSubject?->name }}</a></small>
+                                                <small><a href="#" class="text-body">{{ $session?->getSubject?->name }}</a></small>
                                                 <span class="text-muted ms-50 me-25">|</span>
-                                                <small class="text-muted">{{ $course->created_at->format('M d, Y') }}</small>
+                                                <small class="text-muted">{{ $session->created_at->format('M d, Y') }}</small>
                                             </div>
                                         </div>
                                         <div class="my-1 py-25">
-                                            {{-- <a href="#">
+                                            <a href="#">
                                                 <span class="badge rounded-pill badge-light-danger me-50">Gaming</span>
                                             </a>
                                             <a href="#">
                                                 <span class="badge rounded-pill badge-light-warning">Video</span>
-                                            </a> --}}
+                                            </a>
                                         </div>
                                         <pre class="card-text mb-2">
-                                            {{ $course?->description }}
+                                            {{ $session?->description }}
                                         </pre>
-                                        {{-- <h4 class="mb-75">Unprecedented Challenge</h4>
+                                        <h4 class="mb-75">Unprecedented Challenge</h4>
                                         <ul class="p-0 mb-2">
                                             <li class="d-block">
                                                 <span class="me-25">-</span>
@@ -421,16 +421,16 @@
                                                 <span class="me-25">-</span>
                                                 <span>Fully ethical life</span>
                                             </li>
-                                        </ul> --}}
+                                        </ul>
                                         <hr class="my-2" />
                                         <div class="d-flex align-items-start">
                                             <div class="avatar me-2">
                                                 <img src="{{ asset('assets/images/avatar.png') }}" width="60" height="60" alt="Avatar" />
                                             </div>
                                             <div class="author-info">
-                                                <h6 class="fw-bolder">{{ $course?->coach_name ? $course?->coach_name : $course?->getUser->name }}</h6>
+                                                <h6 class="fw-bolder">{{ $session?->coach_name ? $session?->coach_name : $session?->getUser?->name }}</h6>
                                                 <p class="card-text mb-0">
-                                                    {{ $course?->coach_bio}}
+                                                    {{ $session?->coach_bio}}
                                                 </p>
                                             </div>
                                         </div>
@@ -443,14 +443,26 @@
                         </div>
                     </div>
                     <!--/ Blog Detail -->
-                </div>
+                </div> --}}
 
                 <!-- Leave a Blog Comment -->
-                <form id="msform" method="POST" action="{{ route('course-booking', $course->slug) }}" class="form" >
+                <form id="msform" method="POST" action="{{ route('course-booking', $session->id) }}" class="form" >
                     @csrf
                     <div class="row justify-content-center card card-body" style="flex-direction: unset;">
 
-                        <div class="col-md-3" id="calendar">
+                        <div class="col-md-9 col-12">
+                            <div class="mb-1">
+                                <label class="form-label" for="teachers">Select Teacher</label>
+                                <select class="form-select" id="teachers" name="teachers" required>
+                                    @foreach ($session->teachers as $teacher)
+                                        <option value="{{ $teacher }}" >{{ $session?->getUser($teacher)?->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('teachers')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-6" id="calendar">
                             <div id="calendar_header">
                                 <i class="icon-chevron-left fa fa-angle-left"></i>
                                 <h1></h1>
@@ -460,25 +472,30 @@
                             <div id="calendar_content"></div>
                         </div>
 
-                        <div class="col-md-3 time-slot-list">
+                        <div class="col-md-6 time-slot-list">
                             <h1 class="time-slot-h">Time slot</h1>
                             <div class="row" id="session">
                                 <div class="booked col-10">No Date selected</div>
                             </div>
                         </div>
 
-                        <div class="col-md-4 select_list">
+                    </div>
+
+                    <div class="row justify-content-between card card-body" style="flex-direction: unset;">
+
+                        <div class="col-md-12 select_list">
                             <table class="table setup_table  table-striped main__table">
                                 <thead>
                                     <tr>
                                         <th scope="col" class="first">Schedule</th>
+                                        <th scope="col">Teacher</th>
                                         <th scope="col">Date</th>
                                         <th scope="col">Time</th>
                                         <th scope="col" class="last"></th>
                                     </tr>
                                 </thead>
                                 <tbody class="schedule-table">
-                                    <tr class="demo"><td></td><td>No session selected</td><td></td><td></td></tr>
+                                    <tr class="demo"><td></td><td></td><td>No session selected</td><td></td><td></td></tr>
                                     {{-- <tr>
                                         <th>1</th>
                                         <td>Mark</td>
@@ -534,7 +551,7 @@
             </div>
 
 
-            <div class="sidebar-detached sidebar-right">
+            {{-- <div class="sidebar-detached sidebar-right">
                 <div class="sidebar">
                     <div class="blog-sidebar my-2 my-lg-0">
 
@@ -578,7 +595,7 @@
                                             <div class="avatar bg-light-primary rounded">
                                                 <div class="avatar-content">
                                                     <img class="img-fluid card-img-top" src="{{ asset( ($subject?->image_url) ? $subject?->image_url : 'assets/images/no-preview.png' ) }}" alt="img-placeholder" />
-                                                    {{-- <i data-feather="watch" class="avatar-icon font-medium-1"></i> --}}
+                                                    <i data-feather="watch" class="avatar-icon font-medium-1"></i>
                                                 </div>
                                             </div>
                                         </a>
@@ -595,7 +612,7 @@
                     </div>
 
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>
@@ -610,23 +627,38 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <!-- END: Page JS-->
 
-
+    @php
+        $sectionLimit = $session?->plan_hours;
+        if ($session?->duration == 30) {
+            $sectionLimit = $sectionLimit * 2;
+        } elseif ($session?->duration == 120) {
+            $sectionLimit = $sectionLimit /2;
+        }
+    @endphp
   <script>
 
-        var days = {!! $course?->getslots->pluck('days')->toJson() !!};
+        var sectionLimit = {{ $sectionLimit }}
+        var days = {!! json_encode($session?->days) !!};
         // var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-        var blackOutDate = {!! json_encode(explode(",",str_replace(" ", "",$course?->blackout_dates))) !!};
-        var sectionLimit = {{ $course?->session_limit }};
-        var monthLimit = {{ $course?->month_limit }}*30;
-        var sessionId   =   "{{ $course?->id }}"
-        var slug   =   "{{ $course?->slug }}"
+        var blackOutDate = {!! json_encode(explode(",",str_replace(" ", "",$session?->blackout_dates))) !!};
+        var monthLimit = {{ $session?->month_limit }}*30;
+        var sessionId   =   "{{ $session?->id }}"
+        var slug   =   "{{ $session?->id }}"
         var date = "";
+
+        $(document).on( 'change', '#teachers', function(e){
+            jQuery('#session').html('<div class="booked col-10">No Date selected</div>');
+        })
 
         $(document).on( 'click', '.slots', function(e){
             var $this = $(this);
             var time = $this.text();
+            var teacherId   =   $('#teachers').val();
+            var teacherName = $('#teachers option:selected').text();
+
             if($this.hasClass('active')){
-                $this.removeClass('active');
+                alert('This Date Time select already');
+                // $this.removeClass('active');
 
             }else{
                 $('.schedule-table .demo').hide();
@@ -634,10 +666,15 @@
                 var count = length+1;
                 var dateTime = date+`=`+time;
                 var ifSetAlrady = jQuery(".sl_dt[value='"+dateTime+"']").length;
+                var ifTeacherSet = jQuery(".sl_teacher[value='"+teacherId+"']").length;
 
-                if (ifSetAlrady) {
-                    alert('This Date Time select already');
+                if (ifSetAlrady && ifTeacherSet) {
+                    alert('This Date & Time selected already');
                     $this.addClass('active');
+
+                } else if (ifSetAlrady) {
+                alert('This Date & Time selected for another teacher');
+                // $this.addClass('active');
 
                 } else if (sectionLimit <= length) {
                     alert('Allow only '+sectionLimit+' session selected on this package')
@@ -647,7 +684,9 @@
                     $this.addClass('active');
                     $('.schedule-table').append(`<tr class="schedule-row">
                         <input class="sl_dt" type="hidden" value="`+date+`=`+time+`" name="booking_date_time[]" />
+                        <input class="sl_teacher" type="hidden" value="`+teacherId+`" name="teacher[]" />
                         <th class="length">`+count+`</th>
+                        <th class="teacherName">`+teacherName+`</th>
                         <td>`+date+`</td> <td>`+time+`</td>
                         <td><span class="cross remove-slots" >&#10060;</span></td> </tr>`);
                 }
@@ -671,7 +710,7 @@
             $(this).addClass('active');
 
                 date        =   $(this).attr('date');
-            // var sessionId   =   $('#select-session').val();
+            var teacherId   =   $('#teachers').val();
             var weekday     =   $(this).attr('weekday');
 
             $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
@@ -680,7 +719,7 @@
             $.ajax({
                 url: url,
                 type: "POST",
-                data: {date : date, id : sessionId, weekday : weekday, session_type: 'regular'},
+                data: {date : date, id : sessionId, weekday : weekday, session_type: 'on-demand', teacher:teacherId},
             }).done(function (data) {
                 console.log(data);
                 var html = '';
@@ -720,8 +759,8 @@
                 console.error(result.error);
             } else {
                 // Attach the token or source to the form data
-                stripeForm.append('session_type', 'regular');
                 stripeForm.append('stripeToken', result.token.id);
+                stripeForm.append('session_type', 'on-demand');
                 // let stripeForm = new FormData($('form.msform')[0]);
                 let url = $('#msform').attr('action');
                 $('#msform').find('button[type="submit"]').append('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
@@ -758,7 +797,7 @@
                                     icon: "success",
                                     button: "Close",
                                 }).then((willDelete) => {
-                                    window.location.href = "{{ route('regular-order-list') }}";
+                                    window.location.href = "{{ route('ondemain-order-list') }}";
                                 });
                             }
                         }

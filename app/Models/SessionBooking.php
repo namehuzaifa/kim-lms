@@ -18,6 +18,7 @@ class SessionBooking extends Model
         'user_id',
         'coach_id',
         'session_id',
+        'session_type',
         'coach_name',
         'date',
         'start_time',
@@ -45,9 +46,17 @@ class SessionBooking extends Model
     {
        return $this->belongsTo(Coaching::class,'session_id');
     }
+    public function getOnDemandSession()
+    {
+       return $this->belongsTo(ScheduleSession::class,'session_id');
+    }
     public function getUser()
     {
        return $this->belongsTo(User::class,'user_id');
+    }
+    public function getTeacher()
+    {
+       return $this->belongsTo(User::class,'coach_id');
     }
 
 

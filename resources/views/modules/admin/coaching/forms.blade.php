@@ -282,6 +282,7 @@
                                             @foreach ($days as $key => $day)
 
                                                 @php
+                                                    // $slot = [];
                                                     if (in_array($day, $returnDays) && $isEdit) {
                                                         $slotKey =  array_search($day, array_column($coaching?->getslots->toArray(), 'days'));
                                                         $slot = $coaching?->getslots[$slotKey];
@@ -460,7 +461,7 @@
             disabeldField();
 
             $('#session_Monday, #session_Tuesday, #session_Wednesday, #session_Thursday, #session_Friday, #session_Saturday, #session_Sunday').select2({
-                tags: true
+                // tags: true
             });
         });
     </script>

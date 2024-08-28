@@ -4,12 +4,14 @@ namespace App\Http\Controllers\OnDemandSession;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coaching;
+use App\Models\ScheduleSession;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Models\SessionBooking;
 use App\Models\Sessionclass;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Slot;
+use DateTime;
 use App\Services\Payments\StripeService;
 
 class UserScreenController extends Controller
@@ -44,14 +46,47 @@ class UserScreenController extends Controller
 
     public function getSlots(Request $request)
     {
+        // return $request->all();
         try {
-            $slots  = Slot::where('coaching_id', $request->id)->where('days', $request->weekday)->first();
-            $booked = SessionBooking::where('session_id',$slots->coaching_id)->where('date', $request->date)->pluck('start_end_time');
-            return ["slots" => $slots->session, "booked" => $booked];
+            $slots  = [];
+            $booked = [];
+            if ($request->session_type == 'on-demand') {
+                $session = ScheduleSession::whereId($request->id)->whereStatus(1)->first();
+                $slots  = $this->getServiceScheduleSlots($session->duration, $session->start_time, $session->end_time);
+                $booked = SessionBooking::where('session_type','on-demand')->where('coach_id', $request->teacher)->where('session_id',$request->id)->where('date', $request->date)->pluck('start_end_time');
+
+            } else if($request->session_type == 'regular'){
+                $slots  = Slot::where('coaching_id', $request->id)->where('days', $request->weekday)->first();
+                $booked = SessionBooking::where('session_type','regular')->where('session_id',$slots->coaching_id)->where('date', $request->date)->pluck('start_end_time');
+                $slots  = $slots->session;
+            }
+            return ["slots" => $slots, "booked" => $booked];
 
         } catch (\Throwable $e) {
             return ['status' => false, 'message' => $e->getMessage()];
         }
+    }
+
+    function getServiceScheduleSlots($duration, $start,$end) {
+        $start = new DateTime($start);
+        $end = new DateTime($end);
+        $start_time = $start->format('H:i');
+        $end_time = $end->format('H:i');
+        $i=0;
+        while(strtotime($start_time) <= strtotime($end_time)){
+            $start = $start_time;
+            $end = date('H:i',strtotime('+'.$duration.' minutes',strtotime($start_time)));
+            $start_time = date('H:i',strtotime('+'.$duration.' minutes',strtotime($start_time)));
+            $i++;
+            if(strtotime($start_time) <= strtotime($end_time)){
+                $time[$i] = $start.'-'.$end;
+                // $time[$i]['start'] = $start;
+                // $time[$i]['end'] = $end;
+                // $time[$i]['isBooked'] = 'false';
+
+            }
+        }
+        return $time;
     }
 
     public function courseBooking(Request $request, $slug)
@@ -59,67 +94,114 @@ class UserScreenController extends Controller
         try {
 
             $userId = Auth::user()->id;
-            $session = Coaching::where('slug', $slug)->first();
 
             if(empty($request->booking_date_time)){
                 return ['status' => false, 'message' => "Please select Date and slot"];
             }
 
-            // if($session->price_per_session != 0){
-                $stripeService = new StripeService;
-                $charges = $stripeService->sessionCharge($session->price_per_session, $request->stripeToken, $session->name);
+            // return $request->all();
+            $stripeService = new StripeService;
+
+            if ($request->session_type == 'on-demand') {
+                $session = ScheduleSession::where('id', $slug)->first();
+                $totalPrice = $session->plan_price;
+                $charges = $stripeService->sessionCharge($session->plan_price, $request->stripeToken, $session->title);
+
                 if($charges->status != "succeeded"){
                     return ['status' => false, 'message' => "Payment failed please try again"];
                 }
-            // }
 
+                $customerId = 0;
+                $temp = [];
+                foreach ($request->booking_date_time as $key => $value) {
 
-            $customerId = 0;
-            // if($session->price_per_session != 0){
-            //     $stripeService = new StripeService;
-            //     $customerId = $stripeService->createCustomer($request)->id;
-            // }
+                    $dateTime   = explode("=", $value);
+                    $times      =  explode("-", $dateTime[1]);
+                    $date       = $dateTime[0];
+                    $day        = date_format(date_create($date),"l");
+                    $duration   = $session->duration;
+                    $startTime  = $times[0];
+                    $endTime    = $times[1];
 
-            $temp = [];
-            foreach ($request->booking_date_time as $key => $value) {
+                    $data = SessionBooking::create([
+                        'user_id'           => $userId,
+                        'coach_id'          => $request->teacher[$key],
+                        'session_id'        => $session?->id,
+                        'coach_name'        => $session?->getUser($request->teacher[$key])?->name,
+                        'session_type'      => $request->session_type,
 
-                $dateTime   = explode("=", $value);
-                $times      =  explode("-", $dateTime[1]);
-                $date       = $dateTime[0];
-                $day        = date_format(date_create($date),"l");
-                $duration   = $session->getslots->where('days', $day)->first()->duration;
-                $startTime  = $times[0];
-                $endTime    = $times[1];
+                        'date'              => $date,
+                        'start_time'        => $startTime,
+                        'end_time'          => $endTime,
+                        'start_end_time'    => $dateTime[1],
+                        'duration'          => $duration,
 
-                $data = SessionBooking::create([
-                    'user_id'           => $userId,
-                    'coach_id'          => $session->user_id,
-                    'session_id'        => $session->id,
-                    'coach_name'        => $session->coach_name,
-                    // 'date'              => time(),
-                    // 'start_time'        => $session->start_time,
-                    // 'end_time'          => $session->end_time,
-                    // 'start_end_time'    => $session->end_time,
-                    // 'duration'          => $session->end_time,
+                        'full_name'         => $request->name,
+                        'email'             => $request->email,
+                        'phone'             => $request->phone,
+                        'objective'         => $request->note,
+                        'card_holder_name'  => $request?->card_holder_name,
+                        'price_per_session' => $totalPrice,
+                        'payment_method'    => 'stripe',
+                        'customer_id'       => $customerId,
 
-                    'date'              => $date,
-                    'start_time'        => $startTime,
-                    'end_time'          => $endTime,
-                    'start_end_time'    => $dateTime[1],
-                    'duration'          => $duration,
+                        'payment_status'    => ($customerId) ? 'pending' : 'free',
+                        'session_status'    => 'pending',
+                    ]);
+                }
 
-                    'full_name'         => $request->name,
-                    'email'             => $request->email,
-                    'phone'             => $request->phone,
-                    'objective'         => $request->note,
-                    'card_holder_name'  => $request->card_holder_name,
-                    'price_per_session' => $session->price_per_session,
-                    'payment_method'    => 'stripe',
-                    'customer_id'       => $customerId,
+            } else {
+                $session = Coaching::where('slug', $slug)->first();
+                $totalPrice = $session->price_per_session * count($request->booking_date_time);
+                $charges = $stripeService->sessionCharge($totalPrice, $request->stripeToken, $session->title);
 
-                    'payment_status'    => ($customerId) ? 'pending' : 'free',
-                    'session_status'    => 'pending',
-                ]);
+                if($charges->status != "succeeded"){
+                    return ['status' => false, 'message' => "Payment failed please try again"];
+                }
+
+                // if($session->price_per_session != 0){
+                    //     $stripeService = new StripeService;
+                    //     $customerId = $stripeService->createCustomer($request)->id;
+                 // }
+
+                $customerId = 0;
+                $temp = [];
+                foreach ($request->booking_date_time as $key => $value) {
+
+                    $dateTime   = explode("=", $value);
+                    $times      =  explode("-", $dateTime[1]);
+                    $date       = $dateTime[0];
+                    $day        = date_format(date_create($date),"l");
+                    $duration   = $session->getslots->where('days', $day)->first()->duration;
+                    $startTime  = $times[0];
+                    $endTime    = $times[1];
+
+                    $data = SessionBooking::create([
+                        'user_id'           => $userId,
+                        'coach_id'          => $session->user_id,
+                        'session_id'        => $session->id,
+                        'coach_name'        => $session->coach_name,
+                        'session_type'      => $request->session_type,
+
+                        'date'              => $date,
+                        'start_time'        => $startTime,
+                        'end_time'          => $endTime,
+                        'start_end_time'    => $dateTime[1],
+                        'duration'          => $duration,
+
+                        'full_name'         => $request->name,
+                        'email'             => $request->email,
+                        'phone'             => $request->phone,
+                        'objective'         => $request->note,
+                        'card_holder_name'  => $request->card_holder_name,
+                        'price_per_session' => $session->price_per_session,
+                        'payment_method'    => 'stripe',
+                        'customer_id'       => $customerId,
+
+                        'payment_status'    => ($customerId) ? 'pending' : 'free',
+                        'session_status'    => 'pending',
+                    ]);
+                }
             }
 
             return ['status' => true, 'message' => 'Sessions Booking successfully'];
@@ -130,8 +212,18 @@ class UserScreenController extends Controller
         }
     }
 
-    public function orderList(Request $request, $id = null)
+    public function regularList(Request $request, $id = null)
     {
+        $sessions =  $this->orderList($request, $id, 'regular');
+        return view('modules.admin.SessionBooking.list', compact('sessions'));
+    }
+    public function ondemindList(Request $request, $id = null)
+    {
+        $sessions =  $this->orderList($request, $id, 'on-demand');
+        return view('modules.admin.SessionBooking.list', compact('sessions'));
+    }
+
+    function orderList($request, $id = null, $type) {
         $user = Auth::user();
         $sessions = SessionBooking::select('*');
 
@@ -157,9 +249,7 @@ class UserScreenController extends Controller
             $sessions = $sessions->where('session_id', $request->session);
         }
 
-        $sessions =  $sessions->get();
-
-        return view('modules.admin.SessionBooking.list', compact('sessions'));
+        return $sessions->where('session_type', $type)->get();
     }
 
 

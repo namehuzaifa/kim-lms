@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ScheduleSession;
+use App\Http\Controllers\Controller;
 
 use App\Mail\ConfirmationEmail;
 use App\Mail\EmailReminder;
-use App\Models\Coaching;
 use App\Models\ScheduleSession;
-use App\Models\SessionBooking;
+use App\Models\SessionOrder;
 use App\Models\Slot;
 use App\Services\Payments\StripeService;
 use DateTime;
@@ -16,8 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Termwind\Components\Dd;
 use Stripe;
 
-
-class SessionBookingController extends Controller
+class SessionOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,16 +26,16 @@ class SessionBookingController extends Controller
     public function index(Request $request, $id = null)
     {
         $user = Auth::user();
-        $sessions = SessionBooking::select('*');
+        $sessions = SessionOrder::select('*');
 
         if ($id) {
-            $sessions = SessionBooking::where('user_id',$id);
+            $sessions = SessionOrder::where('user_id',$id);
         }
         elseif ($request->status) {
-            $sessions = SessionBooking::where('session_status',$request->status);
+            $sessions = SessionOrder::where('session_status',$request->status);
         }
         elseif ($request->today == true) {
-            $sessions = SessionBooking::where('date',date("Y/m/d"));
+            $sessions = SessionOrder::where('date',date("Y/m/d"));
         }
 
         if ($user->user_role == 'coach') {
@@ -87,7 +86,7 @@ class SessionBookingController extends Controller
             if(empty($request->booking_date_time)){
                 return ['status' => false, 'message' => "Please select Date and slot"];
             }
-            $session = Coaching::where('slug', $slug)->first();
+            $session = ScheduleSession::where('id', $slug)->first();
             $customerId = 0;
             if($session->price_per_session != 0){
                 $stripeService = new StripeService;
@@ -105,11 +104,10 @@ class SessionBookingController extends Controller
                 $startTime  = $times[0];
                 $endTime    = $times[1];
 
-                $data = SessionBooking::create([
+                $data = SessionOrder::create([
                             'user_id'           => $userId,
                             'coach_id'          => $session->user_id,
                             'session_id'        => $session->id,
-                            'session_type'      => $request->session_type,
                             'coach_name'        => $session->coach_name,
                             'date'              => $date,
                             'start_time'        => $startTime,
@@ -150,12 +148,12 @@ class SessionBookingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SessionBooking  $sessionBooking
+     * @param  \App\Models\SessionOrder  $sessionBooking
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $Session = SessionBooking::findOrFail($id);
+        $Session = SessionOrder::findOrFail($id);
         $isEdit = true;
         return view('modules.admin.SessionBooking.forms', compact('id', 'Session', 'isEdit'));
     }
@@ -163,20 +161,20 @@ class SessionBookingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SessionBooking  $sessionBooking
+     * @param  \App\Models\SessionOrder  $sessionBooking
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
 
-        $session    = SessionBooking::where('id', $id)->where('session_status','pending')->first();
+        $session    = SessionOrder::where('id', $id)->where('session_status','pending')->first();
         if (!$session) {
             abort(404);
         }
 
-        $coaching   = Coaching::findOrFail($session->session_id)->getslots->where('days', $session->date->format("l"))->first();
+        $coaching   = ScheduleSession::findOrFail($session->session_id)->getslots->where('days', $session->date->format("l"))->first();
         $slots      = $coaching->session;
-        $booked     = SessionBooking::where('session_id',$coaching->id)->where('date', $session->date)->pluck('start_end_time')->toArray();
+        $booked     = SessionOrder::where('session_id',$coaching->id)->where('date', $session->date)->pluck('start_end_time')->toArray();
         $diff_mins = $this->getTimeDiffer($session->date, $session->start_time);
         $remainLessThan24h = ($diff_mins <= 1440) ? true : false;
 
@@ -188,7 +186,7 @@ class SessionBookingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SessionBooking  $sessionBooking
+     * @param  \App\Models\SessionOrder  $sessionBooking
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -202,8 +200,8 @@ class SessionBookingController extends Controller
         $date       =   $request->date;
         $startTime  =   $times[0];
         $endTime    =   $times[1];
-        $session    =  SessionBooking::where('id', $id)->first();
-        SessionBooking::where('id', $id)->update([
+        $session    =  SessionOrder::where('id', $id)->first();
+        SessionOrder::where('id', $id)->update([
             'date'              => $date,
             'start_time'        => $startTime,
             'end_time'          => $endTime,
@@ -222,10 +220,10 @@ class SessionBookingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SessionBooking  $sessionBooking
+     * @param  \App\Models\SessionOrder  $sessionBooking
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SessionBooking $sessionBooking)
+    public function destroy(SessionOrder $sessionBooking)
     {
         //
     }
@@ -234,10 +232,10 @@ class SessionBookingController extends Controller
     {
         try {
 
-            $session = SessionBooking::where('id', $request->id)->first();
+            $session = SessionOrder::where('id', $request->id)->first();
 
             if (Auth::user()->user_role == "admin") {
-                SessionBooking::where('id', $request->id)->update([
+                SessionOrder::where('id', $request->id)->update([
                     "payment_status" => $request->status,
                     "session_status" => $request->status
                 ]);
@@ -255,21 +253,21 @@ class SessionBookingController extends Controller
 
                     $charge = $stripeService->chargeCustomer($session->price_per_session, $session->customer_id,'', $session);
                     if ($charge->status == "succeeded") {
-                        SessionBooking::where('id', $request->id)->update([
+                        SessionOrder::where('id', $request->id)->update([
                             "payment_status" => "success",
                             "session_status" => "done"
                         ]);
                         return ["status" => true , "message" => "Payment charge successfully"];
                     }
                     else {
-                        SessionBooking::where('id', $request->id)->update([
+                        SessionOrder::where('id', $request->id)->update([
                             "payment_status" => "failed",
                         ]);
                         return ["status" => false , "message" => $charge->failure_message];
                     }
 
                 } else{
-                    SessionBooking::where('id', $request->id)->update([
+                    SessionOrder::where('id', $request->id)->update([
                         "payment_status" => "free",
                         "session_status" => "done"
                     ]);
@@ -281,7 +279,7 @@ class SessionBookingController extends Controller
 
                 $charge = $stripeService->chargeCustomer(100, $session->customer_id,'', $session);
                 if ($charge->status == "succeeded") {
-                    SessionBooking::where('id', $request->id)->update([
+                    SessionOrder::where('id', $request->id)->update([
                         "session_status" => "no-show"
                     ]);
                     return ["status" => true , "message" => "No Show Penalty $100 charge successfully"];
@@ -298,7 +296,7 @@ class SessionBookingController extends Controller
 
                     $charge = $stripeService->chargeCustomer(75, $session->customer_id,'', $session);
                     if ($charge->status == "succeeded") {
-                        SessionBooking::where('id', $request->id)->update([
+                        SessionOrder::where('id', $request->id)->update([
                             "session_status" => "canceled"
                         ]);
                         return ["status" => true , "message" => "Session canceled 24 hours in advance Penalty $75 charge successfully"];
@@ -307,7 +305,7 @@ class SessionBookingController extends Controller
                     }
                 }
                 else{
-                    SessionBooking::where('id', $request->id)->update([
+                    SessionOrder::where('id', $request->id)->update([
                         "session_status" => "canceled"
                     ]);
                     return ["status" => true , "message" => "Session canceled successfully"];
@@ -326,21 +324,11 @@ class SessionBookingController extends Controller
 
     public function getSlots(Request $request)
     {
-        dd($request->all());
         try {
-            $slots  = [];
-            $booked = [];
-            if ($request->session_type == 'on-demand') {
-                $session = ScheduleSession::whereId($request->id)->whereStatus(1)->first();
-                $slots  = $this->getServiceScheduleSlots($session->duration, $session->start_time, $session->end_time);
-                $booked = SessionBooking::where('session_type','on-demand')->where('coach_id', $request->teacher)->where('session_id',$slots->coaching_id)->where('date', $request->date)->pluck('start_end_time');
 
-            } else if($request->session_type == 'regular'){
-                $slots  = Slot::where('coaching_id', $request->id)->where('days', $request->weekday)->first();
-                $slots  = $slots->session;
-                $booked = SessionBooking::where('session_type','regular')->where('session_id',$slots->coaching_id)->where('date', $request->date)->pluck('start_end_time');
-            }
-            return ["slots" => $slots, "booked" => $booked];
+            $slots  = Slot::where('coaching_id', $request->id)->where('days', $request->weekday)->first();
+            $booked = SessionOrder::where('session_id',$slots->coaching_id)->where('date', $request->date)->pluck('start_end_time');
+            return ["slots" => $slots->session, "booked" => $booked];
 
         } catch (\Throwable $e) {
             return ['status' => false, 'message' => $e->getMessage()];
@@ -355,26 +343,4 @@ class SessionBookingController extends Controller
         $end_date = new DateTime($date);
         return round(abs($end_date->getTimestamp() - $start_date->getTimestamp()) / 60);
     }
-
-    function getServiceScheduleSlots($duration, $start,$end) {
-        $start = new DateTime($start);
-        $end = new DateTime($end);
-        $start_time = $start->format('H:i');
-        $end_time = $end->format('H:i');
-        $i=0;
-        while(strtotime($start_time) <= strtotime($end_time)){
-            $start = $start_time;
-            $end = date('H:i',strtotime('+'.$duration.' minutes',strtotime($start_time)));
-            $start_time = date('H:i',strtotime('+'.$duration.' minutes',strtotime($start_time)));
-            $i++;
-            if(strtotime($start_time) <= strtotime($end_time)){
-                $time[$i]['start'] = $start;
-                $time[$i]['end'] = $end;
-                $time[$i]['isBooked'] = 'false';
-
-            }
-        }
-        return $time;
-    }
-
 }

@@ -19,6 +19,7 @@ use App\Http\Controllers\ScheduleSession\SessionController;
 use App\Http\Controllers\SessionBookingController;
 use App\Http\Controllers\ScheduleSession\SessionGradeController;
 use App\Http\Controllers\OnDemandSession\SessionclassController;
+use App\Http\Controllers\ScheduleSession\HourlySessionController;
 use App\Http\Controllers\SessionPaymentController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\TestimnonialController;
@@ -41,6 +42,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::controller(HourlySessionController::class)->group(function (){
+    Route::get('/hours-list', 'index')->name('hours-list')->middleware(['auth', 'Allow:user']);
+    Route::get('/hours-details/{id}', 'show')->name('hours-details')->middleware(['auth', 'Allow:user']);
+    // Route::get('/courses/{slug}', 'courses')->name('courses')->middleware(['auth', 'Allow:user']);
+    // Route::get('/course-detail/{slug}', 'courseDetail')->name('course-detail')->middleware(['auth', 'Allow:user']);
+    // Route::post('/course-slots', 'getSlots')->name('course-slots')->middleware(['auth', 'Allow:user']);
+    // Route::post('/course-booking/{slug?}', 'courseBooking')->name('course-booking')->middleware(['auth', 'Allow:user']);
+
+});
+
 Route::controller(UserScreenController::class)->group(function (){
     Route::get('/class', 'class')->name('class')->middleware(['auth', 'Allow:user']);
     Route::get('/subjects/{slug}', 'subjects')->name('subjects')->middleware(['auth', 'Allow:user']);
@@ -49,11 +61,17 @@ Route::controller(UserScreenController::class)->group(function (){
     Route::post('/course-slots', 'getSlots')->name('course-slots')->middleware(['auth', 'Allow:user']);
     Route::post('/course-booking/{slug?}', 'courseBooking')->name('course-booking')->middleware(['auth', 'Allow:user']);
 
-    Route::get('ondemain-order-list/{id?}', 'orderList')->name('ondemain-order-list')->middleware(['auth']);
-    Route::get('today-ondemain-list/', 'orderList')->name('today-ondemain-list')->middleware(['auth']);
-    Route::get('pending-ondemain-list/', 'orderList')->name('pending-ondemain-list')->middleware(['auth',]);
-    Route::get('attended-ondemain-list/', 'orderList')->name('attended-ondemain-list')->middleware(['auth',]);
-    Route::get('not-attended-ondemain-list/', 'orderList')->name('not-attended-ondemain-list')->middleware(['auth',]);
+    Route::get('ondemain-order-list/{id?}', 'ondemindList')->name('ondemain-order-list')->middleware(['auth']);
+    Route::get('today-ondemain-list/', 'ondemindList')->name('today-ondemain-list')->middleware(['auth']);
+    Route::get('pending-ondemain-list/', 'ondemindList')->name('pending-ondemain-list')->middleware(['auth',]);
+    Route::get('attended-ondemain-list/', 'ondemindList')->name('attended-ondemain-list')->middleware(['auth',]);
+    Route::get('not-attended-ondemain-list/', 'ondemindList')->name('not-attended-ondemain-list')->middleware(['auth',]);
+
+    Route::get('regular-order-list/{id?}', 'regularList')->name('regular-order-list')->middleware(['auth']);
+    Route::get('today-regular-list/', 'regularList')->name('today-regular-list')->middleware(['auth']);
+    Route::get('pending-regular-list/', 'regularList')->name('pending-regular-list')->middleware(['auth',]);
+    Route::get('attended-regular-list/', 'regularList')->name('attended-regular-list')->middleware(['auth',]);
+    Route::get('not-attended-regular-list/', 'regularList')->name('not-attended-regular-list')->middleware(['auth',]);
 
 });
 
@@ -71,7 +89,8 @@ Route::controller(UsersController::class)->group(function (){
     Route::get('user-edit/{id}', 'edit')->name('user-edit')->middleware(['auth']);
     Route::post('user-update/{id}', 'update')->name('user-update')->middleware(['auth']);
 
-    Route::get('user-list', 'index')->name('user-list')->middleware(['auth', 'Allow:admin']);
+    Route::get('user-list/{id}', 'index')->name('user-list')->middleware(['auth', 'Allow:admin']);
+    Route::get('teacher-list/{id}', 'index')->name('teacher-list')->middleware(['auth', 'Allow:admin']);
     Route::get('user-delete/{id}', 'destroy')->name('user-delete')->middleware(['auth', 'Allow:,admin']);
 
     Route::get('add-user-session/{id}', 'addSession')->name('add-user-session')->middleware(['auth', 'Allow:,admin']);

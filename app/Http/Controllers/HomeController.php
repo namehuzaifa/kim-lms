@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Models\Coaching;
 use App\Models\Courses;
 use App\Models\Poadcast;
+use App\Models\ScheduleSession;
 use App\Models\SessionBooking;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,7 +25,8 @@ class HomeController extends Controller
         $user = Auth::user();
         if($user->user_role == "admin"){
             $user = User::where('user_role','user')->count();
-            $courses = Courses::count();
+            $teacher = User::where('user_role','coach')->count();
+            $ondemand = ScheduleSession::count();
             $blog = Blog::count();
             $poadcast = Poadcast::count();
             $session = Coaching::count();
@@ -51,7 +53,7 @@ class HomeController extends Controller
 
 
             // dd($lastMonthEarning);
-            return view('modules.admin.dashboard.index',compact('user', 'courses', 'blog', 'poadcast', 'session', 'sessionBooking', 'totalearning', 'bookingChartData', 'revenueChatData', 'curentMonthEarning', 'lastMonthEarning'));
+            return view('modules.admin.dashboard.index',compact('user', 'teacher', 'ondemand', 'poadcast', 'session', 'sessionBooking', 'totalearning', 'bookingChartData', 'revenueChatData', 'curentMonthEarning', 'lastMonthEarning'));
         }
 
         if($user->user_role == "coach"){
