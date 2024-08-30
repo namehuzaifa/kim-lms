@@ -170,10 +170,10 @@
                 {{-- <h2><b>{{ $subject?->name }}</b></h2> --}}
                 {{-- <p>Select your desired teacher from the sections below</p> --}}
                 <!-- Wishlist Starts -->
-                <section class="row match-height">
+                <section class="row match-height hours-list">
 
                     @forelse ($session as $course)
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12 list">
                             <a class="card card-congratulations" href="{{ route('hours-details', $course->id) }}" style="background: {{ $course->unique_color }}">
                                 <div class="card-body text-center">
                                     <img src="../../../app-assets/images/elements/decore-left.png" class="congratulations-img-left" alt="card-img-left">
@@ -252,7 +252,7 @@
     $(document).ready(function(){
     $("#search-session").on("keyup", function() {
         var value = $(this).val().toLowerCase();
-        $("#wishlist .card").filter(function() {
+        $(".hours-list .list").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
