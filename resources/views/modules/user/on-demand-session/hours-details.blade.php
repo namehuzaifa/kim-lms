@@ -452,6 +452,13 @@
 
                         <div class="col-md-9 col-12">
                             <div class="mb-1">
+                                <div class="remain float-end"><h4>Remaining Hours: <span>{{ $session?->plan_hours; }}</span></h4></div>
+                                <div class="avail"><h4>Available Hours: <span>{{ $session?->plan_hours; }}</span></h4></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9 col-12">
+                            <div class="mb-1">
                                 <label class="form-label" for="teachers">Select Teacher</label>
                                 <select class="form-select" id="teachers" name="teachers" required>
                                     @foreach ($session->teachers as $teacher)
@@ -643,7 +650,9 @@
         var blackOutDate = {!! json_encode(explode(",",str_replace(" ", "",$session?->blackout_dates))) !!};
         var monthLimit = {{ $session?->month_limit }}*30;
         var sessionId   =   "{{ $session?->id }}"
-        var slug   =   "{{ $session?->id }}"
+        var slug   =   "{{ $session?->id }}";
+        var duration   =   {{ $session?->duration }};
+        var remain   =   {{ $session?->plan_hours; }};
         var date = "";
 
         $(document).on( 'change', '#teachers', function(e){
@@ -681,6 +690,16 @@
 
                 } else {
 
+                    if(duration == 30){
+                        remain = remain - .5;
+                    } else if(duration == 60){
+                        remain = remain - 1;
+                    } else{
+                        remain = remain - 2;
+                    }
+
+                    jQuery('.remain span').text(remain);
+
                     $this.addClass('active');
                     $('.schedule-table').append(`<tr class="schedule-row">
                         <input class="sl_dt" type="hidden" value="`+date+`=`+time+`" name="booking_date_time[]" />
@@ -698,6 +717,17 @@
             $('.schedule-table').children('.schedule-row').each(function(i, obj) {
                 $(this).find('.length').text(i+1)
             });
+
+            if(duration == 30){
+                remain = remain + .5;
+            } else if(duration == 60){
+                remain = remain + 1;
+            } else{
+                remain = remain + 2;
+            }
+
+            jQuery('.remain span').text(remain);
+
             var length = $('.schedule-row').length;
 
             if (!length) {
@@ -747,6 +777,12 @@
 
         $('#msform').submit(function(e){
             e.preventDefault();
+            var length = $('.schedule-row').length;
+            var count = length+1;
+            if (sectionLimit > length) {
+                alert('Please avail all remaining hours before booking');
+                return false;
+            }
             var stripeForm = new FormData(this);
             stripe.createToken(cardElement).then(function(result) {
             if (result.error) {
